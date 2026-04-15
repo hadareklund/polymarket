@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+
+# Python cache and tooling
+__pycache__/
+*.py[cod]
+*.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Local environment files
+.env
+.env.*
+
+# Generated outputs
+*.txt
+targeted_sherlock_results.json

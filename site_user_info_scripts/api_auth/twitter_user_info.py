@@ -12,7 +12,7 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from common import fetch_json, print_json, require_secret
+from common import fetch_json, load_env_file, print_json, require_secret
 
 
 def parse_args() -> argparse.Namespace:
@@ -22,13 +22,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("username", help="Twitter/X username without @")
     parser.add_argument(
         "--bearer-token",
-        help="Twitter API Bearer token (or set TWITTER_BEARER_TOKEN).",
+        help="Twitter API Bearer token (or set TWITTER_BEARER_TOKEN in env or .env).",
     )
     parser.add_argument("--timeout", type=int, default=20, help="HTTP timeout in seconds")
     return parser.parse_args()
 
 
 def main() -> int:
+    load_env_file(start_dir=Path(__file__).resolve().parent)
     args = parse_args()
     try:
         bearer_token = require_secret(args.bearer_token, "TWITTER_BEARER_TOKEN")

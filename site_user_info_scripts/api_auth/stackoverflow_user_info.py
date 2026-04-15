@@ -12,7 +12,7 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from common import fetch_json, print_json, unix_to_iso
+from common import fetch_json, load_env_file, print_json, unix_to_iso
 
 
 def parse_args() -> argparse.Namespace:
@@ -22,7 +22,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("username", help="StackOverflow username or partial name")
     parser.add_argument(
         "--api-key",
-        help="StackExchange API key (optional, or set STACKEXCHANGE_API_KEY).",
+        help="StackExchange API key (optional, or set STACKEXCHANGE_API_KEY in env or .env).",
     )
     parser.add_argument(
         "--pagesize",
@@ -49,6 +49,7 @@ def _compact_item(item: dict) -> dict:
 
 
 def main() -> int:
+    load_env_file(start_dir=Path(__file__).resolve().parent)
     args = parse_args()
     api_key = args.api_key or os.getenv("STACKEXCHANGE_API_KEY")
     endpoint = "https://api.stackexchange.com/2.3/users"

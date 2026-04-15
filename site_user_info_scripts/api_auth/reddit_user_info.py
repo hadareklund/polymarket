@@ -12,7 +12,7 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from common import fetch_json, print_json, require_secret, unix_to_iso
+from common import fetch_json, load_env_file, print_json, require_secret, unix_to_iso
 
 
 def parse_args() -> argparse.Namespace:
@@ -22,7 +22,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("username", help="Reddit username without u/")
     parser.add_argument(
         "--access-token",
-        help="OAuth access token (or set REDDIT_ACCESS_TOKEN).",
+        help="OAuth access token (or set REDDIT_ACCESS_TOKEN in env or .env).",
     )
     parser.add_argument(
         "--user-agent",
@@ -34,6 +34,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> int:
+    load_env_file(start_dir=Path(__file__).resolve().parent)
     args = parse_args()
     try:
         access_token = require_secret(args.access_token, "REDDIT_ACCESS_TOKEN")

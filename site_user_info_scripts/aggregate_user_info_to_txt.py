@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Any, Callable
 from urllib.parse import quote
 
-from common import fetch_json, unix_to_iso
+from common import fetch_json, load_env_file, unix_to_iso
 
 
 def collect_github(username: str, timeout: int) -> dict[str, Any]:
@@ -70,8 +70,7 @@ def _compact_keybase_proofs(proofs: list[dict[str, Any]]) -> list[dict[str, Any]
 
 def collect_keybase(username: str, timeout: int) -> dict[str, Any]:
     endpoint = (
-        "https://keybase.io/_/api/1.0/user/lookup.json"
-        f"?usernames={quote(username)}"
+        "https://keybase.io/_/api/1.0/user/lookup.json" f"?usernames={quote(username)}"
     )
     data = fetch_json(endpoint, timeout=timeout)
     them = data.get("them") or []
@@ -135,7 +134,8 @@ def collect_mixcloud(username: str, timeout: int) -> dict[str, Any]:
         "following_count": data.get("following_count"),
         "is_pro": data.get("is_pro"),
         "pictures": data.get("pictures"),
-        "profile_url": data.get("url") or f"https://www.mixcloud.com/{quote(username)}/",
+        "profile_url": data.get("url")
+        or f"https://www.mixcloud.com/{quote(username)}/",
     }
 
 
@@ -248,7 +248,9 @@ def collect_twitter(username: str, timeout: int, bearer_token: str) -> dict[str,
     }
 
 
-def run_collector(site_name: str, runner: Callable[[], dict[str, Any]]) -> dict[str, Any]:
+def run_collector(
+    site_name: str, runner: Callable[[], dict[str, Any]]
+) -> dict[str, Any]:
     try:
         return {"status": "ok", "data": runner()}
     except Exception as exc:
@@ -276,22 +278,34 @@ def parse_args() -> argparse.Namespace:
         default="site_user_info_scripts/user_info_records.txt",
         help="Structured text output path (append mode)",
     )
-    parser.add_argument("--timeout", type=int, default=20, help="HTTP timeout in seconds")
+    parser.add_argument(
+        "--timeout", type=int, default=20, help="HTTP timeout in seconds"
+    )
 
-    parser.add_argument("--reddit-access-token", help="Reddit OAuth token")
+    parser.add_argument(
+        "--reddit-access-token",
+        help="Reddit OAuth token (or set REDDIT_ACCESS_TOKEN in env or .env)",
+    )
     parser.add_argument(
         "--reddit-user-agent",
         default="site-user-info-scripts/1.0",
         help="Reddit API User-Agent",
     )
-    parser.add_argument("--stackexchange-api-key", help="StackExchange API key")
+    parser.add_argument(
+        "--stackexchange-api-key",
+        help="StackExchange API key (or set STACKEXCHANGE_API_KEY in env or .env)",
+    )
     parser.add_argument("--stackoverflow-pagesize", type=int, default=10)
-    parser.add_argument("--twitter-bearer-token", help="Twitter/X bearer token")
+    parser.add_argument(
+        "--twitter-bearer-token",
+        help="Twitter/X bearer token (or set TWITTER_BEARER_TOKEN in env or .env)",
+    )
 
     return parser.parse_args()
 
 
 def main() -> int:
+    load_env_file(start_dir=Path(__file__).resolve().parent)
     args = parse_args()
 
     if args.timeout <= 0:
@@ -309,7 +323,8 @@ def main() -> int:
         "GitHub", lambda: collect_github(username=username, timeout=args.timeout)
     )
     sites["HackerNews"] = run_collector(
-        "HackerNews", lambda: collect_hackernews(username=username, timeout=args.timeout)
+        "HackerNews",
+        lambda: collect_hackernews(username=username, timeout=args.timeout),
     )
     sites["Keybase"] = run_collector(
         "Keybase", lambda: collect_keybase(username=username, timeout=args.timeout)
