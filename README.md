@@ -65,5 +65,5 @@ See `/home/runner/work/polymarket/polymarket/site_user_info_scripts/README.md` f
 
 ## Output Notes
 
-- Generated text and JSON outputs are ignored by git (`*.txt`, `targeted_sherlock_results.json`).
+- Newly generated, untracked text and JSON outputs are ignored by git (`*.txt`, `targeted_sherlock_results.json`); files already tracked by git are not affected by ignore rules.
 - Environment files (`.env*`) are also ignored.
