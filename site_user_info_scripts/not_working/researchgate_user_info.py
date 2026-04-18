@@ -270,9 +270,10 @@ def scrape(slug: str, cookie: str | None = None) -> dict:
     data = _parse(r.text, slug)
     if "_error" in data:
         # If static HTML parse fails due JS/anti-bot behavior, try browser rendering.
-        if "js rendering" in data["_error"].lower() or "cloudflare" in data[
-            "_error"
-        ].lower():
+        if (
+            "js rendering" in data["_error"].lower()
+            or "cloudflare" in data["_error"].lower()
+        ):
             html_pw, pw_status, pw_error = _fetch_with_playwright(url, cookie)
             if html_pw and not _is_cloudflare_block(pw_status, html_pw):
                 data_pw = _parse(html_pw, slug)
