@@ -3,14 +3,17 @@ researchgate_user_info.py
 Scrapes a ResearchGate public profile.
 
 ResearchGate is behind Cloudflare (error 1020) for cold requests.
-Works best with a real browser session cookie.
+This scraper now tries multiple fetch modes automatically.
 
-  MODE 1 — Session cookie (recommended):
+    MODE 1 — Plain requests (default):
+        Fast path; works when Cloudflare does not block.
+
+    MODE 2 — Browser fallback (automatic):
+        Uses Playwright headless Chromium if requests are blocked or parsing fails.
+
+    MODE 3 — Session cookie (recommended if still blocked):
     export RG_COOKIE="__cf_bm=...; cf_clearance=...; _ga=..."
     Copy all cookies from a logged-in browser session as a single string.
-
-  MODE 2 — Cold request (often blocked):
-    Returns partial data if Cloudflare doesn't intercept.
 
 Profile URL: https://www.researchgate.net/profile/{First-Last}
   or:        https://www.researchgate.net/scientific-contributions/{slug}
@@ -23,10 +26,87 @@ Returns fields:
   publications[{title, date, type, doi, reads, citations, url}]
 """
 
-import sys, os, re, json
+import sys, os, re, json, importlib
 from scraper_base import new_session, safe_text, ok, err, dump, get_beautifulsoup
 
 SITE = "researchgate"
+
+
+def _is_cloudflare_block(status_code: int | None, html: str) -> bool:
+    low = (html or "").lower()
+    return bool(
+        status_code in {403, 429}
+        or "error code: 1020" in low
+        or "cf-error-details" in low
+        or "cloudflare" in low
+        or "cf-challenge" in low
+        or "verify you are human" in low
+    )
+
+
+def _parse_cookie_header(cookie_header: str) -> list[dict]:
+    cookies = []
+    for part in cookie_header.split(";"):
+        if "=" not in part:
+            continue
+        name, value = part.split("=", 1)
+        name = name.strip()
+        value = value.strip()
+        if not name:
+            continue
+        cookies.append(
+            {
+                "name": name,
+                "value": value,
+                "domain": ".researchgate.net",
+                "path": "/",
+                "secure": True,
+                "httpOnly": False,
+            }
+        )
+    return cookies
+
+
+def _fetch_with_playwright(
+    url: str, cookie_header: str | None
+) -> tuple[str | None, int | None, str | None]:
+    try:
+        sync_api = importlib.import_module("playwright.sync_api")
+        sync_playwright = sync_api.sync_playwright
+    except Exception:
+        return (
+            None,
+            None,
+            "Playwright not installed. Run: python3 -m pip install playwright && python3 -m playwright install chromium",
+        )
+
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            context = browser.new_context(
+                user_agent=(
+                    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                    "AppleWebKit/537.36 (KHTML, like Gecko) "
+                    "Chrome/124.0.0.0 Safari/537.36"
+                ),
+                extra_http_headers={"Accept-Language": "en-US,en;q=0.9"},
+            )
+
+            if cookie_header:
+                parsed = _parse_cookie_header(cookie_header)
+                if parsed:
+                    context.add_cookies(parsed)
+
+            page = context.new_page()
+            resp = page.goto(url, wait_until="domcontentloaded", timeout=45000)
+            page.wait_for_timeout(2500)
+            html = page.content()
+            status = resp.status if resp else None
+            context.close()
+            browser.close()
+            return html, status, None
+    except Exception as e:
+        return None, None, f"Playwright fetch failed: {e}"
 
 
 def _parse(html: str, slug: str) -> dict:
@@ -166,11 +246,22 @@ def scrape(slug: str, cookie: str | None = None) -> dict:
     except Exception as e:
         return err(SITE, str(e))
 
-    if r.status_code == 403 or "error code: 1020" in r.text:
-        return err(
-            SITE,
-            "Cloudflare block. Set RG_COOKIE with cookies from a real browser session.",
+    if _is_cloudflare_block(r.status_code, r.text):
+        html_pw, pw_status, pw_error = _fetch_with_playwright(url, cookie)
+        if html_pw and not _is_cloudflare_block(pw_status, html_pw):
+            data = _parse(html_pw, slug)
+            if "_error" in data:
+                return err(SITE, data["_error"])
+            return ok(SITE, slug, {"url": url, "fetch_mode": "playwright", **data})
+
+        reason = (
+            "Cloudflare block after requests + browser fallback. "
+            "Set RG_COOKIE with cookies from a real browser session."
         )
+        if pw_error:
+            reason = f"{reason} {pw_error}"
+        return err(SITE, reason)
+
     if r.status_code == 404:
         return err(SITE, "profile not found (404)")
     if r.status_code != 200:
@@ -178,9 +269,24 @@ def scrape(slug: str, cookie: str | None = None) -> dict:
 
     data = _parse(r.text, slug)
     if "_error" in data:
+        # If static HTML parse fails due JS/anti-bot behavior, try browser rendering.
+        if "js rendering" in data["_error"].lower() or "cloudflare" in data[
+            "_error"
+        ].lower():
+            html_pw, pw_status, pw_error = _fetch_with_playwright(url, cookie)
+            if html_pw and not _is_cloudflare_block(pw_status, html_pw):
+                data_pw = _parse(html_pw, slug)
+                if "_error" not in data_pw:
+                    return ok(
+                        SITE,
+                        slug,
+                        {"url": url, "fetch_mode": "playwright", **data_pw},
+                    )
+            if pw_error:
+                return err(SITE, f"{data['_error']}. {pw_error}")
         return err(SITE, data["_error"])
 
-    return ok(SITE, slug, {"url": url, **data})
+    return ok(SITE, slug, {"url": url, "fetch_mode": "requests", **data})
 
 
 if __name__ == "__main__":

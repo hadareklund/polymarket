@@ -4,7 +4,7 @@ Scrapes a Bitcointalk public profile.
 
 Supports lookup by:
   • numeric user ID  (e.g. "3")
-  • username string  (resolves to ID via member-list search first)
+    • username string  (resolves to ID via profile lookup first)
 
 Profile URL: https://bitcointalk.org/index.php?action=profile;u={uid}
 
@@ -26,25 +26,42 @@ BASE = "https://bitcointalk.org/index.php"
 
 def _resolve_uid(s, username: str) -> str | None:
     """Try to get numeric UID from a username string."""
-    r = s.get(
-        BASE,
-        params={
-            "action": "search2",
-            "search": username,
-            "searchtype": "1",  # member search
-        },
-        timeout=15,
-    )
-    m = re.search(
-        rf'action=profile;u=(\d+)[^"]*"[^>]*>{re.escape(username)}<',
-        r.text,
-        re.IGNORECASE,
-    )
-    if m:
-        return m.group(1)
-    # broader fallback — first hit
-    m = re.search(r"action=profile;u=(\d+)", r.text)
-    return m.group(1) if m else None
+    # Most reliable path: Bitcointalk accepts username-based profile URLs.
+    try:
+        r = s.get(
+            BASE,
+            params={"action": "profile", "user": username},
+            timeout=15,
+        )
+        m = re.search(r"action=profile;u=(\d+)", r.text, re.IGNORECASE)
+        if m:
+            return m.group(1)
+    except Exception:
+        pass
+
+    # Legacy fallback: member search page (may be guest-restricted/captcha-gated).
+    try:
+        r = s.get(
+            BASE,
+            params={
+                "action": "search2",
+                "search": username,
+                "searchtype": "1",  # member search
+            },
+            timeout=15,
+        )
+        m = re.search(
+            rf'action=profile;u=(\d+)[^"]*"[^>]*>{re.escape(username)}<',
+            r.text,
+            re.IGNORECASE,
+        )
+        if m:
+            return m.group(1)
+        # broader fallback — first hit
+        m = re.search(r"action=profile;u=(\d+)", r.text)
+        return m.group(1) if m else None
+    except Exception:
+        return None
 
 
 def _parse_profile(uid: str, html: str) -> dict:

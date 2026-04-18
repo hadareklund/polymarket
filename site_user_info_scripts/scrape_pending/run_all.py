@@ -7,11 +7,10 @@ Usage:
 
 Sites are auto-discovered from *_user_info.py files in this folder.
 Current defaults:
-    angellist, bitcointalk, crunchbase, discord, doxbin,
-    linkedin, pastebin, quora, researchgate, tradingview
+    bitcointalk, crunchbase, discord, doxbin,
+    pastebin, quora, researchgate, tradingview
 
 Environment variables for auth-gated sites:
-  LINKEDIN_LI_AT        — li_at cookie from logged-in LinkedIn session
   DISCORD_BOT_TOKEN     — Discord bot token (Bot xxxx)
   CRUNCHBASE_API_KEY    — Crunchbase v4 API key
   PASTEBIN_API_KEY      — Pastebin dev key  (optional, enhances pastebin)
@@ -24,18 +23,17 @@ Sites that strictly require a secret key / token (cannot work without one):
   • crunchbase  → CRUNCHBASE_API_KEY (API always requires user_key param)
 
 Sites that work without auth but return more with one:
-    • linkedin    → LINKEDIN_LI_AT (without cookie often limited/blocked)
   • pastebin    → PASTEBIN_API_KEY + PASTEBIN_PASSWORD (own private pastes)
   • quora       → QUORA_M_B (Cloudflare bypass)
   • researchgate→ RG_COOKIE (Cloudflare bypass)
 
 Sites that work fully without any auth:
-  • angellist / wellfound
   • bitcointalk
     • doxbin (domain/challenge dependent)
   • tradingview  (HTML)
 """
 
+import shlex
 import sys, os, json, argparse, importlib, traceback, re
 from datetime import datetime, timezone
 
@@ -106,6 +104,46 @@ def _sanitize_value(value, include_tracebacks: bool):
 
 def _safe_filename(text: str) -> str:
     return re.sub(r"[^A-Za-z0-9._-]+", "_", text).strip("_") or "user"
+
+
+def _check_core_dependencies() -> list[str]:
+    """Return a list of required dependencies missing in current interpreter."""
+    missing = []
+    for dep in ("requests",):
+        try:
+            importlib.import_module(dep)
+        except ModuleNotFoundError:
+            missing.append(dep)
+    return missing
+
+
+def _print_dependency_help(missing: list[str]):
+    dep_list = ", ".join(missing)
+    print(
+        f"Error: missing required dependency(s) for this interpreter: {dep_list}",
+        file=sys.stderr,
+    )
+    print(f"Active Python: {sys.executable}", file=sys.stderr)
+
+    venv_python = os.path.abspath(
+        os.path.join(SCRIPT_DIR, "..", "..", ".venv", "bin", "python")
+    )
+    if os.path.exists(venv_python):
+        args = " ".join(shlex.quote(a) for a in sys.argv[1:])
+        print(
+            "Try running with project venv:",
+            file=sys.stderr,
+        )
+        print(
+            f"  {venv_python} {os.path.basename(__file__)} {args}".rstrip(),
+            file=sys.stderr,
+        )
+
+    print(
+        "Or install deps in current interpreter:",
+        file=sys.stderr,
+    )
+    print("  python3 -m pip install requests", file=sys.stderr)
 
 
 def run_scraper(site: str, username: str) -> dict:
@@ -206,6 +244,11 @@ def main():
         help="Include exception tracebacks in output JSON",
     )
     args = parser.parse_args()
+
+    missing_core = _check_core_dependencies()
+    if missing_core:
+        _print_dependency_help(missing_core)
+        sys.exit(2)
 
     sites = [s.strip() for s in args.sites.split(",") if s.strip()]
     unknown_sites = [s for s in sites if s not in ALL_SITES]

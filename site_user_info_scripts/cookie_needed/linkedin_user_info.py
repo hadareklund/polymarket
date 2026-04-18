@@ -23,6 +23,21 @@ Returns fields (cookie mode):
 """
 
 import sys, os, re, json
+from pathlib import Path
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+PARENT_DIR = SCRIPT_DIR.parent
+SCRAPE_PENDING_DIR = PARENT_DIR / "scrape_pending"
+if str(PARENT_DIR) not in sys.path:
+    sys.path.insert(0, str(PARENT_DIR))
+if str(SCRAPE_PENDING_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRAPE_PENDING_DIR))
+
+try:
+    from common import load_env_file
+except Exception:  # pragma: no cover - optional convenience import
+    load_env_file = None
+
 from scraper_base import new_session, safe_text, ok, err, dump, get_beautifulsoup
 
 SITE = "linkedin"
@@ -145,6 +160,15 @@ def _public_html(s, username: str) -> dict:
     if r.status_code != 200:
         return {"_error": f"HTTP {r.status_code}"}
 
+    low = r.text.lower()
+    if (
+        "linkedin respects your privacy" in low
+        or "sign in to view" in low
+        or "checkpoint/challenge" in low
+        or "authwall" in low
+    ):
+        return {"_error": "authwall/privacy page detected — use li_at cookie"}
+
     ld_match = re.search(
         r'<script[^>]*type=["\']application/ld\+json["\'][^>]*>(.*?)</script>',
         r.text,
@@ -153,7 +177,7 @@ def _public_html(s, username: str) -> dict:
     if ld_match:
         try:
             d = json.loads(ld_match.group(1).strip())
-            return {
+            parsed = {
                 "name": d.get("name"),
                 "headline": d.get("description") or d.get("jobTitle"),
                 "location": d.get("address", {}).get("addressLocality"),
@@ -162,6 +186,8 @@ def _public_html(s, username: str) -> dict:
                 "alumni_of": [a.get("name") for a in d.get("alumniOf", [])],
                 "works_for": [w.get("name") for w in d.get("worksFor", [])],
             }
+            if parsed.get("name") or parsed.get("headline") or parsed.get("url"):
+                return parsed
         except Exception:
             pass
 
@@ -188,7 +214,7 @@ def _public_html(s, username: str) -> dict:
     if ld:
         try:
             d = json.loads(ld.string)
-            return {
+            parsed = {
                 "name": d.get("name"),
                 "headline": d.get("description") or d.get("jobTitle"),
                 "location": d.get("address", {}).get("addressLocality"),
@@ -197,6 +223,8 @@ def _public_html(s, username: str) -> dict:
                 "alumni_of": [a.get("name") for a in d.get("alumniOf", [])],
                 "works_for": [w.get("name") for w in d.get("worksFor", [])],
             }
+            if parsed.get("name") or parsed.get("headline") or parsed.get("url"):
+                return parsed
         except Exception:
             pass
 
@@ -208,6 +236,9 @@ def _public_html(s, username: str) -> dict:
 
 
 def scrape(username: str, li_at: str | None = None) -> dict:
+    if load_env_file:
+        load_env_file(start_dir=SCRIPT_DIR)
+
     li_at = li_at or os.environ.get("LINKEDIN_LI_AT")
     s = new_session()
     url = f"https://www.linkedin.com/in/{username}/"
@@ -222,7 +253,10 @@ def scrape(username: str, li_at: str | None = None) -> dict:
         if "_error" in data:
             return err(SITE, data["_error"])
 
-    return ok(SITE, username, {"url": url, **data})
+    payload = dict(data)
+    if not payload.get("url"):
+        payload["url"] = url
+    return ok(SITE, username, payload)
 
 
 if __name__ == "__main__":
