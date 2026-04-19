@@ -22,6 +22,38 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def _fetch_recent_stories(submitted_ids: list[int], timeout: int, max_stories: int = 10) -> list[dict]:
+    """Walk submitted item IDs newest-first and collect top-level stories."""
+    from urllib.parse import urlparse
+    stories: list[dict] = []
+    checked = 0
+    for item_id in submitted_ids:
+        if len(stories) >= max_stories or checked >= 60:
+            break
+        checked += 1
+        try:
+            item = fetch_json(
+                f"https://hacker-news.firebaseio.com/v0/item/{item_id}.json",
+                timeout=timeout,
+            )
+        except Exception:
+            continue
+        if not item or item.get("type") != "story" or item.get("deleted") or not item.get("title"):
+            continue
+        url = item.get("url") or ""
+        domain = urlparse(url).netloc.lstrip("www.") if url else None
+        stories.append({
+            "title": item.get("title"),
+            "url": url or None,
+            "domain": domain,
+            "score": item.get("score"),
+            "comments": item.get("descendants"),
+            "time": unix_to_iso(item.get("time")),
+            "hn_url": f"https://news.ycombinator.com/item?id={item_id}",
+        })
+    return stories
+
+
 def main() -> int:
     args = parse_args()
     endpoint = (
@@ -32,6 +64,12 @@ def main() -> int:
         if data is None:
             raise RuntimeError("User not found.")
         submitted = data.get("submitted") or []
+
+        recent_stories = _fetch_recent_stories(submitted, args.timeout)
+        domains = sorted(
+            {s["domain"] for s in recent_stories if s.get("domain")},
+        )
+
         result = {
             "site": "HackerNews",
             "username": data.get("id"),
@@ -40,6 +78,8 @@ def main() -> int:
             "karma": data.get("karma"),
             "bio": data.get("about"),
             "submission_count": len(submitted),
+            "recent_stories": recent_stories,
+            "domains_shared": domains,
             "profile_url": f"https://news.ycombinator.com/user?id={quote(args.username)}",
         }
         print_json(result)

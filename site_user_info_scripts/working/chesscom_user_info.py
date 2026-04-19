@@ -28,24 +28,55 @@ def _country_from_url(country_url: str | None) -> str | None:
     return country_url.rstrip("/").split("/")[-1]
 
 
+def _rating_summary(mode: dict | None) -> dict | None:
+    if not mode:
+        return None
+    last = mode.get("last") or {}
+    best = mode.get("best") or {}
+    record = mode.get("record") or {}
+    return {
+        "current": last.get("rating"),
+        "best": best.get("rating"),
+        "wins": record.get("win"),
+        "losses": record.get("loss"),
+        "draws": record.get("draw"),
+    }
+
+
 def main() -> int:
     args = parse_args()
-    endpoint = f"https://api.chess.com/pub/player/{quote(args.username)}"
+    base = f"https://api.chess.com/pub/player/{quote(args.username)}"
     try:
-        data = fetch_json(endpoint, timeout=args.timeout)
+        data = fetch_json(base, timeout=args.timeout)
+        username = data.get("username") or args.username
+
+        stats: dict = {}
+        try:
+            raw_stats = fetch_json(f"{base}/stats", timeout=args.timeout)
+            stats = {
+                "rapid": _rating_summary(raw_stats.get("chess_rapid")),
+                "blitz": _rating_summary(raw_stats.get("chess_blitz")),
+                "bullet": _rating_summary(raw_stats.get("chess_bullet")),
+                "daily": _rating_summary(raw_stats.get("chess_daily")),
+                "puzzles_best": (raw_stats.get("tactics") or {}).get("highest", {}).get("rating"),
+            }
+        except Exception:
+            pass
+
         result = {
             "site": "chess.com",
-            "username": data.get("username"),
+            "username": username,
             "name": data.get("name"),
+            "title": data.get("title"),
             "location": data.get("location"),
             "country_code": _country_from_url(data.get("country")),
-            "country_url": data.get("country"),
             "status": data.get("status"),
             "joined_unix": data.get("joined"),
             "joined_at": unix_to_iso(data.get("joined")),
             "last_online_unix": data.get("last_online"),
             "last_online_at": unix_to_iso(data.get("last_online")),
             "twitch_url": data.get("twitch_url"),
+            "ratings": stats or None,
             "profile_url": data.get("url"),
         }
         print_json(result)

@@ -22,14 +22,39 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def _fetch_cloudcasts(username: str, timeout: int) -> list[dict]:
+    try:
+        data = fetch_json(
+            f"https://api.mixcloud.com/{quote(username)}/cloudcasts/?limit=10",
+            timeout=timeout,
+        )
+        return [
+            {
+                "name": c.get("name"),
+                "url": c.get("url"),
+                "play_count": c.get("play_count"),
+                "listener_count": c.get("listener_count"),
+                "favorite_count": c.get("favorite_count"),
+                "created_time": c.get("created_time"),
+                "tags": [t.get("name") for t in (c.get("tags") or [])],
+            }
+            for c in (data.get("data") or [])
+        ]
+    except Exception:
+        return []
+
+
 def main() -> int:
     args = parse_args()
     endpoint = f"https://api.mixcloud.com/{quote(args.username)}/"
     try:
         data = fetch_json(endpoint, timeout=args.timeout)
+        username = data.get("username") or args.username
+        cloudcasts = _fetch_cloudcasts(username, args.timeout)
+
         result = {
             "site": "Mixcloud",
-            "username": data.get("username"),
+            "username": username,
             "display_name": data.get("name"),
             "bio": data.get("biog"),
             "city": data.get("city"),
@@ -37,6 +62,7 @@ def main() -> int:
             "follower_count": data.get("follower_count"),
             "following_count": data.get("following_count"),
             "is_pro": data.get("is_pro"),
+            "cloudcasts": cloudcasts,
             "pictures": data.get("pictures"),
             "profile_url": data.get("url") or f"https://www.mixcloud.com/{quote(args.username)}/",
         }

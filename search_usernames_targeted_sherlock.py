@@ -10,29 +10,37 @@ from pathlib import Path
 from typing import Iterable
 
 TARGET_SITES = [
-    "LinkedIn",
-    "GitHub",
-    "StackOverflow",
-    "ResearchGate",
-    "Medium",
-    "Pastebin",
-    "Rentry",
-    "Doxbin",
-    "BitcoinTalk",
-    "Reddit",
-    "TradingView",
-    "HackerNews",
-    "Twitter",
-    "Telegra.ph",
-    "Discord",
-    "Keybase",
-    "AngelList",
-    "Crunchbase",
-    "Substack",
-    "Quora",
-    "Mixcloud",
-    "chess.com",
-    "Cashapp",
+    # --- confirmed working ---
+    "GitHub",           # status_code → 404 for non-existent users; very reliable
+    "Medium",           # urlProbe: RSS feed; <body absent in XML → reliable
+    "Pastebin",         # message: "Not Found (#404)"; reliable
+    "Reddit",           # message: "Sorry, nobody on Reddit goes by that name."
+    "TradingView",      # status_code → 404 for non-existent users
+    "HackerNews",       # message: "No such user." / "Sorry."
+    "Discord",          # POST to Discord API; {"taken":false} → reliable
+    "Keybase",          # status_code → 404 for non-existent users
+    "Substack",         # (not in Sherlock manifest — will warn)
+    "Quora",            # (not in Sherlock manifest — will warn)
+    "Mixcloud",         # status_code → 404 for non-existent users
+    "chess.com",        # validation API; "Username is valid" for available names
+    "Cashapp",          # status_code → 404 for non-existent users
+    "AngelList",        # (not in Sherlock manifest — will warn)
+    "Crunchbase",       # (not in Sherlock manifest — will warn)
+    "StackOverflow",    # (not in Sherlock manifest — will warn)
+    "BitcoinTalk",      # (not in Sherlock manifest — will warn)
+    "Telegra.ph",       # (not in Sherlock manifest — will warn)
+    "Rentry",           # (not in Sherlock manifest — will warn)
+    "Doxbin",           # (not in Sherlock manifest — will warn)
+    # --- removed due to confirmed false positives ---
+    # "Twitter"       — Sherlock probes Nitter; all known public Nitter instances
+    #                   are down or Cloudflare-protected. Non-existent usernames
+    #                   return no error-panel → always reported CLAIMED.
+    # "LinkedIn"      — Returns HTTP 999 (anti-bot) for ALL requests regardless
+    #                   of whether a profile exists. status_code detection sees
+    #                   "not 404" → always reported CLAIMED. Also on Sherlock's
+    #                   own false_positive_exclusions list.
+    # "ResearchGate"  — Returns HTTP 403 for all unauthenticated bot requests;
+    #                   profile existence cannot be determined at all.
 ]
 
 # Manual aliases for names that differ from Sherlock's manifest keys.

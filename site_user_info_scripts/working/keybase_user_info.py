@@ -38,6 +38,22 @@ def _compact_proofs(proofs: list[dict]) -> list[dict[str, str | int | None]]:
     return compact
 
 
+def _fetch_follow_list(kind: str, username: str, timeout: int) -> list[str]:
+    """Return usernames from a Keybase followers or following list."""
+    try:
+        data = fetch_json(
+            f"https://keybase.io/_/api/1.0/user/list_{kind}?username={quote(username)}&limit=100",
+            timeout=timeout,
+        )
+        return [
+            u.get("username") or u.get("basics", {}).get("username", "")
+            for u in (data.get("them") or [])
+            if u
+        ]
+    except Exception:
+        return []
+
+
 def main() -> int:
     args = parse_args()
     endpoint = (
@@ -55,16 +71,21 @@ def main() -> int:
         profile = user.get("profile") or {}
         proofs_summary = user.get("proofs_summary") or {}
         proofs = proofs_summary.get("all") or []
+        username = basics.get("username") or args.username
+
+        followers = _fetch_follow_list("followers", username, args.timeout)
+        following = _fetch_follow_list("following", username, args.timeout)
 
         result = {
             "site": "Keybase",
-            "username": basics.get("username") or args.username,
+            "username": username,
             "full_name": profile.get("full_name"),
             "bio": profile.get("bio"),
             "location": profile.get("location"),
             "proofs": _compact_proofs(proofs),
             "cryptocurrency_addresses": user.get("cryptocurrency_addresses") or [],
-            "public_keys": user.get("public_keys") or {},
+            "followers": followers,
+            "following": following,
             "profile_url": f"https://keybase.io/{quote(args.username)}",
         }
         print_json(result)
