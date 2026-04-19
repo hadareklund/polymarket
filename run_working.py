@@ -25,10 +25,10 @@ def run_script(script: Path, username: str, timeout: int) -> dict:
     site = script.stem.replace("_user_info", "")
     try:
         proc = subprocess.run(
-            [sys.executable, str(script), username],
+            [sys.executable, str(script), username, "--timeout", str(timeout)],
             capture_output=True,
             text=True,
-            timeout=timeout,
+            timeout=timeout + 10,
         )
         if proc.returncode != 0:
             return {

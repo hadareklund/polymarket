@@ -38,7 +38,14 @@ try:
 except Exception:  # pragma: no cover - optional convenience import
     load_env_file = None
 
-from scraper_base import new_session, safe_text, ok, err, dump, get_beautifulsoup
+from site_user_info_scripts.not_working.really_not_working.scraper_base import (
+    new_session,
+    safe_text,
+    ok,
+    err,
+    dump,
+    get_beautifulsoup,
+)
 
 SITE = "linkedin"
 VOYAGER = "https://www.linkedin.com/voyager/api"
