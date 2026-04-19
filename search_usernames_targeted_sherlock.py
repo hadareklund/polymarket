@@ -177,8 +177,8 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--output",
-        default="targeted_sherlock_results.json",
-        help="Output JSON report path (default: targeted_sherlock_results.json)",
+        default=None,
+        help="Output JSON report path (default: results/targeted_sherlock_results.json)",
     )
     parser.add_argument(
         "--timeout",
@@ -310,7 +310,9 @@ def main() -> int:
                 for item in full_entries:
                     print(f"  - {item['site']}: {item['status']}", file=sys.stderr)
 
-        output_path = Path(args.output)
+        results_dir = script_dir / "results"
+        results_dir.mkdir(exist_ok=True)
+        output_path = Path(args.output) if args.output else results_dir / "targeted_sherlock_results.json"
         output_path.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
         print(f"\nWrote report to: {output_path}", file=sys.stderr)
         return 0

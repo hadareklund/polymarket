@@ -48,7 +48,7 @@ def run_script(script: Path, username: str, timeout: int) -> dict:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run all working scrapers for a username.")
     parser.add_argument("username", help="Username to look up")
-    parser.add_argument("--out", help="Output JSON file (default: <username>_results.json)")
+    parser.add_argument("--out", help="Output JSON file (default: results/<username>_results.json)")
     parser.add_argument("--timeout", type=int, default=30, help="Per-script timeout in seconds")
     args = parser.parse_args()
 
@@ -57,7 +57,9 @@ def main() -> int:
         print(f"No scripts found in {WORKING_DIR}", file=sys.stderr)
         return 1
 
-    out_path = Path(args.out) if args.out else Path(f"{args.username}_results.json")
+    results_dir = Path(__file__).resolve().parent / "results"
+    results_dir.mkdir(exist_ok=True)
+    out_path = Path(args.out) if args.out else results_dir / f"{args.username}_results.json"
 
     combined = {
         "username": args.username,

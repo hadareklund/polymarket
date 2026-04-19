@@ -14,6 +14,7 @@ import argparse
 import json
 import os
 import sys
+from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
@@ -364,8 +365,11 @@ def main() -> int:
             no_wallets, wallet_to_username, args.wallet_fallback
         )
 
+        results_dir = Path(__file__).resolve().parent / "results"
+        results_dir.mkdir(exist_ok=True)
         output_path = (
-            args.output or f"{safe_slug_for_filename(slug)}_full_holder_usernames.txt"
+            args.output
+            or str(results_dir / f"{safe_slug_for_filename(slug)}_full_holder_usernames.txt")
         )
         write_output_file(
             path=output_path,
