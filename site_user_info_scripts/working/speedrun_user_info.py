@@ -7,7 +7,7 @@ import argparse
 import sys
 from pathlib import Path
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
+ROOT_DIR = Path(__file__).resolve().parents[2]
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
@@ -21,18 +21,22 @@ def main() -> int:
     args = parser.parse_args()
     try:
         data = fetch_json(f"https://www.speedrun.com/api/v1/users/{args.username}", timeout=args.timeout)
-        u = (data.get("data") or {})
-        if not u: raise RuntimeError("User not found.")
+        u = data.get("data") or {}
+        if not u:
+            raise RuntimeError("User not found.")
         names = u.get("names") or {}
+        links = {ln["rel"]: ln["uri"] for ln in (u.get("links") or []) if ln.get("rel") and ln.get("uri")}
         result = {
             "site": "Speedrun.com",
             "username": names.get("international"),
-            "location": (u.get("location") or {}).get("country", {}).get("names", {}).get("international"),
+            "location": ((u.get("location") or {}).get("country") or {}).get("names", {}).get("international"),
+            "role": u.get("role"),
+            "signup": u.get("signup"),
             "twitch": (u.get("twitch") or {}).get("uri"),
             "youtube": (u.get("youtube") or {}).get("uri"),
             "twitter": (u.get("twitter") or {}).get("uri"),
-            "signup": u.get("signup"),
-            "profile_url": (u.get("weblink") or f"https://www.speedrun.com/user/{args.username}"),
+            "speedrunslive": (u.get("speedrunslive") or {}).get("uri"),
+            "profile_url": u.get("weblink") or f"https://www.speedrun.com/user/{args.username}",
         }
         print_json(result)
         return 0

@@ -84,7 +84,8 @@ Polymarket event URL
 
 - **`get_event_holder_usernames.py`** — self-contained, no third-party deps (stdlib only). Handles pagination from Alchemy, concurrent username resolution via `ThreadPoolExecutor`.
 - **`search_usernames_targeted_sherlock.py`** — imports `sherlock_project` from the local submodule at runtime by prepending `./sherlock` to `sys.path`. The `TARGET_SITES` list at the top is the curated set; sites marked "not in Sherlock manifest" will produce warnings but won't fail. `TARGET_SITE_ALIASES` maps display names to Sherlock manifest keys.
-- **`site_user_info_scripts/working/`** — standalone per-site scripts that return JSON to stdout. All scripts in this folder are confirmed working. `not_working/` contains placeholders that should not be called.
+- **`site_user_info_scripts/working/`** — standalone per-site scripts that return JSON to stdout. All scripts in this folder are confirmed working.
+- **`site_user_info_scripts/not_working/`** — scripts pending implementation, fix, or testing. See `site_user_info_scripts/not_working/CLAUDE.md` for the implementation tracker, status of each script, common bug patterns, and the recommended implementation order. Do not call these from other scripts — move them to `working/` first.
 - **`site_user_info_scripts/aggregate_user_info_to_txt.py`** — calls all working scripts concurrently and appends a JSON block per user to a `.txt` file, delimited by `=== USER_INFO_RECORD_START/END ===`.
 - **`general_sherlock/run.py`** — batch runner that shells out to `sherlock` CLI for each username in a file and summarizes hits.
 
