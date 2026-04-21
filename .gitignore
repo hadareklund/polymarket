@@ -1,6 +1,7 @@
 # macOS
 .DS_Store
 
+*.json
 # Python cache and tooling
 __pycache__/
 *.py[cod]

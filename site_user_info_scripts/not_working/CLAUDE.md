@@ -43,6 +43,26 @@ Also check for JSON-LD embedded in `<script type="application/ld+json">` — ric
 | akniga_user_info.py | ✅ OG + JSON-LD. Russian audiobook site. book/review counts not in OG — extracted via body regex (may be null). |
 | allMyLinks_user_info.py | ✅ OG + JSON-LD. Note: actual profile links are JS-rendered and unavailable in static HTML. |
 | anilist_user_info.py | ✅ Public GraphQL API. Returns full anime/manga stats and favourites. |
+| mamot_user_info.py | ✅ Mastodon API (`/api/v1/accounts/lookup`). Returns followers, posts, bio. |
+| mastodon_cloud_user_info.py | ✅ Mastodon API (`/api/v1/accounts/lookup`). Returns followers, posts, bio. |
+| mastodon_social_user_info.py | ✅ Mastodon API (`/api/v1/accounts/lookup`). Returns followers, posts, bio. |
+| memrise_user_info.py | ❌ Moved to `really_not_working/` — Next.js SPA, no public API, login required. |
+| monkeytype_user_info.py | ✅ Public REST API. Returns typing stats, best WPM, streak, XP. |
+| hackmd_user_info.py | ✅ HTML scraper. Extracts display name from og:title. Avatar is generic site image. |
+| hackster_user_info.py | ❌ Moved to `really_not_working/` — React SPA, no server-rendered profile, API requires auth. |
+| hive_blog_user_info.py | ✅ Blockchain JSON-RPC API. Returns display name, bio, location, avatar, post count. |
+| houzz_user_info.py | ✅ HTML + embedded JS store. Parses UserProfileStore JSON for display name and stats. |
+| hudsonrock_user_info.py | ✅ Public REST API. Returns infostealer exposure: compromised flag, stealer count, OS/IP. |
+| packagist_user_info.py | ✅ Public packages list API. Returns all vendor packages and count. |
+| pastebin_user_user_info.py | ✅ HTML scraper. Returns display name, avatar, profile views, join date. |
+| patreon_user_info.py | ❌ Moved to `really_not_working/` — Next.js SPA, all OG tags are generic, OAuth required for API. |
+| peppernl_user_info.py | ❌ Moved to `really_not_working/` — site is unreachable (HTTP 000/connection refused). |
+| pepperpl_user_info.py | ✅ HTML scraper using `window.__INITIAL_STATE__` JSON. Returns stats, badges, join date. |
+| pikabu_user_info.py | ✅ HTML scraper with windows-1251 charset detection. Parses og:description for post/comment/follower counts. |
+| pinkbike_user_info.py | ❌ Moved to `really_not_working/` — Cloudflare (HTTP 403 JS challenge), no public API. |
+| pinterest_user_info.py | ❌ Moved to `really_not_working/` — React SPA, login required, no public API. |
+| plurk_user_info.py | ✅ HTML scraper + extracts `page_user` block from embedded JS (GLOBAL var). Returns display name, karma, location, avatar. |
+| pokemon_showdown_user_info.py | ✅ Public JSON API. Returns username, avatar, registration date, ladder ratings per format. |
 
 ## Pending scripts (~170 remaining)
 

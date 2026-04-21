@@ -7,7 +7,7 @@ import argparse
 import sys
 from pathlib import Path
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
+ROOT_DIR = Path(__file__).resolve().parents[2]
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
@@ -24,6 +24,15 @@ def main() -> int:
         if data.get("message") and "not found" in data.get("message","").lower():
             raise RuntimeError("User not found.")
         d = (data.get("data") or {})
+        typing_stats = d.get("typingStats") or {}
+        personal_bests = d.get("personalBests") or {}
+        best_time = personal_bests.get("time") or {}
+        best_wpm = None
+        for _dur, records in best_time.items():
+            if records:
+                wpm = records[0].get("wpm")
+                if wpm and (best_wpm is None or wpm > best_wpm):
+                    best_wpm = wpm
         result = {
             "site": "Monkeytype",
             "username": d.get("name"),
@@ -32,6 +41,11 @@ def main() -> int:
             "twitter": d.get("twitter"),
             "github": d.get("github"),
             "discord": d.get("discord"),
+            "xp": d.get("xp"),
+            "streak": d.get("streak"),
+            "completed_tests": typing_stats.get("completedTests"),
+            "time_typing_seconds": typing_stats.get("timeTyping"),
+            "best_wpm": best_wpm,
             "profile_url": f"https://monkeytype.com/profile/{args.username}",
         }
         print_json(result)

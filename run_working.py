@@ -2,7 +2,7 @@
 """Run all working site scrapers for a username and save combined JSON output.
 
 Usage:
-    python3 run_working.py <username> [--out result.json] [--timeout 20]
+    python3 run_working.py <username> [--out result.json] [--timeout 20] [--skip-error]
 """
 
 from __future__ import annotations
@@ -50,6 +50,7 @@ def main() -> int:
     parser.add_argument("username", help="Username to look up")
     parser.add_argument("--out", help="Output JSON file (default: results/<username>_results.json)")
     parser.add_argument("--timeout", type=int, default=30, help="Per-script timeout in seconds")
+    parser.add_argument("--skip-error", action="store_true", help="Omit error results from output")
     args = parser.parse_args()
 
     scripts = discover_scripts()
@@ -71,6 +72,8 @@ def main() -> int:
         site = script.stem.replace("_user_info", "")
         print(f"  → {site}...", file=sys.stderr)
         result = run_script(script, args.username, args.timeout)
+        if args.skip_error and result.get("status") == "error":
+            continue
         combined["results"][site] = result
 
     out_path.write_text(json.dumps(combined, indent=2, ensure_ascii=False), encoding="utf-8")

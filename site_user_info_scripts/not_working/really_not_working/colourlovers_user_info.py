@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fetch user profile information from Typeracer (HTML scraper)."""
+"""Fetch user profile information from ColourLovers (HTML scraper)."""
 
 from __future__ import annotations
 
@@ -17,13 +17,13 @@ import re
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Get Typeracer user info by username.")
-    parser.add_argument("username", help="Typeracer username")
+    parser = argparse.ArgumentParser(description="Get ColourLovers user info by username.")
+    parser.add_argument("username", help="ColourLovers username")
     parser.add_argument("--timeout", type=int, default=20)
     args = parser.parse_args()
     try:
         from common import fetch_text
-        url = f"https://data.typeracer.com/pit/profile?user={args.username}"
+        url = f"https://www.colourlovers.com/lover/{args.username}"
         html = fetch_text(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=args.timeout)
         if len(html) < 500:
             raise RuntimeError("Empty or blocked response.")
@@ -32,7 +32,7 @@ def main() -> int:
         og_title = re.search(r'<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)', html, re.I)
         og_image = re.search(r'<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)', html, re.I)
         result = {
-            "site": "Typeracer",
+            "site": "ColourLovers",
             "username": args.username,
             "title": og_title.group(1).strip() if og_title else (title_m.group(1).strip() if title_m else None),
             "description": desc_m.group(1).strip() if desc_m else None,

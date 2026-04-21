@@ -22,8 +22,17 @@ def main() -> int:
     parser.add_argument("--timeout", type=int, default=20)
     args = parser.parse_args()
     try:
-        payload = _json.dumps({"jsonrpc": "2.0", "method": "condenser_api.get_accounts", "params": [[args.username]], "id": 1}).encode()
-        req = Request("https://api.hive.blog", data=payload, headers={"Content-Type": "application/json", "User-Agent": "site-user-info-scripts/1.0"})
+        payload = _json.dumps({
+            "jsonrpc": "2.0",
+            "method": "condenser_api.get_accounts",
+            "params": [[args.username]],
+            "id": 1,
+        }).encode()
+        req = Request(
+            "https://api.hive.blog",
+            data=payload,
+            headers={"Content-Type": "application/json", "User-Agent": "site-user-info-scripts/1.0"},
+        )
         with urlopen(req, timeout=args.timeout) as r:
             data = _json.loads(r.read().decode())
         accounts = data.get("result") or []
@@ -31,6 +40,8 @@ def main() -> int:
             raise RuntimeError("User not found.")
         u = accounts[0]
         meta = _json.loads(u.get("json_metadata") or "{}").get("profile", {})
+        if not meta:
+            meta = _json.loads(u.get("posting_json_metadata") or "{}").get("profile", {})
         result = {
             "site": "Hive Blog",
             "username": u.get("name"),
@@ -38,8 +49,7 @@ def main() -> int:
             "bio": meta.get("about"),
             "location": meta.get("location"),
             "website": meta.get("website"),
-            "followers": u.get("follower_count"),
-            "following": u.get("following_count"),
+            "avatar_url": meta.get("profile_image"),
             "post_count": u.get("post_count"),
             "created": u.get("created"),
             "profile_url": f"https://peakd.com/@{args.username}",
