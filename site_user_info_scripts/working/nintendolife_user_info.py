@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fetch user profile information from Threads (HTML scraper for public profiles)."""
+"""Fetch user profile information from Nintendo Life."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import re
 import sys
 from pathlib import Path
 
-ROOT_DIR = Path(__file__).resolve().parents[2]
+ROOT_DIR = Path(__file__).resolve().parents[1]
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
@@ -27,33 +27,26 @@ def _meta(html: str, name: str, attr: str = "name") -> str | None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Get Threads user info by username.")
-    parser.add_argument("username", help="Threads username (without @)")
+    parser = argparse.ArgumentParser(description="Get Nintendo Life user info by username.")
+    parser.add_argument("username", help="Nintendo Life username")
     parser.add_argument("--timeout", type=int, default=20)
     args = parser.parse_args()
     try:
-        url = f"https://www.threads.net/@{args.username}"
-        html = fetch_text(
-            url,
-            headers={
-                "User-Agent": (
-                    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
-                    "AppleWebKit/537.36 (KHTML, like Gecko) "
-                    "Chrome/124.0.0.0 Safari/537.36"
-                ),
-                "Accept-Language": "en-US,en;q=0.9",
-            },
-            timeout=args.timeout,
-        )
+        url = f"https://www.nintendolife.com/users/{args.username}"
+        html = fetch_text(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=args.timeout)
         if len(html) < 500:
             raise RuntimeError("Empty or blocked response.")
+        title = _meta(html, "og:title", "property")
+        description = _meta(html, "og:description", "property")
+        avatar_url = _meta(html, "og:image", "property")
+        profile_url = _meta(html, "og:url", "property") or url
         result = {
-            "site": "Threads",
+            "site": "Nintendo Life",
             "username": args.username,
-            "display_name": _meta(html, "og:title", "property"),
-            "description": _meta(html, "og:description", "property"),
-            "avatar_url": _meta(html, "og:image", "property"),
-            "profile_url": url,
+            "display_name": title,
+            "bio": description,
+            "avatar_url": avatar_url,
+            "profile_url": profile_url,
         }
         print_json(result)
         return 0

@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-"""Fetch user/blog profile information from Tumblr (HTML scraper).
-
-Tumblr blogs are hosted at {username}.tumblr.com.
-"""
+"""Fetch user profile information from Tuna (tuna.am — HTML scraper)."""
 
 from __future__ import annotations
 
@@ -11,7 +8,7 @@ import re
 import sys
 from pathlib import Path
 
-ROOT_DIR = Path(__file__).resolve().parents[2]
+ROOT_DIR = Path(__file__).resolve().parents[1]
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
@@ -23,7 +20,6 @@ _HEADERS = {
         "AppleWebKit/537.36 (KHTML, like Gecko) "
         "Chrome/124.0.0.0 Safari/537.36"
     ),
-    "Accept-Language": "en-US,en;q=0.9",
 }
 
 
@@ -39,22 +35,25 @@ def _meta(html: str, name: str, attr: str = "name") -> str | None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Get Tumblr blog info by username.")
-    parser.add_argument("username", help="Tumblr blog username (subdomain)")
+    parser = argparse.ArgumentParser(description="Get Tuna user info by username.")
+    parser.add_argument("username", help="Tuna username")
     parser.add_argument("--timeout", type=int, default=20)
     args = parser.parse_args()
     try:
-        url = f"https://{args.username}.tumblr.com"
+        url = f"https://tuna.voicemod.net/user/{args.username}"
         html = fetch_text(url, headers=_HEADERS, timeout=args.timeout)
         if len(html) < 500:
             raise RuntimeError("Empty or blocked response.")
         title_m = re.search(r"<title[^>]*>([^<]+)</title>", html, re.I)
+        avatar = _meta(html, "og:image", "property")
+        if avatar and avatar.startswith("/"):
+            avatar = "https://tuna.voicemod.net" + avatar
         result = {
-            "site": "Tumblr",
+            "site": "Tuna",
             "username": args.username,
-            "blog_title": _meta(html, "og:title", "property") or (title_m.group(1).strip() if title_m else None),
+            "display_name": _meta(html, "og:title", "property") or (title_m.group(1).strip() if title_m else None),
             "description": _meta(html, "og:description", "property") or _meta(html, "description"),
-            "avatar_url": _meta(html, "og:image", "property"),
+            "avatar_url": avatar,
             "profile_url": url,
         }
         print_json(result)
