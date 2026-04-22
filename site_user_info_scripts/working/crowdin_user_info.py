@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import re
 import sys
 from pathlib import Path
 
@@ -11,9 +12,7 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from common import fetch_json, print_json
-
-import re
+from common import fetch_text, print_json
 
 
 def main() -> int:
@@ -22,21 +21,34 @@ def main() -> int:
     parser.add_argument("--timeout", type=int, default=20)
     args = parser.parse_args()
     try:
-        from common import fetch_text
-        url = f"https://crowdin.com/{args.username}"
+        url = f"https://crowdin.com/profile/{args.username}"
         html = fetch_text(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=args.timeout)
         if len(html) < 500:
             raise RuntimeError("Empty or blocked response.")
+
         title_m = re.search(r"<title[^>]*>([^<]+)</title>", html, re.I)
-        desc_m = re.search(r'<meta[^>]+name=["']description["'][^>]+content=["']([^"']+)', html, re.I)
-        og_title = re.search(r'<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)', html, re.I)
-        og_image = re.search(r'<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)', html, re.I)
+        page_title = title_m.group(1).strip() if title_m else ""
+
+        if "not found" in page_title.lower() or "page not found" in page_title.lower():
+            raise RuntimeError(f"User '{args.username}' not found on Crowdin.")
+
+        # Title format: "FullName (username) – Crowdin"
+        full_name = None
+        parsed_username = None
+        title_parsed = re.match(r"^(.+?)\s*\(([^)]+)\)\s*[–\-]", page_title)
+        if title_parsed:
+            full_name = title_parsed.group(1).strip()
+            parsed_username = title_parsed.group(2).strip()
+
+        # Description: "Name's Profile on crowdin.com. ..."
+        desc_m = re.search(r'<meta\s[^>]*name="description"[^>]*content="([^"]*)"', html, re.I)
+        description = desc_m.group(1).strip() if desc_m else None
+
         result = {
             "site": "Crowdin",
-            "username": args.username,
-            "title": og_title.group(1).strip() if og_title else (title_m.group(1).strip() if title_m else None),
-            "description": desc_m.group(1).strip() if desc_m else None,
-            "avatar_url": og_image.group(1).strip() if og_image else None,
+            "username": parsed_username or args.username,
+            "name": full_name,
+            "description": description,
             "profile_url": url,
         }
         print_json(result)

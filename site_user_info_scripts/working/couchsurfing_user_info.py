@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fetch user profile information from Coderwall (HTML scraper)."""
+"""Fetch user profile information from Couchsurfing (HTML scraper)."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import re
 import sys
 from pathlib import Path
 
-ROOT_DIR = Path(__file__).resolve().parents[2]
+ROOT_DIR = Path(__file__).resolve().parents[1]
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
@@ -27,42 +27,46 @@ def _meta(html: str, name: str, attr: str = "name") -> str | None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Get Coderwall user info by username.")
-    parser.add_argument("username", help="Coderwall username (case-sensitive)")
+    parser = argparse.ArgumentParser(description="Get Couchsurfing user info by username.")
+    parser.add_argument("username", help="Couchsurfing username")
     parser.add_argument("--timeout", type=int, default=20)
     args = parser.parse_args()
     try:
-        url = f"https://coderwall.com/{args.username}"
+        url = f"https://www.couchsurfing.com/people/{args.username}"
         html = fetch_text(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=args.timeout)
         if len(html) < 500:
             raise RuntimeError("Empty or blocked response.")
 
         og_title = _meta(html, "og:title", attr="property")
-        if og_title and "404" in og_title:
-            raise RuntimeError(f"User '{args.username}' not found on Coderwall.")
-
-        og_desc = _meta(html, "og:description", attr="property")
         og_image = _meta(html, "og:image", attr="property")
         og_url = _meta(html, "og:url", attr="property")
 
+        # Not found page check
         title_m = re.search(r"<title[^>]*>([^<]+)</title>", html, re.I)
-        page_title = title_m.group(1).strip() if title_m else None
+        page_title = title_m.group(1).strip() if title_m else ""
+        if "not found" in page_title.lower() or "error" in page_title.lower():
+            raise RuntimeError(f"User '{args.username}' not found on Couchsurfing.")
 
-        name = None
-        if og_title:
-            # og:title format: "Name&#39;s profile | username" or "Name's profile | username"
-            m = re.match(r"^(.+?)(?:&#\d+;s profile|'s profile)", og_title)
-            if m:
-                name = m.group(1).strip()
+        # Location appears in a sidebar link
+        location_m = re.search(
+            r'class="profile-sidebar__city[^"]*"[^>]*>\s*([^<\n]+?)\s*</a>', html
+        )
+        location = location_m.group(1).strip() if location_m else None
+
+        # Occupation
+        occupation_m = re.search(r'class="[^"]*mod-occupation[^"]*"[^>]*>\s*([^<\n]+?)\s*<', html)
+        occupation = occupation_m.group(1).strip() if occupation_m else None
+        if occupation and occupation.lower() in ("no occupation listed", ""):
+            occupation = None
 
         result = {
-            "site": "Coderwall",
+            "site": "Couchsurfing",
             "username": args.username,
-            "name": name,
-            "description": og_desc,
+            "name": og_title,
+            "location": location,
+            "occupation": occupation,
             "avatar_url": og_image,
-            "profile_url": f"https://coderwall.com{og_url}" if og_url and og_url.startswith("/") else url,
-            "page_title": page_title,
+            "profile_url": og_url or url,
         }
         print_json(result)
         return 0

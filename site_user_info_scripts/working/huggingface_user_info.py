@@ -20,19 +20,24 @@ def main() -> int:
     parser.add_argument("--timeout", type=int, default=20)
     args = parser.parse_args()
     try:
-        data = fetch_json(f"https://huggingface.co/api/users/{args.username}", timeout=args.timeout)
-        if "error" in data: raise RuntimeError(data.get("error", "Not found."))
+        data = fetch_json(f"https://huggingface.co/api/users/{args.username}/overview", timeout=args.timeout)
+        if "error" in data:
+            raise RuntimeError(data.get("error", "Not found."))
         result = {
             "site": "Hugging Face",
-            "username": data.get("name"),
+            "username": data.get("user"),
             "full_name": data.get("fullname"),
             "bio": data.get("details"),
-            "location": data.get("location"),
-            "website": data.get("websiteUrl"),
+            "avatar_url": data.get("avatarUrl"),
+            "is_pro": data.get("isPro"),
             "followers": data.get("numFollowers"),
+            "following": data.get("numFollowing"),
             "models": data.get("numModels"),
             "datasets": data.get("numDatasets"),
             "spaces": data.get("numSpaces"),
+            "papers": data.get("numPapers"),
+            "likes": data.get("numLikes"),
+            "created_at": data.get("createdAt"),
             "profile_url": f"https://huggingface.co/{args.username}",
         }
         print_json(result)

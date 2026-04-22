@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fetch user profile information from Wattpad."""
+"""Fetch user profile information from Wattpad's public API."""
 
 from __future__ import annotations
 
@@ -13,6 +13,8 @@ if str(ROOT_DIR) not in sys.path:
 
 from common import fetch_json, print_json
 
+FIELDS = "username,name,description,avatar,numStoriesPublished,numFollowers,numFollowing,createDate"
+
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Get Wattpad user info by username.")
@@ -20,8 +22,13 @@ def main() -> int:
     parser.add_argument("--timeout", type=int, default=20)
     args = parser.parse_args()
     try:
-        data = fetch_json(f"https://www.wattpad.com/api/v3/users/{args.username}?fields=username,name,description,avatar,numStoriesPublished,numFollowers,numFollowing,createDate", timeout=args.timeout)
-        if "code" in data and data["code"] != 200: raise RuntimeError(data.get("message", "Not found."))
+        data = fetch_json(
+            f"https://www.wattpad.com/api/v3/users/{args.username}",
+            params={"fields": FIELDS},
+            timeout=args.timeout,
+        )
+        if "error" in data:
+            raise RuntimeError(data.get("error", "Not found"))
         result = {
             "site": "Wattpad",
             "username": data.get("username"),
