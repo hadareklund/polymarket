@@ -22,12 +22,14 @@ def main() -> int:
     try:
         data = fetch_json(f"https://api.scratch.mit.edu/users/{args.username}", timeout=args.timeout)
         if "id" not in data: raise RuntimeError("User not found.")
+        profile = data.get("profile", {})
         result = {
             "site": "Scratch",
             "username": data.get("username"),
-            "display_name": data.get("profile", {}).get("bio"),
-            "bio": data.get("profile", {}).get("bio"),
-            "country": data.get("profile", {}).get("country"),
+            "status": profile.get("status"),
+            "bio": profile.get("bio"),
+            "country": profile.get("country"),
+            "avatar_url": profile.get("images", {}).get("90x90"),
             "joined": data.get("history", {}).get("joined"),
             "profile_url": f"https://scratch.mit.edu/users/{args.username}/",
         }

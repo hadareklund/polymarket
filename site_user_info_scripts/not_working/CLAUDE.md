@@ -63,6 +63,26 @@ Also check for JSON-LD embedded in `<script type="application/ld+json">` — ric
 | pinterest_user_info.py | ❌ Moved to `really_not_working/` — React SPA, login required, no public API. |
 | plurk_user_info.py | ✅ HTML scraper + extracts `page_user` block from embedded JS (GLOBAL var). Returns display name, karma, location, avatar. |
 | pokemon_showdown_user_info.py | ✅ Public JSON API. Returns username, avatar, registration date, ladder ratings per format. |
+| redbubble_user_info.py | ❌ Moved to `really_not_working/` — Cloudflare JS challenge (HTTP 403), no public API. |
+| replit_user_info.py | ✅ HTML scraper. Fixed regex syntax errors. Returns display name, description, avatar from OG tags. |
+| reverbnation_user_info.py | ✅ HTML scraper. Fixed regex syntax errors. Returns display name, description, avatar from OG tags. |
+| runescape_user_info.py | ✅ Public REST API (RuneMetrics). Returns total XP, level, combat level, quests. |
+| scratch_user_info.py | ✅ Public REST API (api.scratch.mit.edu). Returns bio, status, country, avatar, join date. |
+| sketchfab_user_info.py | ✅ HTML scraper (sketchfab.com/{username}). Returns display name, bio, avatar (from embedded React bundle). |
+| slack_user_info.py | ❌ Moved to `really_not_working/` — no public profile pages; all profiles require workspace membership. |
+| snapchat_user_info.py | ✅ HTML scraper (snapchat.com/add/{username}). Returns display name, avatar, snapcode URL from embedded JSON + OG tags. |
+| soop_user_info.py | ❌ Moved to `really_not_working/` — bare Next.js SPA, no OG tags; API requires proprietary partner token. |
+| soundcloud_user_info.py | ✅ HTML scraper (soundcloud.com/{username}). Returns display name, bio, avatar, follower/track/playlist counts from embedded JSON. |
+| kaskus_user_info.py | ❌ Moved to `really_not_working/` — Next.js SPA, generic OG tags only, no public API. |
+| kick_user_info.py | ❌ Moved to `really_not_working/` — JS SPA, API requires authenticated session token. |
+| kofi_user_info.py | ❌ Moved to `really_not_working/` — Cloudflare managed JS challenge on all requests. |
+| kongregate_user_info.py | ✅ HTML scraper. Returns display name, level, points, badges, fans, friends, avatar. |
+| kwork_user_info.py | ✅ HTML scraper. Returns display name (from title), description, avatar from meta tags. |
+| launchpad_user_info.py | ✅ Public REST API (api.launchpad.net/1.0). Returns display name, bio, timezone, karma, join date. |
+| lemmyworld_user_info.py | ✅ Public REST API (lemmy.world/api/v3). Returns bio, avatar, post/comment counts, join date. |
+| linktree_user_info.py | ✅ HTML scraper (OG meta tags). Returns display name, bio, avatar. |
+| linuxfr_user_info.py | ✅ HTML scraper. Returns content count (from title), avatar. |
+| livejournal_user_info.py | ✅ HTML scraper (JSON-LD + Site.page). Returns real name, journal title, journal URL, avatar, achievements. |
 
 ## Pending scripts (~170 remaining)
 

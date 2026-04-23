@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fetch user profile information from Launchpad."""
+"""Fetch user profile information from Launchpad (public REST API)."""
 
 from __future__ import annotations
 
@@ -20,8 +20,14 @@ def main() -> int:
     parser.add_argument("--timeout", type=int, default=20)
     args = parser.parse_args()
     try:
-        data = fetch_json(f"https://api.launchpad.net/1.0/~{args.username}", timeout=args.timeout)
-        if "message" in data: raise RuntimeError(data["message"])
+        data = fetch_json(
+            f"https://api.launchpad.net/1.0/~{args.username}",
+            timeout=args.timeout,
+        )
+        if "message" in data:
+            raise RuntimeError(data["message"])
+        if data.get("is_team"):
+            raise RuntimeError("Target is a team, not a person.")
         result = {
             "site": "Launchpad",
             "username": data.get("name"),
@@ -30,6 +36,8 @@ def main() -> int:
             "location": data.get("location"),
             "time_zone": data.get("time_zone"),
             "karma": data.get("karma"),
+            "date_created": data.get("date_created"),
+            "is_ubuntu_coc_signer": data.get("is_ubuntu_coc_signer"),
             "profile_url": data.get("web_link"),
         }
         print_json(result)

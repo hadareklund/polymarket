@@ -20,20 +20,24 @@ def main() -> int:
     parser.add_argument("--timeout", type=int, default=20)
     args = parser.parse_args()
     try:
-        data = fetch_json(f"https://www.duolingo.com/2017-06-30/users?username={args.username}", timeout=args.timeout)
+        data = fetch_json(
+            f"https://www.duolingo.com/2017-06-30/users?username={args.username}",
+            headers={"User-Agent": "Mozilla/5.0"},
+            timeout=args.timeout,
+        )
         users = data.get("users") or []
-        if not users: raise RuntimeError("User not found.")
+        if not users:
+            raise RuntimeError("User not found.")
         u = users[0]
         result = {
             "site": "Duolingo",
             "username": u.get("username"),
-            "display_name": u.get("name"),
-            "bio": u.get("bio"),
+            "display_name": u.get("name") or None,
+            "bio": u.get("bio") or None,
+            "location": u.get("location") or None,
             "total_xp": u.get("totalXp"),
             "streak": u.get("streak"),
-            "courses": [c.get("title") for c in (u.get("courses") or [])],
-            "followers": u.get("followers"),
-            "following": u.get("following"),
+            "courses": [c.get("title") for c in (u.get("courses") or []) if c.get("title")],
             "profile_url": f"https://www.duolingo.com/profile/{args.username}",
         }
         print_json(result)

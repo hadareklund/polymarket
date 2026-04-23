@@ -20,16 +20,26 @@ def main() -> int:
     parser.add_argument("--timeout", type=int, default=20)
     args = parser.parse_args()
     try:
-        data = fetch_json(f"https://api.discogs.com/users/{args.username}", timeout=args.timeout)
-        if "message" in data: raise RuntimeError(data["message"])
+        data = fetch_json(
+            f"https://api.discogs.com/users/{args.username}",
+            headers={"User-Agent": "PolymarketOSINT/1.0"},
+            timeout=args.timeout,
+        )
+        if "message" in data:
+            raise RuntimeError(data["message"])
         result = {
             "site": "Discogs",
             "username": data.get("username"),
-            "real_name": data.get("name"),
-            "location": data.get("location"),
-            "profile": data.get("profile"),
-            "followers": data.get("num_collection"),
-            "wantlist": data.get("num_wantlist"),
+            "name": data.get("name") or None,
+            "location": data.get("location") or None,
+            "bio": data.get("profile") or None,
+            "home_page": data.get("home_page") or None,
+            "avatar_url": data.get("avatar_url"),
+            "rank": data.get("rank"),
+            "num_collection": data.get("num_collection"),
+            "num_wantlist": data.get("num_wantlist"),
+            "num_for_sale": data.get("num_for_sale"),
+            "releases_contributed": data.get("releases_contributed"),
             "registered": data.get("registered"),
             "profile_url": data.get("uri"),
         }
