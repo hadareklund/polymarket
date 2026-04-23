@@ -35,6 +35,15 @@ TWITTER_BEARER_TOKEN=...
 ## Commands
 
 ```bash
+# Full end-to-end OSINT pipeline (holder fetch → Sherlock → per-site info → per-user JSON)
+python3 run.py "https://polymarket.com/event/<slug>"
+python3 run.py "https://polymarket.com/event/<slug>" --alchemy-api-key <key> --workers 10 --timeout 20
+python3 run.py --usernames-file results/some_usernames.txt   # skip holder fetch
+python3 run.py "https://polymarket.com/event/<slug>" --skip-sherlock  # run all scripts, skip Sherlock
+python3 run.py --markets-file markets.txt  # batch: one event URL per line, processed sequentially
+# Output: results/<slug>/<username>.json per user, containing username, position, sherlock_claimed, profiles
+# markets.txt format: one Polymarket event URL (or slug) per line; blank lines and # comments ignored
+
 # Fetch holders + resolve usernames for a Polymarket event
 python3 get_event_holder_usernames.py "https://polymarket.com/event/<slug>"
 python3 get_event_holder_usernames.py "https://polymarket.com/event/<slug>" --alchemy-api-key <key> --workers 20
@@ -70,10 +79,17 @@ cd sherlock && python3 -m pytest tests/test_probes.py
 
 ```
 Polymarket event URL
-  → get_event_holder_usernames.py
-      → Gamma API (event/market metadata)
-      → Alchemy NFT API (on-chain ERC-1155 owners per outcome token)
-      → Polymarket Data API (wallet → username resolution, concurrent)
+  → run.py  (full pipeline)
+      → get_event_holder_usernames.py
+          → Gamma API (event/market metadata)
+          → Alchemy NFT API (on-chain ERC-1155 owners per outcome token)
+          → Polymarket Data API (wallet → username resolution, concurrent)
+          → results/<slug>_full_holder_usernames.txt  (Yes holders, blank line, No holders)
+      → Sherlock (sherlock_project.sherlock) against sites with working scripts
+      → site_user_info_scripts/working/<site>_user_info.py per claimed site
+      → results/<slug>/<username>.json  (per-user profile with position info)
+
+  (standalone) get_event_holder_usernames.py
       → results/<slug>_full_holder_usernames.txt
           → search_usernames_targeted_sherlock.py
               → sherlock submodule (sherlock_project.sherlock)
@@ -82,6 +98,7 @@ Polymarket event URL
 
 ### Key files
 
+- **`run.py`** — end-to-end pipeline: fetches holders, runs Sherlock, calls per-site info scripts, writes `results/<slug>/<username>.json` per user. Each JSON includes `position: {"yes": bool, "no": bool}` derived from the holder output file's Yes/No sections.
 - **`get_event_holder_usernames.py`** — self-contained, no third-party deps (stdlib only). Handles pagination from Alchemy, concurrent username resolution via `ThreadPoolExecutor`.
 - **`search_usernames_targeted_sherlock.py`** — imports `sherlock_project` from the local submodule at runtime by prepending `./sherlock` to `sys.path`. The `TARGET_SITES` list at the top is the curated set; sites marked "not in Sherlock manifest" will produce warnings but won't fail. `TARGET_SITE_ALIASES` maps display names to Sherlock manifest keys.
 - **`site_user_info_scripts/working/`** — standalone per-site scripts that return JSON to stdout. All scripts in this folder are confirmed working.

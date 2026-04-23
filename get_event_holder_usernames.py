@@ -117,33 +117,32 @@ def parse_json_array_field(value: Any) -> List[Any]:
     return []
 
 
-def extract_market_and_outcome_tokens(
+def extract_binary_markets(
     event: Dict[str, Any],
-) -> Tuple[Dict[str, Any], Dict[str, str]]:
+) -> List[Tuple[Dict[str, Any], str, str]]:
+    """Return list of (market, yes_token_id, no_token_id) for every binary Yes/No market."""
     markets = event.get("markets", [])
     if not markets:
         raise RuntimeError("No markets found in event payload.")
 
-    # This event has one binary market; if multiple exist, we use the first market.
-    market = markets[0]
+    result = []
+    for market in markets:
+        outcomes = parse_json_array_field(market.get("outcomes"))
+        token_ids = parse_json_array_field(market.get("clobTokenIds"))
+        if len(outcomes) != len(token_ids):
+            continue
+        mapping: Dict[str, str] = {
+            o.strip(): tid.strip()
+            for o, tid in zip(outcomes, token_ids)
+            if isinstance(o, str) and isinstance(tid, str)
+        }
+        if "Yes" in mapping and "No" in mapping:
+            result.append((market, mapping["Yes"], mapping["No"]))
 
-    outcomes = parse_json_array_field(market.get("outcomes"))
-    token_ids = parse_json_array_field(market.get("clobTokenIds"))
+    if not result:
+        raise RuntimeError("No binary Yes/No markets found in this event.")
 
-    if len(outcomes) != len(token_ids):
-        raise RuntimeError(
-            "Could not align outcomes with clobTokenIds for this market."
-        )
-
-    mapping: Dict[str, str] = {}
-    for outcome, token_id in zip(outcomes, token_ids):
-        if isinstance(outcome, str) and isinstance(token_id, str):
-            mapping[outcome.strip()] = token_id.strip()
-
-    if not mapping:
-        raise RuntimeError("No outcome token IDs found for market.")
-
-    return market, mapping
+    return result
 
 
 def fetch_owners_for_token_via_alchemy(
@@ -324,45 +323,56 @@ def main() -> int:
 
         log_status("Fetching event metadata from Gamma API...")
         event = fetch_event_by_slug(slug)
-        market, outcome_token_map = extract_market_and_outcome_tokens(event)
-        log_status("Fetched market metadata and outcome token IDs")
+        binary_markets = extract_binary_markets(event)
+        log_status(f"Found {len(binary_markets)} binary Yes/No market(s)")
 
-        if "Yes" not in outcome_token_map or "No" not in outcome_token_map:
-            raise RuntimeError(
-                "Expected binary outcomes 'Yes' and 'No' but could not find both."
-            )
+        # Step 1: On-chain owner extraction for every market.
+        all_yes_wallets: Set[str] = set()
+        all_no_wallets: Set[str] = set()
+        # wallet → {market_slug: {question, yes, no}}
+        wallet_market_positions: Dict[str, Dict[str, Any]] = {}
 
-        yes_token = outcome_token_map["Yes"]
-        no_token = outcome_token_map["No"]
+        for market, yes_token, no_token in binary_markets:
+            market_slug = market.get("slug") or market.get("conditionId", "unknown")
+            question = market.get("question", market_slug)
 
-        # Step 1: On-chain owner extraction via Alchemy for each ERC-1155 outcome token.
-        yes_wallets = fetch_owners_for_token_via_alchemy(
-            token_id_decimal=yes_token,
-            api_key=args.alchemy_api_key,
-            include_zero_address=not args.exclude_zero_address,
-            outcome_label="Yes",
-        )
-        no_wallets = fetch_owners_for_token_via_alchemy(
-            token_id_decimal=no_token,
-            api_key=args.alchemy_api_key,
-            include_zero_address=not args.exclude_zero_address,
-            outcome_label="No",
-        )
+            yes_set = set(fetch_owners_for_token_via_alchemy(
+                token_id_decimal=yes_token,
+                api_key=args.alchemy_api_key,
+                include_zero_address=not args.exclude_zero_address,
+                outcome_label=f"Yes ({market_slug})",
+            ))
+            no_set = set(fetch_owners_for_token_via_alchemy(
+                token_id_decimal=no_token,
+                api_key=args.alchemy_api_key,
+                include_zero_address=not args.exclude_zero_address,
+                outcome_label=f"No ({market_slug})",
+            ))
 
-        all_wallets = sorted(set(yes_wallets) | set(no_wallets))
-        log_status(f"Combined owner universe built: {len(all_wallets)} unique wallets")
+            all_yes_wallets |= yes_set
+            all_no_wallets |= no_set
 
-        # Step 2: Off-chain username resolution for each wallet.
+            for wallet in yes_set | no_set:
+                wallet_market_positions.setdefault(wallet, {})[market_slug] = {
+                    "question": question,
+                    "yes": wallet in yes_set,
+                    "no": wallet in no_set,
+                }
+
+        all_wallets = sorted(all_yes_wallets | all_no_wallets)
+        log_status(f"Combined owner universe: {len(all_wallets)} unique wallets across all markets")
+
+        # Step 2: Off-chain username resolution.
         wallet_to_username = resolve_usernames_for_wallets(
             wallets=all_wallets,
             workers=args.workers,
         )
 
         yes_usernames = build_usernames(
-            yes_wallets, wallet_to_username, args.wallet_fallback
+            sorted(all_yes_wallets), wallet_to_username, args.wallet_fallback
         )
         no_usernames = build_usernames(
-            no_wallets, wallet_to_username, args.wallet_fallback
+            sorted(all_no_wallets), wallet_to_username, args.wallet_fallback
         )
 
         results_dir = Path(__file__).resolve().parent / "results"
@@ -377,9 +387,22 @@ def main() -> int:
             no_usernames=no_usernames,
         )
 
-        print(f"Event: {market.get('question', '')}", file=sys.stderr)
-        print(f"Yes holders (on-chain wallets): {len(yes_wallets)}", file=sys.stderr)
-        print(f"No holders (on-chain wallets): {len(no_wallets)}", file=sys.stderr)
+        # Write per-market positions sidecar (username-keyed).
+        username_market_positions: Dict[str, Any] = {}
+        for wallet, markets_pos in wallet_market_positions.items():
+            username = (wallet_to_username.get(wallet) or "").strip()
+            if not username or username.lower().startswith("0x"):
+                continue
+            for market_slug, pos in markets_pos.items():
+                username_market_positions.setdefault(username, {})[market_slug] = pos
+
+        sidecar_path = str(results_dir / f"{safe_slug_for_filename(slug)}_market_positions.json")
+        with open(sidecar_path, "w", encoding="utf-8") as f:
+            json.dump(username_market_positions, f, indent=2, ensure_ascii=False)
+
+        print(f"Markets processed: {len(binary_markets)}", file=sys.stderr)
+        print(f"Yes holders (union, on-chain): {len(all_yes_wallets)}", file=sys.stderr)
+        print(f"No holders (union, on-chain): {len(all_no_wallets)}", file=sys.stderr)
         print(f"Union wallets: {len(all_wallets)}", file=sys.stderr)
         print(f"Yes usernames written: {len(yes_usernames)}", file=sys.stderr)
         print(f"No usernames written: {len(no_usernames)}", file=sys.stderr)
@@ -388,12 +411,12 @@ def main() -> int:
         )
         print(f"Resolved unique usernames: {resolved_unique}", file=sys.stderr)
         unresolved = sum(
-            1
-            for wallet in all_wallets
+            1 for wallet in all_wallets
             if not wallet_to_username.get(wallet, "").strip()
         )
         print(f"Unresolved wallet usernames: {unresolved}", file=sys.stderr)
         print(f"Wrote dataset to: {output_path}", file=sys.stderr)
+        print(f"Wrote market positions to: {sidecar_path}", file=sys.stderr)
         return 0
 
     except Exception as exc:

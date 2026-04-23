@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 from pathlib import Path
 from urllib.parse import quote
@@ -12,7 +13,14 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from common import fetch_json, print_json
+from common import fetch_json, load_env_file, print_json
+
+load_env_file(start_dir=ROOT_DIR)
+
+
+def _auth_headers() -> dict[str, str]:
+    token = os.getenv("GITHUB_TOKEN")
+    return {"Authorization": f"Bearer {token}"} if token else {}
 
 NOREPLY_SUFFIX = "@users.noreply.github.com"
 
@@ -32,7 +40,7 @@ def _extract_commit_emails(username: str, timeout: int) -> list[str]:
         "?per_page=10&sort=pushed&type=owner"
     )
     try:
-        repos = fetch_json(repos_url, timeout=timeout)
+        repos = fetch_json(repos_url, headers=_auth_headers(), timeout=timeout)
     except Exception:
         return []
 
@@ -46,7 +54,7 @@ def _extract_commit_emails(username: str, timeout: int) -> list[str]:
             f"/commits?author={quote(username)}&per_page=5"
         )
         try:
-            commits = fetch_json(commits_url, timeout=timeout)
+            commits = fetch_json(commits_url, headers=_auth_headers(), timeout=timeout)
         except Exception:
             continue
         for commit in commits:
@@ -63,6 +71,7 @@ def _fetch_orgs(username: str, timeout: int) -> list[dict]:
     try:
         orgs = fetch_json(
             f"https://api.github.com/users/{quote(username)}/orgs",
+            headers=_auth_headers(),
             timeout=timeout,
         )
         return [
@@ -78,6 +87,7 @@ def _fetch_top_repos(username: str, timeout: int) -> list[dict]:
         repos = fetch_json(
             f"https://api.github.com/users/{quote(username)}/repos"
             "?per_page=5&sort=stars&direction=desc&type=owner",
+            headers=_auth_headers(),
             timeout=timeout,
         )
         return [
@@ -100,7 +110,7 @@ def main() -> int:
     args = parse_args()
     endpoint = f"https://api.github.com/users/{quote(args.username)}"
     try:
-        data = fetch_json(endpoint, timeout=args.timeout)
+        data = fetch_json(endpoint, headers=_auth_headers(), timeout=args.timeout)
         username = data.get("login") or args.username
 
         commit_emails = (
