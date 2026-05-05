@@ -25,6 +25,8 @@ from contextlib import contextmanager
 from datetime import datetime
 from pathlib import Path
 
+import falcon_analytics
+
 from rich.console import Console
 from rich.panel import Panel
 from rich.progress import (
@@ -246,6 +248,8 @@ _ALWAYS_RUN_SITE_NAMES: frozenset[str] = frozenset({"HudsonRock"})
 
 # Max concurrent subprocess calls per site script stem.
 # Medium-risk sites (official APIs with tighter limits) get 3; everything else gets 10.
+# LinkedIn must be 1: the script sleeps 15-25 s before each Google SERP request and
+# parallel calls would immediately exhaust the unauthenticated rate limit.
 _SITE_CONCURRENCY: dict[str, int] = {
     "github_user_info": 3,
     "gitlab_user_info": 3,
@@ -257,6 +261,12 @@ _SITE_CONCURRENCY: dict[str, int] = {
     "mixcloud_user_info": 3,
 }
 _DEFAULT_SITE_CONCURRENCY = 10
+
+# Extra seconds added to the subprocess timeout for scripts that include their
+# own sleep (e.g. LinkedIn's pre-request delay of up to 25 s).
+_SITE_TIMEOUT_EXTRA: dict[str, int] = {
+    # Pre-request sleep (up to 25 s) + Playwright browser startup + page load.
+}
 _semaphore_lock = threading.Lock()
 _site_semaphores: dict[str, threading.Semaphore] = {}
 
@@ -306,10 +316,11 @@ def _make_progress() -> Progress:
 
 def fetch_usernames(
     event_url: str, alchemy_key: str | None, workers: int
-) -> tuple[list[str], str, dict[str, dict[str, bool]]]:
-    """Run get_event_holder_usernames.py and return (all_usernames, slug, position_map).
+) -> tuple[list[str], str, dict[str, dict[str, bool]], dict[str, str]]:
+    """Run get_event_holder_usernames.py and return (all_usernames, slug, position_map, wallet_map).
 
     position_map: {username: {"yes": bool, "no": bool}}
+    wallet_map:   {username: wallet_address}
     """
     cmd = [sys.executable, str(SCRIPT_DIR / "get_event_holder_usernames.py"), event_url]
     if alchemy_key:
@@ -404,7 +415,18 @@ def fetch_usernames(
             for u in all_usernames
         }
 
-    return all_usernames, slug, position_map
+    # Load username→wallet map if available.
+    wallet_map_sidecar = Path(output_file).with_name(
+        Path(output_file).stem.replace("_full_holder_usernames", "_wallet_map") + ".json"
+    )
+    wallet_map: dict[str, str] = {}
+    if wallet_map_sidecar.exists():
+        try:
+            wallet_map = json.loads(wallet_map_sidecar.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            pass
+
+    return all_usernames, slug, position_map, wallet_map
 
 
 # ---------------------------------------------------------------------------
@@ -481,13 +503,14 @@ def run_site_script(script_stem: str, username: str, timeout: int) -> dict | Non
     script_path = WORKING_DIR / f"{script_stem}.py"
     if not script_path.exists():
         return None
+    extra = _SITE_TIMEOUT_EXTRA.get(script_stem, 0)
     with _site_semaphore(script_stem):
         try:
             proc = subprocess.run(
                 [sys.executable, str(script_path), username, "--timeout", str(timeout)],
                 capture_output=True,
                 text=True,
-                timeout=timeout + 10,
+                timeout=timeout + 10 + extra,
             )
             if proc.returncode == 0 and proc.stdout.strip():
                 data = json.loads(proc.stdout)
@@ -505,11 +528,12 @@ def build_profile(
     timeout: int,
     workers: int,
 ) -> dict:
+    always = set(ALWAYS_RUN_SCRIPTS)
     scripts_to_run: list[str] = list({
         SHERLOCK_TO_SCRIPT[site]
         for site in claimed_sites
         if site in SHERLOCK_TO_SCRIPT
-    } | set(ALWAYS_RUN_SCRIPTS))
+    } | always)
 
     site_results: list[dict] = []
     with ThreadPoolExecutor(max_workers=workers) as pool:
@@ -551,6 +575,66 @@ def _update_checkpoint(out_dir: Path, completed: set[str]) -> None:
         encoding="utf-8",
     )
     tmp.replace(out_dir / "checkpoint.json")
+
+
+# ---------------------------------------------------------------------------
+# Falcon API enrichment
+# ---------------------------------------------------------------------------
+
+def _enrich_with_falcon(
+    out_dir: Path,
+    wallet_map: dict[str, str],
+    token: str,
+    workers: int,
+) -> None:
+    """Fetch Falcon on-chain analytics for every user that has a wallet address
+    and merge the result into their existing profile JSON.
+    """
+    json_files = list(out_dir.glob("*.json"))
+    targets: list[tuple[Path, str]] = []
+    for jf in json_files:
+        if jf.name in ("summary.json", "checkpoint.json", "linkedin_queries.json"):
+            continue
+        try:
+            profile = json.loads(jf.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            continue
+        username = profile.get("username", "")
+        wallet = wallet_map.get(username)
+        if not wallet:
+            continue
+        if falcon_analytics.is_fresh(profile):
+            continue  # cached and fresh
+        targets.append((jf, wallet))
+
+    if not targets:
+        return
+
+    log(f"[dim]Falcon API: enriching {len(targets)} profile(s) with on-chain analytics…[/]")
+
+    lock = threading.Lock()
+    enriched = 0
+
+    def _do(jf: Path, wallet: str) -> None:
+        nonlocal enriched
+        analytics = falcon_analytics.enrich_wallet(wallet, token)
+        if not analytics:
+            return
+        with lock:
+            try:
+                profile = json.loads(jf.read_text(encoding="utf-8"))
+                profile["polymarket_analytics"] = {"wallet": wallet, **analytics}
+                jf.write_text(json.dumps(profile, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+                enriched += 1
+            except (json.JSONDecodeError, OSError):
+                pass
+
+    with ThreadPoolExecutor(max_workers=min(workers, 4)) as pool:
+        futs = [pool.submit(_do, jf, wallet) for jf, wallet in targets]
+        for fut in as_completed(futs):
+            fut.result()
+
+    log(f"[dim]Falcon API: enriched {enriched}/{len(targets)} profile(s)[/]")
 
 
 # ---------------------------------------------------------------------------
@@ -670,6 +754,111 @@ def _run_profiling_phase(
 
 
 # ---------------------------------------------------------------------------
+# LinkedIn query-file generation
+# ---------------------------------------------------------------------------
+
+def _name_confidence(name: str) -> str | None:
+    """
+    Return "high", "low", or None.
+    None  → skip (empty, handle with no space, CJK, 0x address).
+    low   → partial name with a single-letter initial ("Richard W", "J. Smith").
+    high  → full first + last name.
+    """
+    if not name:
+        return None
+    name = name.strip()
+    if not name or name.startswith("0x") or name.startswith("@"):
+        return None
+    # CJK / Korean / Japanese
+    if any(
+        "一" <= c <= "鿿"
+        or "぀" <= c <= "ヿ"
+        or "가" <= c <= "힣"
+        for c in name
+    ):
+        return None
+    words = [w for w in name.split() if w]
+    if len(words) < 2:
+        return None
+    first, last = words[0].rstrip("."), words[-1].rstrip(".")
+    if len(first) == 1 or len(last) == 1:
+        return "low"
+    return "high"
+
+
+def _generate_linkedin_queries(profiles: list[dict]) -> list[dict]:
+    """
+    Extract name / company / location from collected site profiles and return
+    a list of LinkedIn query entries suitable for linkedin_batch.py.
+
+    Priority rules:
+    - Prefers "high" confidence names over "low".
+    - Merges company and location across sites when the best name source
+      doesn't have them.
+    - Skips "low" confidence entries that have no company (not findable).
+    """
+    results: list[dict] = []
+
+    for profile in profiles:
+        username = profile.get("username", "")
+        best_name: str | None = None
+        best_conf: str | None = None
+        best_source: str | None = None
+        best_company: str | None = None
+        best_location: str | None = None
+
+        for sp in profile.get("profiles", []):
+            name = (sp.get("name") or sp.get("display_name") or "").strip()
+            site = sp.get("site", "")
+            # Strip GitHub's @ convention from company strings.
+            company = (sp.get("company") or "").strip().lstrip("@").strip() or None
+            location = (sp.get("location") or "").strip() or None
+
+            conf = _name_confidence(name)
+
+            if conf is not None:
+                # Upgrade if we find a higher-confidence name.
+                if best_conf is None or (conf == "high" and best_conf == "low"):
+                    best_name = name
+                    best_conf = conf
+                    best_source = site
+                    best_company = company
+                    best_location = location
+                elif conf == best_conf:
+                    # Same confidence: absorb missing company/location.
+                    if company and not best_company:
+                        best_company = company
+                    if location and not best_location:
+                        best_location = location
+            else:
+                # Even if name is unusable, harvest company/location.
+                if company and not best_company:
+                    best_company = company
+                if location and not best_location:
+                    best_location = location
+
+        if not best_name or not best_conf:
+            continue
+        # Low confidence with no company — not findable on LinkedIn.
+        if best_conf == "low" and not best_company:
+            continue
+
+        entry: dict = {
+            "polymarket_username": username,
+            "name": best_name,
+            "name_source": best_source,
+            "name_confidence": best_conf,
+        }
+        if best_company:
+            entry["company"] = best_company
+        if best_location:
+            entry["location"] = best_location
+        results.append(entry)
+
+    return results
+
+
+# ---------------------------------------------------------------------------
 # Single-market runner (used by both single and multi-market paths)
 # ---------------------------------------------------------------------------
 
@@ -683,7 +872,7 @@ def _run_one_market(
 
     # Step 1: fetch usernames
     progress.update(step_task, description="[yellow]Fetching holders…", total=1, completed=0)
-    usernames, slug, position_map = fetch_usernames(event_url, args.alchemy_api_key, args.workers)
+    usernames, slug, position_map, wallet_map = fetch_usernames(event_url, args.alchemy_api_key, args.workers)
     progress.update(step_task, completed=1)
     log(f"[cyan]{slug}[/] — {len(usernames)} unique usernames")
 
@@ -735,6 +924,27 @@ def _run_one_market(
     summary_file = out_dir / "summary.json"
     summary_file.write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
+    # Generate LinkedIn query file from names collected by other scrapers.
+    lq_entries = _generate_linkedin_queries(all_profiles)
+    if lq_entries:
+        lq_file = out_dir / "linkedin_queries.json"
+        lq_file.write_text(
+            json.dumps(lq_entries, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+        )
+        high = sum(1 for e in lq_entries if e["name_confidence"] == "high")
+        with_company = sum(1 for e in lq_entries if "company" in e)
+        log(
+            f"[dim]LinkedIn queries: {len(lq_entries)} entries "
+            f"({high} high-confidence, {with_company} with company) → {lq_file}[/]"
+        )
+
+    # Step 4: Falcon on-chain analytics enrichment (skipped if no token or no wallet map).
+    falcon_token = getattr(args, "falcon_api_token", None) or falcon_analytics.load_token()
+    if falcon_token and wallet_map:
+        progress.update(step_task, description=f"[magenta]Falcon [{slug}]", total=1, completed=0)
+        _enrich_with_falcon(out_dir, wallet_map, falcon_token, args.workers)
+        progress.update(step_task, completed=1)
+
     log(
         f"[bold green]✓[/] [cyan]{slug}[/] — "
         f"{written} profile(s) written, {skipped} thin, summary → [dim]{summary_file}[/]"
@@ -761,6 +971,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--skip-sherlock", action="store_true", default=True, help="Skip Sherlock and run all site scripts for every username (default: True)")
     parser.add_argument("--with-sherlock", dest="skip_sherlock", action="store_false", help="Enable Sherlock probing before running site scripts")
     parser.add_argument("--delay", type=float, default=1.0, help="Base inter-user delay in seconds between Sherlock checks (default: 1.0, 0 to disable)")
+    parser.add_argument("--falcon-api-token", help="Falcon API bearer token for on-chain analytics enrichment (or set FALCON_API_TOKEN env var)")
     return parser.parse_args()
 
 
@@ -869,6 +1080,28 @@ def main() -> int:
                 (out_dir / "summary.json").write_text(
                     json.dumps(summary, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
                 )
+
+                # Falcon enrichment: try two wallet-map naming conventions —
+                # polywhaler writes {stem}_wallet_map.json; event pipeline writes
+                # {slug}_wallet_map.json (stem has _full_holder_usernames suffix).
+                _stem = Path(args.usernames_file).stem
+                _wmap: dict[str, str] = {}
+                for _candidate in [
+                    Path(args.usernames_file).with_name(f"{_stem}_wallet_map.json"),
+                    Path(args.usernames_file).with_name(
+                        _stem.replace("_full_holder_usernames", "_wallet_map") + ".json"
+                    ),
+                ]:
+                    if _candidate.exists():
+                        try:
+                            _wmap = json.loads(_candidate.read_text(encoding="utf-8"))
+                        except (json.JSONDecodeError, OSError):
+                            pass
+                        break
+                _falcon_token = getattr(args, "falcon_api_token", None) or falcon_analytics.load_token()
+                if _falcon_token and _wmap:
+                    _enrich_with_falcon(out_dir, _wmap, _falcon_token, args.workers)
+
                 log(f"Done. {written} profile(s), {skipped} thin. → {out_dir}/")
                 print(str(out_dir))
 

@@ -41,6 +41,9 @@ def main() -> int:
         title = _meta(html, "og:title", "property")
         description = _meta(html, "og:description", "property")
         avatar_url = _meta(html, "og:image", "property")
+        # Naver returns its generic blog icon for every URL, real or not.
+        if avatar_url == "https://ssl.pstatic.net/static/blog/icon/og_270x270.png":
+            raise RuntimeError("User has no Naver Blog (generic placeholder page returned).")
         result = {
             "site": "Naver Blog",
             "username": args.username,

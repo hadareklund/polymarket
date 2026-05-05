@@ -33,6 +33,8 @@ def main() -> int:
 
         uid_m = re.search(r"USERINFO\.userId\s*=\s*(\d+)", html)
         user_id = uid_m.group(1) if uid_m else None
+        if user_id is None:
+            raise RuntimeError("User not found on Wikidot.")
 
         avatar_url = (
             f"https://www.wikidot.com/avatar.php?userid={user_id}" if user_id else None

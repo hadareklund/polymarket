@@ -36,11 +36,16 @@ def main() -> int:
         html = fetch_text(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=args.timeout)
         if len(html) < 500:
             raise RuntimeError("Empty or blocked response.")
+        display_name = _meta(html, "og:title", "property")
+        description = _meta(html, "og:description", "property")
+        # Generic Telegram landing page returned for non-existent/private usernames.
+        if not display_name or display_name.startswith("Telegram") or description == "Fast. Secure. Powerful.":
+            raise RuntimeError("User not found or not a public Telegram profile.")
         result = {
             "site": "Telegram",
             "username": args.username,
-            "display_name": _meta(html, "og:title", "property"),
-            "description": _meta(html, "og:description", "property"),
+            "display_name": display_name,
+            "description": description,
             "avatar_url": _meta(html, "og:image", "property"),
             "profile_url": url,
         }

@@ -40,8 +40,8 @@ def main() -> int:
         description = _meta(html, "og:description")
         avatar_url = _meta(html, "og:image")
         canonical = _meta(html, "og:url") or url
-        if not title:
-            raise RuntimeError("User not found or channel has no OG data.")
+        if not title or title == "Odysee":
+            raise RuntimeError("User not found on Odysee (generic platform page returned).")
         result = {
             "site": "Odysee",
             "username": args.username,

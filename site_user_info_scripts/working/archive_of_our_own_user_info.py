@@ -51,6 +51,8 @@ def main() -> int:
         meta_pairs = re.findall(r"<dt[^>]*>([^<]+)</dt>\s*<dd[^>]*>([^<]+)</dd>", html)
         joined = next((v.strip() for k, v in meta_pairs if "joined" in k.lower()), None)
         user_id = next((v.strip() for k, v in meta_pairs if "user id" in k.lower()), None)
+        if not user_id:
+            raise RuntimeError("User not found on Archive of Our Own.")
 
         result = {
             "site": "Archive of Our Own",

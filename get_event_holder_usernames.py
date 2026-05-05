@@ -14,6 +14,8 @@ import argparse
 import json
 import os
 import sys
+import threading
+import time
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
@@ -29,6 +31,26 @@ POLY_CONDITIONAL_TOKENS_CONTRACT = "0x4D97DCd97eC945f40cF65F87097ACe5EA0476045"
 ZERO_ADDRESS = "0x0000000000000000000000000000000000000000"
 DEFAULT_EVENT_URL = "https://polymarket.com/event/fda-approves-retatrutide-this-year"
 USER_AGENT = "Mozilla/5.0 (compatible; polymarket-holder-usernames/1.0)"
+
+
+class _RateLimiter:
+    """Sliding-window rate limiter. Each thread is assigned a dispatch slot
+    under the lock (fast), then sleeps for its wait outside the lock so
+    other threads can proceed concurrently."""
+    def __init__(self, rate: float):
+        self._interval = 1.0 / rate   # seconds between consecutive requests
+        self._lock = threading.Lock()
+        self._next_slot = time.monotonic()
+
+    def acquire(self) -> None:
+        with self._lock:
+            now = time.monotonic()
+            if now >= self._next_slot:
+                self._next_slot = now + self._interval
+                return          # no wait needed — fire immediately
+            wait_until = self._next_slot
+            self._next_slot += self._interval
+        time.sleep(max(0.0, wait_until - time.monotonic()))
 
 
 def safe_slug_for_filename(slug: str) -> str:
@@ -145,15 +167,29 @@ def extract_binary_markets(
     return result
 
 
+def _parse_balance(raw: Any) -> int:
+    """Parse an Alchemy balance value (hex string, decimal string, or int)."""
+    if isinstance(raw, int):
+        return raw
+    s = str(raw).strip()
+    if not s or s == "0x":
+        return 0
+    try:
+        return int(s, 16) if s.startswith("0x") else int(s)
+    except ValueError:
+        return 0
+
+
 def fetch_owners_for_token_via_alchemy(
     token_id_decimal: str,
     api_key: str,
     include_zero_address: bool,
     outcome_label: str,
     contract_address: str = POLY_CONDITIONAL_TOKENS_CONTRACT,
-) -> List[str]:
+) -> Dict[str, int]:
+    """Return {wallet: raw_balance} for all holders of this ERC-1155 token."""
     token_id_hex = hex(int(token_id_decimal))
-    owners: Set[str] = set()
+    owners: Dict[str, int] = {}
     page_key: Optional[str] = None
     page_num = 0
 
@@ -178,13 +214,20 @@ def fetch_owners_for_token_via_alchemy(
         for owner_entry in payload.get("owners", []):
             if isinstance(owner_entry, str):
                 wallet = owner_entry.lower()
+                balance = 0
             elif isinstance(owner_entry, dict):
                 wallet = str(owner_entry.get("ownerAddress", "")).lower()
+                token_bals = owner_entry.get("tokenBalances", [])
+                balance = 0
+                for tb in token_bals:
+                    if isinstance(tb, dict):
+                        balance += _parse_balance(tb.get("balance", 0))
             else:
                 wallet = ""
+                balance = 0
 
             if wallet.startswith("0x") and len(wallet) == 42:
-                owners.add(wallet)
+                owners[wallet] = balance
 
         added = len(owners) - before
         log_status(
@@ -196,10 +239,10 @@ def fetch_owners_for_token_via_alchemy(
             break
 
     if not include_zero_address:
-        owners.discard(ZERO_ADDRESS)
+        owners.pop(ZERO_ADDRESS, None)
 
     log_status(f"Completed {outcome_label} owner fetch: {len(owners)} wallets")
-    return sorted(owners)
+    return owners
 
 
 def resolve_wallet_username(wallet: str) -> str:
@@ -226,16 +269,22 @@ def resolve_wallet_username(wallet: str) -> str:
 def resolve_usernames_for_wallets(
     wallets: Sequence[str],
     workers: int,
+    rate: float = 25.0,
 ) -> Dict[str, str]:
     resolved: Dict[str, str] = {}
     total = len(wallets)
     completed = 0
+    limiter = _RateLimiter(rate)
 
-    log_status(f"Resolving usernames for {total} wallets using {workers} workers...")
+    log_status(f"Resolving usernames for {total} wallets ({workers} workers, {rate:.0f} req/s cap)...")
+
+    def _resolve(wallet: str) -> str:
+        limiter.acquire()
+        return resolve_wallet_username(wallet)
 
     with ThreadPoolExecutor(max_workers=workers) as pool:
         futures = {
-            pool.submit(resolve_wallet_username, wallet): wallet for wallet in wallets
+            pool.submit(_resolve, wallet): wallet for wallet in wallets
         }
         for future in as_completed(futures):
             wallet = futures[future]
@@ -245,7 +294,7 @@ def resolve_usernames_for_wallets(
                 resolved[wallet] = ""
 
             completed += 1
-            if completed % 10 == 0 or completed == total:
+            if completed % 25 == 0 or completed == total:
                 found = sum(1 for value in resolved.values() if value)
                 log_status(
                     f"Username resolution progress: {completed}/{total} complete, {found} resolved"
@@ -290,8 +339,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--workers",
         type=int,
-        default=12,
-        help="Concurrent worker count for wallet-to-username resolution (default: 12).",
+        default=25,
+        help="Concurrent worker count for wallet-to-username resolution (default: 25).",
     )
     parser.add_argument(
         "--wallet-fallback",
@@ -329,35 +378,66 @@ def main() -> int:
         # Step 1: On-chain owner extraction for every market.
         all_yes_wallets: Set[str] = set()
         all_no_wallets: Set[str] = set()
-        # wallet → {market_slug: {question, yes, no}}
+        # wallet → {market_slug: {question, yes, no, shares, value_usd, …}}
         wallet_market_positions: Dict[str, Dict[str, Any]] = {}
+
+        # Polymarket conditional tokens use USDC (6 decimals) as collateral,
+        # so raw balance / 1e6 = number of shares.
+        SHARES_DECIMALS = 1e6
 
         for market, yes_token, no_token in binary_markets:
             market_slug = market.get("slug") or market.get("conditionId", "unknown")
             question = market.get("question", market_slug)
 
-            yes_set = set(fetch_owners_for_token_via_alchemy(
+            # Parse current Yes/No prices (0–1 range) from the Gamma market object.
+            outcome_prices = parse_json_array_field(market.get("outcomePrices", []))
+            try:
+                yes_price = float(outcome_prices[0])
+            except (IndexError, ValueError, TypeError):
+                yes_price = None
+            try:
+                no_price = float(outcome_prices[1])
+            except (IndexError, ValueError, TypeError):
+                no_price = None
+
+            yes_balances = fetch_owners_for_token_via_alchemy(
                 token_id_decimal=yes_token,
                 api_key=args.alchemy_api_key,
                 include_zero_address=not args.exclude_zero_address,
                 outcome_label=f"Yes ({market_slug})",
-            ))
-            no_set = set(fetch_owners_for_token_via_alchemy(
+            )
+            no_balances = fetch_owners_for_token_via_alchemy(
                 token_id_decimal=no_token,
                 api_key=args.alchemy_api_key,
                 include_zero_address=not args.exclude_zero_address,
                 outcome_label=f"No ({market_slug})",
-            ))
+            )
+
+            # Only keep wallets with a current non-zero balance.
+            # Alchemy returns historical holders (balance=0) alongside active ones.
+            yes_set = {w for w, b in yes_balances.items() if b > 0}
+            no_set  = {w for w, b in no_balances.items()  if b > 0}
 
             all_yes_wallets |= yes_set
             all_no_wallets |= no_set
 
             for wallet in yes_set | no_set:
-                wallet_market_positions.setdefault(wallet, {})[market_slug] = {
+                yes_shares = yes_balances.get(wallet, 0) / SHARES_DECIMALS
+                no_shares = no_balances.get(wallet, 0) / SHARES_DECIMALS
+                entry: Dict[str, Any] = {
                     "question": question,
                     "yes": wallet in yes_set,
                     "no": wallet in no_set,
+                    "yes_shares": round(yes_shares, 6),
+                    "no_shares": round(no_shares, 6),
                 }
+                if yes_price is not None:
+                    entry["yes_price"] = yes_price
+                    entry["yes_value_usd"] = round(yes_shares * yes_price, 4)
+                if no_price is not None:
+                    entry["no_price"] = no_price
+                    entry["no_value_usd"] = round(no_shares * no_price, 4)
+                wallet_market_positions.setdefault(wallet, {})[market_slug] = entry
 
         all_wallets = sorted(all_yes_wallets | all_no_wallets)
         log_status(f"Combined owner universe: {len(all_wallets)} unique wallets across all markets")
@@ -400,6 +480,16 @@ def main() -> int:
         with open(sidecar_path, "w", encoding="utf-8") as f:
             json.dump(username_market_positions, f, indent=2, ensure_ascii=False)
 
+        # Write username→wallet map sidecar for downstream Falcon API enrichment.
+        username_to_wallet: Dict[str, str] = {}
+        for wallet, username in wallet_to_username.items():
+            username = (username or "").strip()
+            if username and not username.lower().startswith("0x"):
+                username_to_wallet[username] = wallet
+        wallet_map_path = str(results_dir / f"{safe_slug_for_filename(slug)}_wallet_map.json")
+        with open(wallet_map_path, "w", encoding="utf-8") as f:
+            json.dump(username_to_wallet, f, indent=2, ensure_ascii=False)
+
         print(f"Markets processed: {len(binary_markets)}", file=sys.stderr)
         print(f"Yes holders (union, on-chain): {len(all_yes_wallets)}", file=sys.stderr)
         print(f"No holders (union, on-chain): {len(all_no_wallets)}", file=sys.stderr)
@@ -417,6 +507,7 @@ def main() -> int:
         print(f"Unresolved wallet usernames: {unresolved}", file=sys.stderr)
         print(f"Wrote dataset to: {output_path}", file=sys.stderr)
         print(f"Wrote market positions to: {sidecar_path}", file=sys.stderr)
+        print(f"Wrote wallet map to: {wallet_map_path}", file=sys.stderr)
         return 0
 
     except Exception as exc:
