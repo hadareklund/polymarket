@@ -43,6 +43,39 @@ _SYSTEM_ADDRESSES: frozenset[str] = frozenset({
     "0xe592427a0aece92de3edee1f18e0157c05861564",  # Uniswap V3 router
     "0x401f6c983ea34274ec46f84d70b31c151321188b",  # Polygon PoS bridge
     "0x8484ef722627bf18ca5ae6bcf031c23e6e922b30",  # Polygon plasma bridge
+    # Confirmed Polymarket infrastructure — found in 39–77% of 5000-wallet sample
+    "0xc288480574783bd7615170660d71753378159c47",  # Polymarket infrastructure (32%)
+    "0x3a3bd7bb9528e159577f7c2e685cc81a765002e2",  # Polymarket infrastructure (44%)
+    "0xf70da97812cb96acdf810712aa562db8dfa3dbef",  # Polymarket relayer/EOA (59%)
+    "0xf7cd89be08af4d4d6b1522852ced49fc10169f64",  # Polymarket infrastructure (18%)
+    "0xc536633ff12ee52e280b2af2594031060c5aaf41",  # Polymarket infrastructure (11%)
+    "0xe3f18acc55091e2c48d883fc8c8413319d4ab7b0",  # Polymarket infrastructure (43%)
+    "0x3a9418b2651c8164db5ebc56f12008137865e0f7",  # Polymarket infrastructure (45%)
+    # High-frequency funders — confirmed infrastructure/CEX (3–21% of 5000 wallets)
+    "0x05cd9922a5d37fae921fc5dee280a9dbc4c3b393",  # 20.78% of 5000 wallets
+    "0xb768891e3130f6df18214ac804d4db76c2c37730",  # 12.16% of 5000 wallets
+    "0xf5042e6ffac5a625d4e7848e0b01373d8eb9e222",  # 11.30% of 5000 wallets
+    "0xabb2acd3be814a80e502575d6c1dc5f789e9cd10",  # 7.12% of 5000 wallets
+    "0x56c262027e0de4aea31d2489529cb25d23e58a8b",  # 6.84% of 5000 wallets
+    "0xa67d7eb4dc68fa6ce8e34ef8cadaf075b9893fbb",  # 6.40% of 5000 wallets
+    "0xd36ec33c8bed5a9f7b6630855f1533455b98a418",  # 4.78% of 5000 wallets
+    "0xb92fe925dc43a0ecde6c8b1a2709c170ec4fff4f",  # 4.32% of 5000 wallets
+    "0xd15fe25ed0dba12fe05e7029c88b10c25e8880e3",  # 3.62% of 5000 wallets
+    "0x1510565e93c9729410b6e41088e014e312fd8829",  # 3.50% of 5000 wallets
+    # Mid-frequency funders — likely smaller CEX/on-ramp (1–2% of 5000 wallets)
+    "0xc417fd8e9661c0d2120b64a04bb3278c17e99db1",  # 1.38% of 5000 wallets
+    "0x2924f3eb2f26d47ecb0283c645d596100ef3001f",  # 1.04% of 5000 wallets
+    # Lower-frequency funders — probable CEX/on-ramp (0.5–1% of 5000 wallets)
+    "0x4be70a9b53e89b202bd794086f413894c5082709",  # 0.90% of 5000 wallets
+    "0x19f1a546bdc076009d75e7c0dfb49be7bb51ce8f",  # 0.88% of 5000 wallets
+    "0x2bb27b73c602643f42471d4751fe4fc4eebefbd1",  # 0.84% of 5000 wallets
+    "0xada5bb90d0de0bd1b6f3938708f49295a8d1f7cb",  # 0.82% of 5000 wallets
+    "0x331d9a049d496385998067abf6cbb6371c8d2466",  # 0.76% of 5000 wallets
+    "0x370a7e2d300c14d79d4a7ee07aaca46c4b3012cf",  # 0.76% of 5000 wallets
+    "0xca7ded7e4f4ba8ab3b10009236ae6d1b95094589",  # 0.70% of 5000 wallets
+    "0xd152f549545093347a162dce210e7293f1452150",  # 0.68% of 5000 wallets
+    "0x18dd3c14e34c1bc379f7538068c59160d9f68e25",  # 0.64% of 5000 wallets
+    "0xa5a5491bca93dd4c076e4906e79e7673f4a5a142",  # 0.52% of 5000 wallets
 })
 
 

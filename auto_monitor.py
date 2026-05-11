@@ -164,6 +164,44 @@ def _trader_summary(r: dict) -> dict:
     return summary
 
 
+def _portfolio_stats_block() -> str:
+    """Return a short portfolio performance summary to include in the Claude prompt."""
+    portfolio_file = SCRIPT_DIR / "results" / "watchlist_portfolio.json"
+    if not portfolio_file.exists():
+        return ""
+    try:
+        positions = json.loads(portfolio_file.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return ""
+
+    decided = [p for p in positions if p.get("status") in ("won", "lost")]
+    if not decided:
+        return ""
+
+    won     = sum(1 for p in decided if p["status"] == "won")
+    priced  = [p for p in decided if (p.get("entry_price") or 0) > 0]
+    total_pnl   = sum(p.get("pnl_usd", 0) for p in priced)
+    total_staked = sum(p.get("paper_stake", 100) for p in priced)
+    win_rate = f"{won / len(decided):.0%}"
+    pnl_str  = (
+        f"${total_pnl:+,.0f} ({total_pnl / total_staked * 100:+.1f}%)"
+        if total_staked > 0 else f"${total_pnl:+,.0f}"
+    )
+
+    # Recent 30-day stats
+    cutoff30 = (datetime.now(timezone.utc) - __import__("datetime").timedelta(days=30)).strftime("%Y-%m-%d")
+    recent30 = [p for p in decided if p.get("date_flagged", "") >= cutoff30]
+    r30_won  = sum(1 for p in recent30 if p["status"] == "won")
+    r30_wr   = f"{r30_won / len(recent30):.0%}" if recent30 else "n/a"
+
+    return (
+        f"Portfolio performance (paper $100/trade): "
+        f"all-time win rate {win_rate} ({won}/{len(decided)} decided), "
+        f"P&L {pnl_str}; "
+        f"last 30 days win rate {r30_wr} ({r30_won}/{len(recent30)} decided).\n\n"
+    )
+
+
 def build_prompt(out_dir: Path) -> str | None:
     analysis_file = out_dir / "analysis.json"
     if not analysis_file.exists():
@@ -181,12 +219,32 @@ def build_prompt(out_dir: Path) -> str | None:
         if u not in seen or r["our_score"] > seen[u]["our_score"]:
             seen[u] = r
     traders = [_trader_summary(r) for r in seen.values()]
-    return (
+
+    prompt = (
         f"Date: {out_dir.name}\n"
         f"Traders flagged: {len(traders)}\n\n"
         f"Data:\n```json\n{json.dumps(traders, indent=2, ensure_ascii=False)}\n```\n\n"
-        f"Write the intelligence brief now."
     )
+
+    updates_file = out_dir / "watchlist_updates.json"
+    if updates_file.exists():
+        try:
+            updates: list[dict] = json.loads(updates_file.read_text(encoding="utf-8"))
+            if updates:
+                prompt += (
+                    f"Previously-flagged traders whose markets just resolved "
+                    f"({len(updates)} outcome(s)):\n"
+                    f"```json\n{json.dumps(updates, indent=2, ensure_ascii=False)}\n```\n\n"
+                )
+        except (json.JSONDecodeError, OSError):
+            pass
+
+    stats_block = _portfolio_stats_block()
+    if stats_block:
+        prompt += stats_block
+
+    prompt += "Write the intelligence brief now."
+    return prompt
 
 
 # ---------------------------------------------------------------------------
@@ -333,6 +391,107 @@ def post_telegram(text: str, token: str, chat_id: str, topic_id: str | None) -> 
 
 
 # ---------------------------------------------------------------------------
+# Step 5: pipeline self-review via Claude
+# ---------------------------------------------------------------------------
+
+_REVIEW_SYSTEM = """\
+You are performing a meta-analysis of a Polymarket insider-trading intelligence pipeline.
+Your job is to evaluate how well today's run performed and propose concrete improvements.
+
+You have been given:
+1. The intelligence brief that was sent to the operator via Telegram (the pipeline's output)
+2. The full scored-trader data from analysis.json (the raw evidence)
+3. The project's CLAUDE.md (already loaded as context), which describes the full pipeline
+   architecture, scoring weights, data sources, and goals
+
+Evaluate the following dimensions:
+
+**Signal quality** — Are the flagged traders genuinely suspicious? Which flags are the most
+and least predictive of real insider activity?  Point out any obvious false positives.
+
+**Coverage gaps** — What data is absent that would materially strengthen or weaken the cases?
+(e.g. missing Falcon enrichment, no LinkedIn hit, no OSINT profile at all)
+
+**Scoring calibration** — Are the point weights in score_against_market() well-balanced?
+Are any flags over- or under-weighted relative to their actual information value?
+
+**Pipeline reliability** — Signs of collection failures: empty profiles, skipped enrichment,
+dedup issues, traders with polywhaler_insider_score but zero OSINT.
+
+**Output quality** — Is the Telegram brief clear, actionable, and appropriately concise?
+Does it surface the right traders? Does it miss anyone from the raw data who should be included?
+
+After your evaluation, propose 3–5 specific, actionable improvements ranked by expected impact.
+For each: state what to change, why it would help, and which file/component to modify.
+
+Be direct and critical. If today's run produced low-quality results, say so clearly.\
+"""
+
+
+def call_pipeline_review(brief: str, out_dir: Path, model: str) -> str | None:
+    """Run a Claude meta-analysis of today's pipeline output, return the review text."""
+    claude_bin = shutil.which("claude")
+    if not claude_bin:
+        return None
+
+    print("\n" + "=" * 72)
+    print("STEP 5 — Running pipeline self-review with Claude…")
+    print("=" * 72)
+
+    analysis_json = ""
+    analysis_file = out_dir / "analysis.json"
+    if analysis_file.exists():
+        try:
+            data = json.loads(analysis_file.read_text(encoding="utf-8"))
+            analysis_json = json.dumps(data, indent=2, ensure_ascii=False)
+        except Exception:
+            pass
+
+    stats_block = ""
+    stats_file = out_dir / "run_stats.json"
+    if stats_file.exists():
+        try:
+            stats_block = (
+                "\n=== RUN STATS ===\n```json\n"
+                + stats_file.read_text(encoding="utf-8")
+                + "\n```\n"
+            )
+        except Exception:
+            pass
+
+    prompt = (
+        f"Date: {out_dir.name}\n\n"
+        f"=== TELEGRAM BRIEF SENT TO OPERATOR ===\n{brief}\n\n"
+        f"=== FULL SCORED TRADER DATA (analysis.json) ===\n"
+        f"```json\n{analysis_json}\n```\n"
+        f"{stats_block}"
+        f"\nNow write your pipeline evaluation and improvement suggestions."
+    )
+
+    full_prompt = f"{_REVIEW_SYSTEM}\n\n---\n\n{prompt}"
+
+    try:
+        proc = subprocess.run(
+            [claude_bin, "-p", "--model", model, full_prompt],
+            capture_output=True,
+            text=True,
+            timeout=180,
+            cwd=str(SCRIPT_DIR),
+        )
+        if proc.returncode != 0:
+            err = proc.stderr.strip()[:300]
+            print(f"  Warning: pipeline review exited {proc.returncode}: {err}", file=sys.stderr)
+            return None
+        return proc.stdout.strip()
+    except subprocess.TimeoutExpired:
+        print("  Warning: pipeline review timed out after 180 s", file=sys.stderr)
+        return None
+    except Exception as exc:
+        print(f"  Warning: pipeline review error: {exc}", file=sys.stderr)
+        return None
+
+
+# ---------------------------------------------------------------------------
 # Entrypoint
 # ---------------------------------------------------------------------------
 
@@ -399,34 +558,56 @@ def main() -> int:
         if proc.returncode != 0 and proc.stderr.strip():
             print(f"  Outcomes seed warning: {proc.stderr.strip()}", file=sys.stderr)
 
+    # ── Seed watchlist portfolio ───────────────────────────────────────────
+    portfolio_script = SCRIPT_DIR / "watchlist_portfolio.py"
+    if portfolio_script.exists():
+        proc = subprocess.run(
+            [sys.executable, str(portfolio_script), "seed", out_dir.name],
+            capture_output=True, text=True,
+        )
+        if proc.stdout.strip():
+            print(f"  {proc.stdout.strip()}")
+        if proc.returncode != 0 and proc.stderr.strip():
+            print(f"  Portfolio seed warning: {proc.stderr.strip()}", file=sys.stderr)
+
     # ── Run health summary ─────────────────────────────────────────────────
     health = _health_summary(out_dir)
     print(f"\n{health}")
 
     # ── Step 4 ─────────────────────────────────────────────────────────────
+    full_text = f"*Polymarket Insider Monitor — {out_dir.name}*\n\n{analysis}"
+
     if args.no_telegram:
         print("(--no-telegram set — skipping Telegram post)")
-        return 0
+    else:
+        token    = _require("TELEGRAM_BOT_TOKEN")
+        chat_id  = _require("TELEGRAM_CHAT_ID")
+        topic_id = os.environ.get("TELEGRAM_TOPIC_ID", "") or None
 
-    token    = _require("TELEGRAM_BOT_TOKEN")
-    chat_id  = _require("TELEGRAM_CHAT_ID")
-    topic_id = os.environ.get("TELEGRAM_TOPIC_ID", "") or None
+        post_telegram(full_text, token, chat_id, topic_id)
 
-    full_text = f"*Polymarket Insider Monitor — {out_dir.name}*\n\n{analysis}"
-    post_telegram(full_text, token, chat_id, topic_id)
+        # ── Weekly precision digest ────────────────────────────────────────
+        if args.weekly_report and outcomes_script.exists():
+            proc = subprocess.run(
+                [sys.executable, str(outcomes_script), "report", "--days", "7"],
+                capture_output=True, text=True,
+            )
+            if proc.returncode == 0 and proc.stdout.strip():
+                weekly_text = f"*Weekly precision digest — {out_dir.name}*\n\n{proc.stdout.strip()}"
+                (out_dir / "weekly_digest.txt").write_text(weekly_text, encoding="utf-8")
+                post_telegram(weekly_text, token, chat_id, topic_id)
+            elif proc.stderr.strip():
+                print(f"  Weekly digest warning: {proc.stderr.strip()}", file=sys.stderr)
 
-    # ── Weekly precision digest ────────────────────────────────────────────
-    if args.weekly_report and outcomes_script.exists():
-        proc = subprocess.run(
-            [sys.executable, str(outcomes_script), "report", "--days", "7"],
-            capture_output=True, text=True,
-        )
-        if proc.returncode == 0 and proc.stdout.strip():
-            weekly_text = f"*Weekly precision digest — {out_dir.name}*\n\n{proc.stdout.strip()}"
-            (out_dir / "weekly_digest.txt").write_text(weekly_text, encoding="utf-8")
-            post_telegram(weekly_text, token, chat_id, topic_id)
-        elif proc.stderr.strip():
-            print(f"  Weekly digest warning: {proc.stderr.strip()}", file=sys.stderr)
+    # ── Step 5: pipeline self-review ───────────────────────────────────────
+    review = call_pipeline_review(full_text, out_dir, args.model)
+    if review:
+        review_file = out_dir / "pipeline_review.txt"
+        review_file.write_text(review, encoding="utf-8")
+        print(f"\n  Pipeline review saved → {review_file}")
+        print("\n--- Pipeline review ---")
+        print(review)
+        print("--- end ---\n")
 
     return 0
 

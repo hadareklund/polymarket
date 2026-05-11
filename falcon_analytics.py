@@ -2,10 +2,14 @@
 """Falcon API client for Polymarket on-chain trader analytics.
 
 Agents used:
-  586 — Lifetime Performance  (total_pnl, roi, total_trades, avg_trade_size)
-  581 — Wallet 360            (60+ behavioral/risk metrics over a rolling window)
+  569 — Profit & Loss         (net REALIZED pnl from settled markets, wins/losses/win_rate)
+  581 — Wallet 360            (60+ behavioral/risk metrics: sharpe, diversity, sybil_risk_score)
   579 — Top Traders           (leaderboard rank and ROI for a specific wallet)
   584 — Falcon Leaderboard    (h_score / tier when wallet is ranked)
+
+Agent 586 (Lifetime Performance) was removed — its total_pnl field did not account for
+open-position losses and produced systematically inflated figures. Agent 569 is used
+instead, which explicitly returns net realized PnL from settled markets only.
 """
 from __future__ import annotations
 
@@ -36,6 +40,8 @@ _W360_KEEP = {
     "sharpe_ratio", "sortino_ratio", "total_invested",
     "total_trades", "unique_markets_traded", "win_rate",
     "worst_market_pnl",
+    # Risk / Sybil signals (added after doc review)
+    "sybil_risk_score", "risk_level",
 }
 
 
@@ -95,7 +101,12 @@ def _call(token: str, payload: dict, timeout: int = 20) -> dict | None:
 
 
 def lifetime_performance(wallet: str, token: str) -> dict | None:
-    """Return overall lifetime trading stats for a wallet (agent 586)."""
+    """Return overall lifetime trading stats for a wallet (agent 586).
+
+    Deprecated: agent 586's total_pnl does not correctly account for open-position
+    losses. Use realized_pnl() (agent 569) instead for accurate figures.
+    Kept for backward compatibility with existing cached profiles.
+    """
     raw = _call(token, {
         "agent_id": 586,
         "params": {"wallet_address": wallet},
@@ -111,6 +122,49 @@ def lifetime_performance(wallet: str, token: str) -> dict | None:
         "total_invested": raw.get("total_invested"),
         "avg_pnl_per_trade": raw.get("avg_pnl_per_trade"),
         "last_updated": raw.get("last_updated"),
+    }
+
+
+def realized_pnl(wallet: str, token: str) -> dict | None:
+    """Return net realized PnL from settled markets for a wallet (agent 569).
+
+    Agent 569 explicitly returns 'net realized profit and loss — only realized
+    gains from confirmed trades or settled markets are included.' This is the
+    correct source for historical accuracy signals.
+
+    Uses granularity='all' to get a single all-time aggregate result.
+    """
+    raw = _call(token, {
+        "agent_id": 569,
+        "params": {
+            "wallet":      wallet,
+            "granularity": "all",
+            "start_time":  "2022-01-01",
+            "end_time":    datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+        },
+        "formatter_config": {"format_type": "raw"},
+    })
+    if not raw:
+        return None
+    try:
+        pnl      = float(raw.get("pnl")      or 0)
+        trades   = int(raw.get("trades")     or 0)
+        wins     = int(raw.get("wins")       or 0)
+        losses   = int(raw.get("losses")     or 0)
+        invested = float(raw.get("invested") or 0)
+        # Agent 569 returns win_rate on a 0–100 scale; normalise to 0–1
+        raw_wr   = raw.get("win_rate")
+        win_rate = (float(raw_wr) / 100.0) if raw_wr is not None \
+                   else (wins / trades if trades > 0 else 0.0)
+    except (TypeError, ValueError):
+        return None
+    return {
+        "pnl":      round(pnl, 2),
+        "trades":   trades,
+        "wins":     wins,
+        "losses":   losses,
+        "win_rate": round(win_rate, 4),
+        "invested": round(invested, 2),
     }
 
 
@@ -199,26 +253,36 @@ def is_fresh(profile: dict, max_age_hours: int = CACHE_MAX_AGE_HOURS) -> bool:
 
 
 def enrich_wallet(wallet: str, token: str) -> dict:
-    """Fetch analytics for a wallet from both Falcon and Polymarket's own API.
+    """Fetch analytics for a wallet from Falcon (agents 569, 581) and Polymarket API.
 
-    Polymarket positions data replaces Falcon's lifetime_performance (agent 586),
-    which was found to report systematically inflated PnL figures. Falcon's
-    wallet_360 (agent 581) is retained for win_rate, sharpe, and diversity metrics.
+    Three complementary sources:
+      realized_performance  — agent 569: net realized PnL from settled markets,
+                              wins/losses/win_rate. The authoritative historical
+                              accuracy signal.
+      wallet_360_30d        — agent 581: sharpe, diversity, sybil_risk_score,
+                              and other rolling behavioral metrics.
+      positions_data        — Polymarket API: current portfolio value and open
+                              position breakdown. Sophistication/scale signal.
     """
     result: dict = {}
 
-    # Polymarket positions API — authoritative portfolio/P&L data
+    # Agent 569: net realized PnL from settled markets
+    rp = realized_pnl(wallet, token)
+    if rp:
+        result["realized_performance"] = rp
+
+    # Agent 581: behavioral/risk metrics
+    w360 = wallet_360(wallet, token, window_days=30)
+    if w360:
+        result["wallet_360_30d"] = w360
+
+    # Polymarket positions API: current portfolio
     try:
         stats = polymarket_api.wallet_stats(wallet)
         if stats:
             result["positions_data"] = stats
     except Exception as exc:
         print(f"  polymarket_api: {wallet[:10]}… error — {exc}", file=sys.stderr)
-
-    # Falcon wallet_360 — behavioral/risk metrics (win_rate, sharpe, diversity)
-    w360 = wallet_360(wallet, token, window_days=30)
-    if w360:
-        result["wallet_360_30d"] = w360
 
     if result:
         result["fetched_at"] = datetime.now(timezone.utc).isoformat()

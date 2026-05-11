@@ -30,8 +30,9 @@ import sys
 import time
 import urllib.error
 import urllib.request
+from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import falcon_analytics
@@ -43,6 +44,9 @@ STATE_FILE     = SCRIPT_DIR / "results" / "polywhaler" / "state.json"
 BLOCKLIST_FILE = SCRIPT_DIR / "blocklist.json"
 TRADES_URL     = "https://www.polywhaler.com/api/trades?category=all"
 _UA            = "Mozilla/5.0 (X11; Linux x86_64; rv:125.0) Gecko/20100101 Firefox/125.0"
+
+WATCHLIST_DAYS      = 30  # days to keep tracking a report trader even if off the feed
+WATCHLIST_MIN_SCORE = 5   # minimum our_score to add to watchlist
 
 
 # ---------------------------------------------------------------------------
@@ -414,6 +418,9 @@ _KNOWN_ORGS = re.compile(
     r"FOMC|USDA|EPA|DOD|DOJ|DOE|DOGE)\b"
 )
 
+# Single title-case words (≥4 chars, not a stop word) — used for thematic clustering
+_SINGLE_CAPS_RE = re.compile(r"\b([A-Z][a-z]{3,})\b")
+
 
 def extract_market_entities(title: str) -> list[str]:
     """Extract named entities from a market title for professional-field matching."""
@@ -435,6 +442,78 @@ def extract_market_entities(title: str) -> list[str]:
         entities.append(m.group().lower())
 
     return list(dict.fromkeys(entities))  # deduplicated, order-preserving
+
+
+def _extract_theme_words(title: str) -> set[str]:
+    """Extract subject-matter words from a market title for thematic clustering.
+
+    Combines multi-word entity phrases (from extract_market_entities), known
+    org acronyms, and single title-case proper nouns (≥4 chars, not a stop word).
+    This is deliberately broader than extract_market_entities so that country
+    names like 'Iran' are captured even when they appear alone in a title.
+    """
+    words: set[str] = set()
+    for m in _KNOWN_ORGS.finditer(title):
+        words.add(m.group().lower())
+    for entity in extract_market_entities(title):
+        words.update(entity.split())
+    for m in _SINGLE_CAPS_RE.finditer(title):
+        w = m.group().lower()
+        if w not in _TITLE_STOP:
+            words.add(w)
+    return words
+
+
+def _score_thematic_cluster(user_trades: list[dict]) -> dict | None:
+    """Annotate thematically linked bets across multiple markets (Fix 2).
+
+    Looks for ≥2 significant trades (each ≥ thematic_cluster_min_usd) whose
+    titles share at least one subject-matter keyword and surfaces them as a
+    zero-point annotation flag.
+
+    Multiple bets on related markets is equally consistent with following the
+    news as with insider access, so no score is awarded — the annotation exists
+    to give the analyst (and the Claude prompt) quick context on what the trader
+    is concentrating on.
+
+    Returns a flag dict ready to append to result["flags"], or None if no cluster.
+    """
+    S = scoring.SCORING
+    min_usd     = S["thematic_cluster_min_usd"]
+    significant = [t for t in user_trades if (t.get("size") or 0) >= min_usd]
+    if len(significant) < 2:
+        return None
+
+    word_to_trades: dict[str, list[dict]] = defaultdict(list)
+    for t in significant:
+        for word in _extract_theme_words(t.get("title", "")):
+            word_to_trades[word].append(t)
+
+    best_word: str | None = None
+    best_cluster: list[dict] = []
+    best_total = 0.0
+    for word, cluster in word_to_trades.items():
+        if len(cluster) < 2:
+            continue
+        total = sum(t.get("size") or 0 for t in cluster)
+        if len(cluster) > len(best_cluster) or (
+            len(cluster) == len(best_cluster) and total > best_total
+        ):
+            best_word    = word
+            best_cluster = cluster
+            best_total   = total
+
+    if not best_word:
+        return None
+
+    return {
+        "type":        "thematic_cluster",
+        "theme":       best_word,
+        "trade_count": len(best_cluster),
+        "total_usd":   round(best_total),
+        "markets":     [t.get("title", "")[:60] for t in best_cluster],
+        "points":      0,   # annotation only — no score contribution
+    }
 
 
 def _minutes_before_resolution(trade: dict) -> float | None:
@@ -587,6 +666,32 @@ def score_against_market(
             score += S["category_keyword_pts"]
             break
 
+    # ── 2b. Role domain → market subject relevance (Fix 1 + Fix 3) ──────────
+    # Parses the trader's LinkedIn role title (middle dash-segments) plus snippet
+    # to identify an industry vertical (marine/cargo, defense, pharma, etc.), then
+    # checks whether the market title's subject matter overlaps with that vertical.
+    # This catches domain experts whose job title doesn't name-match the market
+    # entity directly (e.g. "Head of Marine & Cargo" vs "Iran closes airspace").
+    domain_result = scoring.detect_role_domain(profile)
+    if domain_result:
+        vertical_key, matched_role_kws, vertical_label = domain_result
+        market_kws = scoring.INDUSTRY_VERTICAL_DOMAINS[vertical_key]["market_keywords"]
+        hit_market_kw = next(
+            (kw for kw in market_kws
+             if scoring.kw_match(title, kw) or scoring.kw_match(category, kw)),
+            None,
+        )
+        if hit_market_kw:
+            pts = scoring.SCORING["role_domain_match_pts"]
+            flags.append({
+                "type":           "role_domain_match",
+                "vertical":       vertical_label,
+                "role_keywords":  matched_role_kws[:4],
+                "market_keyword": hit_market_kw,
+                "points":         pts,
+            })
+            score += pts
+
     # ── 3. Finance infrastructure (universal) ─────────────────────────────
     def _check_list(kw_list: list[str], flag_type: str, pts: int) -> None:
         nonlocal score
@@ -669,6 +774,19 @@ def score_against_market(
             })
             score += pts
 
+    # ── 9. Identity corroboration (Fix 4) ─────────────────────────────────
+    # Adjusts the score based on how many professional platforms (GitHub,
+    # HuggingFace, LinkedIn) agree on the same real name.  Corroboration boosts
+    # confidence in the LinkedIn-derived identity; conflicting names discount it.
+    id_adj, id_reason = scoring.identity_corroboration(profile)
+    if id_adj != 0:
+        flags.append({
+            "type":   "identity_corroborated" if id_adj > 0 else "identity_fragmented",
+            "reason": id_reason,
+            "points": id_adj,
+        })
+        score += id_adj
+
     result: dict = {
         "username": username,
         "market_title": title,
@@ -695,6 +813,12 @@ def score_against_market(
 
 def _flag_ctx(flag: dict) -> str:
     ftype = flag.get("type", "")
+    if ftype == "falcon_realized_pnl":
+        pnl = flag.get("realized_pnl", 0)
+        w, l = flag.get("wins", 0), flag.get("losses", 0)
+        return f"${pnl:,} realized PnL ({w}W/{l}L on settled markets)"
+    if ftype == "falcon_realized_win_rate":
+        return f"{flag.get('win_rate', 0):.1%} win rate over {flag.get('trades', 0):,} settled trades"
     if ftype == "large_portfolio":
         return f"${flag.get('portfolio_value', 0):,} portfolio value"
     if ftype == "concentrated_thesis":
@@ -702,6 +826,8 @@ def _flag_ctx(flag: dict) -> str:
         val = flag.get("top_value", 0)
         title = flag.get("top_title", "")
         return f"{pct:.0%} of portfolio (${val:,.0f}) in: {title[:50]}"
+    if ftype == "falcon_sybil_risk":
+        return f"sybil_risk_score={flag.get('sybil_risk_score', 0)} ({flag.get('risk_level', '?')})"
     if ftype == "falcon_large_pnl":
         return f"${flag.get('total_pnl', 0):,} lifetime PnL (legacy data)"
     if ftype == "falcon_high_roi":
@@ -719,6 +845,32 @@ def _flag_ctx(flag: dict) -> str:
         win = flag.get("window_days")
         suffix = f" ({win}d window)" if win else ""
         return f"category diversity score {flag.get('diversity_score', 0)}{suffix}"
+    if ftype == "role_domain_match":
+        rks = ", ".join(flag.get("role_keywords", []))
+        return (
+            f"{flag.get('vertical', '?')} expert "
+            f"(role: {rks}); market mentions '{flag.get('market_keyword', '?')}'"
+        )
+    if ftype == "thematic_cluster":
+        markets = "; ".join(flag.get("markets", [])[:2])
+        return (
+            f"{flag.get('trade_count', 0)} bets on '{flag.get('theme', '?')}'-themed markets "
+            f"(${flag.get('total_usd', 0):,.0f} total): {markets}"
+        )
+    if ftype in ("identity_corroborated", "identity_fragmented"):
+        return flag.get("reason", "")
+    if ftype == "high_frequency_trader":
+        tpd = flag.get("trades_per_day", 0)
+        win = flag.get("window_days", "?")
+        return f"{tpd:.0f} trades/day ({win}d window) — likely automated/bot"
+    if ftype == "market_maker_pattern":
+        wr = flag.get("win_rate", 0)
+        n  = flag.get("lifetime_trades", 0)
+        return f"{float(wr):.1%} lifetime win rate over {n:,} trades — spread earner, not directional"
+    if ftype == "dispersed_portfolio":
+        n   = flag.get("open_positions", 0)
+        avg = flag.get("avg_position_usd", 0)
+        return f"{n} open positions, avg ${avg:,} each — no concentrated thesis"
     if ftype == "pre_resolution_trade":
         m = flag.get("minutes_before_resolution", 0)
         if m < 1:
@@ -799,6 +951,75 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--no-sybil",       action="store_true",  help="Skip Sybil/shared-funder cluster analysis")
     p.add_argument("--sybil-lookback", type=int, default=90, help="Days of Polygon history to scan for shared funders (default: 90)")
     return p.parse_args()
+
+
+_GAMMA_BASE = "https://gamma-api.polymarket.com"
+
+
+def check_watchlist_positions(watchlist: dict[str, dict]) -> list[dict]:
+    """Poll Gamma API for each tracked market slug and return resolved positions.
+
+    Returns a list of dicts for markets that have closed with a clear outcome,
+    indicating whether the tracked trader was right or wrong.
+    """
+    if not watchlist:
+        return []
+
+    # Deduplicate slugs (multiple wallets may bet on the same market)
+    slug_to_wallets: dict[str, list[str]] = {}
+    for wallet, wdata in watchlist.items():
+        slug = wdata.get("slug", "")
+        if slug:
+            slug_to_wallets.setdefault(slug, []).append(wallet)
+
+    updates: list[dict] = []
+    for slug, wallets in slug_to_wallets.items():
+        try:
+            url = f"{_GAMMA_BASE}/markets?slug={slug}"
+            data = _get(url)
+            if not data:
+                continue
+            market = data[0]
+            if not market.get("closed"):
+                continue
+
+            # Determine winner from outcomePrices (index matches outcomes list)
+            raw_prices = market.get("outcomePrices", [])
+            outcomes   = market.get("outcomes", [])
+            if isinstance(raw_prices, str):
+                raw_prices = json.loads(raw_prices)
+            if isinstance(outcomes, str):
+                outcomes = json.loads(outcomes)
+            prices = [float(p) for p in raw_prices]
+            if not prices or not outcomes or len(prices) != len(outcomes):
+                continue
+
+            winner_idx = prices.index(max(prices))
+            if max(prices) < 0.9:
+                continue  # ambiguous / market cancelled
+
+            winning_outcome = outcomes[winner_idx]
+
+            for wallet in wallets:
+                wdata = watchlist[wallet]
+                trader_outcome = wdata.get("outcome", "")
+                was_right = trader_outcome.lower() == winning_outcome.lower()
+                updates.append({
+                    "username":    wdata.get("username", ""),
+                    "wallet":      wallet,
+                    "market":      wdata.get("market", slug),
+                    "slug":        slug,
+                    "bet":         trader_outcome,
+                    "bet_size":    wdata.get("size", 0),
+                    "result":      "WON" if was_right else "LOST",
+                    "winner":      winning_outcome,
+                    "our_score":   wdata.get("our_score", 0),
+                    "added":       wdata.get("added", ""),
+                })
+        except Exception:
+            continue
+
+    return updates
 
 
 def main() -> int:
@@ -884,9 +1105,10 @@ def main() -> int:
         profiles_dir = SCRIPT_DIR / "results" / names_file_stem
 
     # Update state: mark new wallets as seen
+    now_utc = datetime.now(timezone.utc)
     new_wallets = {t.get("proxyWallet") for t in new_trades if t.get("proxyWallet")}
     state["seen_wallets"] = sorted(seen_wallets | new_wallets)
-    state["last_fetch"] = datetime.now(timezone.utc).isoformat()
+    state["last_fetch"] = now_utc.isoformat()
     save_state(state)
 
     # ── LinkedIn enrichment ───────────────────────────────────────────────
@@ -981,6 +1203,11 @@ def main() -> int:
         if not username or username.startswith("0x"):
             continue
         trades_by_user.setdefault(username, []).append(trade)
+
+    # ── Watchlist: load for position-outcome checks later ────────────────
+    watchlist: dict[str, dict] = state.get("watchlist", {})
+    watchlist = {w: v for w, v in watchlist.items()
+                 if datetime.fromisoformat(v["expires"]) > now_utc}
 
     # ── Blocklist filter (scoring stage) ─────────────────────────────────────
     if blocked_wallets or blocked_usernames:
@@ -1078,6 +1305,15 @@ def main() -> int:
             }
             for t in sorted(user_trades, key=lambda t: -(t.get("insiderScore") or 0))
         ]
+
+        # ── Thematic bet clustering (Fix 2) ──────────────────────────────
+        # Runs across all trades (not just the best one), so it catches cases
+        # where a trader has spread a conviction across multiple related markets.
+        cluster_flag = _score_thematic_cluster(user_trades)
+        if cluster_flag:
+            result["flags"].append(cluster_flag)
+            result["our_score"] += cluster_flag["points"]
+
         results.append(result)
 
     if no_profile_count:
@@ -1087,6 +1323,9 @@ def main() -> int:
     # Flags that are NOT independent corroboration of insider status:
     _NON_CORROBORATING = frozenset({
         "polywhaler_insider_score", "large_trade", "medium_trade", "pre_resolution_trade",
+        "thematic_cluster",         # annotation-only
+        "high_frequency_trader", "market_maker_pattern", "dispersed_portfolio",  # bot penalties
+        "low_confidence",
     })
     for result in results:
         has_corroboration = any(f["type"] not in _NON_CORROBORATING for f in result["flags"])
@@ -1106,6 +1345,35 @@ def main() -> int:
         encoding="utf-8",
     )
 
+    # ── Update watchlist with high-scoring traders ────────────────────────
+    for result in results:
+        if result.get("our_score", 0) >= WATCHLIST_MIN_SCORE:
+            uname  = result.get("username", "")
+            wallet = all_trade_wallets.get(uname, "")
+            if not wallet:
+                continue
+            user_trade_list = trades_by_user.get(uname, [{}])
+            best = max(user_trade_list, key=lambda t: t.get("insiderScore") or 0)
+            expires = (now_utc + timedelta(days=WATCHLIST_DAYS)).isoformat()
+            if not best.get("_watchlist"):
+                # Real fresh trade — record with current market data
+                watchlist[wallet] = {
+                    "username":     uname,
+                    "added":        now_utc.date().isoformat(),
+                    "expires":      expires,
+                    "market":       best.get("title", ""),
+                    "slug":         best.get("slug", ""),
+                    "outcome":      best.get("outcome", ""),
+                    "size":         best.get("size") or 0,
+                    "insider_score": best.get("insiderScore") or 0,
+                    "category":     best.get("category", ""),
+                    "our_score":    result.get("our_score", 0),
+                }
+    state["watchlist"] = watchlist
+    save_state(state)
+    if watchlist:
+        print(f"  Watchlist: tracking {len(watchlist)} trader(s) for up to {WATCHLIST_DAYS} days")
+
     print(f"\n{'='*72}")
     report_file = write_report(results, out_dir, date_str)
 
@@ -1123,6 +1391,36 @@ def main() -> int:
         json.dumps(run_stats, indent=2, ensure_ascii=False),
         encoding="utf-8",
     )
+
+    # ── Watchlist position outcomes ───────────────────────────────────────
+    # Check which previously-flagged markets have now closed, and whether
+    # the tracked traders were right. Only surfaces once (on close).
+    position_updates = check_watchlist_positions(watchlist)
+    if position_updates:
+        updates_file = out_dir / "watchlist_updates.json"
+        updates_file.write_text(
+            json.dumps(position_updates, indent=2, ensure_ascii=False),
+            encoding="utf-8",
+        )
+        # Append a section to report.txt
+        with report_file.open("a", encoding="utf-8") as fh:
+            fh.write("\n\n" + "=" * 72 + "\n")
+            fh.write("WATCHLIST POSITION OUTCOMES\n")
+            fh.write("=" * 72 + "\n")
+            for u in sorted(position_updates, key=lambda x: x["our_score"], reverse=True):
+                icon = "✓" if u["result"] == "WON" else "✗"
+                fh.write(
+                    f"{icon} {u['username']:30s}  {u['result']:4s}  "
+                    f"bet {u['bet']:3s} ${u['bet_size']:>10,.0f}  "
+                    f"winner={u['winner']}  {u['market'][:50]}\n"
+                )
+        print(f"\n  Watchlist: {len(position_updates)} position(s) resolved → watchlist_updates.json")
+        # Remove resolved markets from watchlist so we don't re-report them
+        resolved_slugs = {u["slug"] for u in position_updates}
+        watchlist = {w: v for w, v in watchlist.items()
+                     if v.get("slug") not in resolved_slugs}
+        state["watchlist"] = watchlist
+        save_state(state)
 
     print(f"\nOutputs → {out_dir}/")
     print(f"  trades.json    {len(trades)} flagged trades")

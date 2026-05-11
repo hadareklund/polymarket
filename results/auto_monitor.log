@@ -1147,3 +1147,2250 @@ Health: trades=25  scored=21  new=11
 STEP 3 — Posting 1 message(s) to Telegram…
 ========================================================================
   [1/1] sent (msg_id=14)
+Fetching up to 4 page(s) of trades (threshold: insiderScore ≥ 20)…
+  26 trades at or above threshold
+  18 new trader(s) not seen before, 8 already profiled
+  16 username(s) to OSINT
+  Running OSINT on 16 new trader(s)…
+╭───────────────────────────╮
+│ Polymarket OSINT Pipeline │
+╰───────────────────────────╯
+[08:30:07] Loaded 16 usernames from                                   run.py:293
+           /home/kali/polymarket/results/polywhaler/2026-05-06/new_us           
+           ernames.txt                                                          
+/home/kali/polymarket/run.py:1075: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "generated_at": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+[08:31:06] Falcon API: enriching 14 profile(s) with on-chain          run.py:293
+           analytics…                                                           
+[08:31:19] Falcon API: enriched 14/14 profile(s)                      run.py:293
+           Done. 15 profile(s), 1 thin. →                             run.py:293
+           /home/kali/polymarket/results/new_usernames/                         
+  Profiling ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16/16 0:00:59 0:00:00
+/home/kali/polymarket/results/new_usernames
+Loaded 38 entries — 0 already done, 38 remaining
+Brave API: 98/5000 used this month (2026-05)  [2.0%]  4902 remaining
+Workers: 10  Delay per worker: 0.0–0.0s
+[1/38] 'novv25' → "gun dew" site:linkedin.com/in/
+[2/38] 'cqs' → "pooja jain" site:linkedin.com/in/ "jabalpur"
+[3/38] 'thegreengem' → "Drew Esmeralda" site:linkedin.com/in/ "Philippines"
+[4/38] 'CSKL' → "Csaba K." site:linkedin.com/in/
+[5/38] 'P' → "Oleg Pudeyev" site:linkedin.com/in/ "NYC"
+[6/38] 'James000' → "Alexander Jacob" site:linkedin.com/in/ "nimbin"
+[7/38] 'peal' → "Pedro Lopes" site:linkedin.com/in/ "Anywhere on earth."
+[8/38] 'exposito' → "Enock Owusu Ansah" site:linkedin.com/in/
+[9/38] 'PantheraUncia' → "Alona Ratsebarska" site:linkedin.com/in/ "Switzerland"
+[10/38] 'TranQuiliT' → "Tranquil IT" site:linkedin.com/in/ "Nantes"
+  – ['PantheraUncia'] not found
+[11/38] 'debased' → "dɘbaƨed (debased)" site:linkedin.com/in/
+  – ['thegreengem'] not found
+[12/38] 'ThreeOneFour' → "Ahmad Ayyash" site:linkedin.com/in/ "Amman"
+  – ['James000'] not found
+[13/38] 'Goopster' → "Jestin Brazda" site:linkedin.com/in/
+  ✓ ['cqs'] https://www.linkedin.com/in/pooja-jain-4352a078 (profile updated)
+[14/38] '36chambers' → "Mattias, Pascal, Gianluca ." site:linkedin.com/in/
+  – ['peal'] not found
+[15/38] 'shadow54' → "jonathan renez" site:linkedin.com/in/ "diamond bar"
+  ✓ ['exposito'] https://www.linkedin.com/in/enock-owusu-ansah (profile updated)
+[16/38] 'JJo' → "JuanJo Ciarlante" site:linkedin.com/in/ "Mendoza"
+  – ['P'] not found
+[17/38] 'Aurelian9' → "Aurelia N" site:linkedin.com/in/
+  – ['novv25'] not found
+[18/38] 'Rafifa' → "Rafifa Binte Jahir" site:linkedin.com/in/
+  ✓ ['CSKL'] https://www.linkedin.com/in/csabakecskemeti (profile updated)
+[19/38] 'justme003' → "Lenka Yaroyan" site:linkedin.com/in/ "Erevan"
+  ✓ ['TranQuiliT'] https://www.linkedin.com/in/vincent-cardon-05b3946b (profile updated)
+[20/38] 'strike123' → "Paresh Pandya" site:linkedin.com/in/
+  – ['debased'] not found
+[21/38] 'xOvation' → "Chris Alha" site:linkedin.com/in/
+  – ['36chambers'] not found
+[22/38] 'SaylorMoon' → "Natacha Benmesbah" site:linkedin.com/in/
+  – ['Goopster'] not found
+[23/38] 'hebi007' → "Aung Kyaw Khant" site:linkedin.com/in/
+  – ['shadow54'] not found
+[24/38] '2B9S' → "Ken Oikawa" site:linkedin.com/in/
+  – ['JJo'] not found
+[25/38] 'MEPP' → "Dave Meppelink" site:linkedin.com/in/ "Mar del Plata"
+  ✓ ['ThreeOneFour'] https://www.linkedin.com/in/ahmad-ayyash-79a6a4150 (profile updated)
+[26/38] '10thave' → "10th Avenue" site:linkedin.com/in/ "10th"
+  – ['Rafifa'] not found
+[27/38] 'wlooo' → "Wael Nice" site:linkedin.com/in/ "New York City"
+  – ['justme003'] not found
+[28/38] 'Warren-Buffett' → "Warren Buffett" site:linkedin.com/in/
+  ✓ ['Aurelian9'] https://www.linkedin.com/in/aurelia-n-87573522 (profile updated)
+[29/38] 'denizz' → "Denis RedCoket" site:linkedin.com/in/ "Turkey"
+  ✓ ['strike123'] https://www.linkedin.com/in/paresh-pandya-a173b5ba (profile updated)
+[30/38] 'TylerTurden' → "Jon Tuck" site:linkedin.com/in/
+  – ['MEPP'] not found
+[31/38] 'ImJustKen' → "Fren Jarvis" site:linkedin.com/in/
+  ✓ ['xOvation'] https://www.linkedin.com/in/chris-alpha-a8b5748b (profile updated)
+[32/38] 'alliswell' → "Jared Erickson" site:linkedin.com/in/ "Brother"
+  ✓ ['SaylorMoon'] https://www.linkedin.com/in/natacha-benmesbah-7408472a1 (profile updated)
+[33/38] 'MisTKy' → "Thiago Gonçalves" site:linkedin.com/in/
+  – ['wlooo'] not found
+[34/38] 'Pajamapants' → "Michael Kong" site:linkedin.com/in/
+  ✓ ['hebi007'] https://www.linkedin.com/in/aung-kyaw-khant-7aa24a200 (profile updated)
+[35/38] 'bigbond' → "Priyansh Agrahari" site:linkedin.com/in/
+  ✓ ['2B9S'] https://www.linkedin.com/in/ken-oikawa-a895036b (profile updated)
+[36/38] 'dooby' → "dov israeli" site:linkedin.com/in/ "palm springs"
+  – ['denizz'] not found
+[37/38] '100x' → "Remigijus Gineitis" site:linkedin.com/in/
+  ✓ ['10thave'] https://www.linkedin.com/in/nick-shapiro (profile updated)
+[38/38] 'Yogi.Bear' → "Yogi Bear" site:linkedin.com/in/
+  ✓ ['Warren-Buffett'] https://www.linkedin.com/in/warren-buffett-9451b3361 (profile updated)
+  ✓ ['TylerTurden'] https://www.linkedin.com/in/jon-tuck-22a9735 (profile updated)
+  – ['ImJustKen'] not found
+  ✓ ['alliswell'] https://www.linkedin.com/in/jared-erickson-93585b14 (profile updated)
+  – ['dooby'] not found
+  ✓ ['bigbond'] https://www.linkedin.com/in/priyansh-agrahari-975309204 (profile updated)
+  ✓ ['MisTKy'] https://www.linkedin.com/in/thiago-gon%C3%A7alves-a4a39930 (profile updated)
+  – ['100x'] not found
+  ✓ ['Yogi.Bear'] https://www.linkedin.com/in/north-texas-jellystone-park-8a5284130 (profile updated)
+  ✓ ['Pajamapants'] https://bs.linkedin.com/in/michael-kong-89817544 (profile updated)
+
+Done — 19 found, 19 not found, 0 errors (of 38 processed)
+Brave API: 136/5000 used this month (2026-05)  [2.7%]  4864 remaining
+  LinkedIn: 38 queries → /home/kali/polymarket/results/polywhaler/2026-05-06/linkedin_queries.json
+  Loaded 104 profile(s) from /home/kali/polymarket/results/new_usernames
+  Falcon: enriching 6 returning trader(s)…
+  Global profile cache: wrote 104 profile(s) → /home/kali/polymarket/results/polywhaler_profiles
+  Sybil: fetching latest Polygon block…
+  Sybil: scanning last 90d (from block 83,083,654) for 23 wallets…
+  Sybil: found 1 cluster(s) covering 14 wallets
+  3 trader(s) scored without OSINT profile
+  Watchlist: tracking 17 trader(s) for up to 30 days
+
+========================================================================
+POLYWHALER INSIDER MONITOR — 2026-05-06
+========================================================================
+Traders scored: 23
+
+  8934394839                      our= 20  pw= 23  $   244,483  No  Will the U.S. invade Iran before 2027?
+    [+3] polywhaler_insider_score: 23
+    [+3] large_trade: 
+    [+2] falcon_realized_pnl: $658,010 realized PnL (586W/330L on settled markets)
+    [+2] large_portfolio: $765,908 portfolio value
+    [+2] concentrated_thesis: 89% of portfolio ($684,331) in: Will the U.S. invade Iran before 2027?
+    [+2] falcon_high_win_rate: 93.9% win rate (7d window)
+    [+6] sybil_cluster: via 0xc536633f…af41, 0xf7cd89be…9f64 → SmallFishInWhaleStomach, Warren
+
+  SmallFishInWhaleStomach         our= 18  pw= 28  $    42,715  No  Russia x Ukraine ceasefire by June 30, 2026?
+    also: $    21,206  No  Russia x Ukraine ceasefire by May 31, 2026?
+    [+4] polywhaler_insider_score: 28
+    [+1] medium_trade: 
+    [+2] large_portfolio: $313,241 portfolio value
+    [+2] concentrated_thesis: 60% of portfolio ($187,889) in: Will Gavin Newsom win the 2028 Democra
+    [+2] falcon_high_win_rate: 100.0% win rate (7d window)
+    [+1] falcon_concentrated_bets: category diversity score 0.29 (7d window)
+    [+6] sybil_cluster: via 0xc536633f…af41, 0xf7cd89be…9f64 → Warren-Buffett, aenews2, stupid
+
+  aenews2                         our= 17  pw= 33  $    21,654  No  Jerome Powell out as Fed Chair by May 15, 2026?
+    [+5] polywhaler_insider_score: 33
+    [+2] large_portfolio: $243,975 portfolio value
+    [+2] concentrated_thesis: 69% of portfolio ($168,067) in: Will the U.S. invade Iran before 2027?
+    [+2] falcon_high_win_rate: 75.2% win rate (7d window)
+    [+6] sybil_cluster: via 0xc536633f…af41, 0xf7cd89be…9f64 → SmallFishInWhaleStomach, Warren
+
+  MisTKy                          our= 17  pw= 28  $    42,188  Yes  US x Iran diplomatic meeting by May 31, 2026?
+    also: $   134,242  No  Iran closes its airspace by May 8?
+    [+4] polywhaler_insider_score: 28
+    [+1] medium_trade: 
+    [+2] falcon_realized_pnl: $169,661 realized PnL (16490W/7528L on settled markets)
+    [+2] large_portfolio: $130,262 portfolio value
+    [+2] falcon_high_win_rate: 75.9% win rate (7d window)
+    [+6] sybil_cluster: via 0xc536633f…af41, 0xf7cd89be…9f64 → SmallFishInWhaleStomach, Warren
+
+  jimbobianthethird               our= 16  pw= 43  $   100,285  Yes  US x Iran permanent peace deal by May 31, 2026?
+    [+7] polywhaler_insider_score: 43
+    [+3] large_trade: 
+    [+6] sybil_cluster: via 0xc536633f…af41, 0xf7cd89be…9f64 → SmallFishInWhaleStomach, Warren
+
+  Warren-Buffett                  our= 15  pw= 40  $    59,427  Yes  Strait of Hormuz traffic returns to normal by end 
+    [+6] polywhaler_insider_score: 40
+    [+1] medium_trade: 
+    [+2] falcon_realized_pnl: $92,249 realized PnL (3574W/1627L on settled markets)
+    [+6] sybil_cluster: via 0xc536633f…af41, 0xf7cd89be…9f64 → SmallFishInWhaleStomach, aenews
+
+  jocpolitic                      our= 15  pw= 27  $    40,796  Yes  Will Thomas Massie be the Republican nominee for K
+    [+4] polywhaler_insider_score: 27
+    [+1] medium_trade: 
+    [+2] falcon_realized_pnl: $124,161 realized PnL (1420W/1536L on settled markets)
+    [+2] large_portfolio: $566,312 portfolio value
+    [+6] sybil_cluster: via 0xc536633f…af41, 0xf7cd89be…9f64 → SmallFishInWhaleStomach, Warren
+
+  Parz1vaI                        our= 15  pw= 22  $    18,119  No  Iran leadership change by June 30?
+    [+3] polywhaler_insider_score: 22
+    [+2] falcon_realized_pnl: $233,744 realized PnL (10785W/3831L on settled markets)
+    [+2] large_portfolio: $210,493 portfolio value
+    [+2] falcon_high_win_rate: 81.9% win rate (7d window)
+    [+6] sybil_cluster: via 0xc536633f…af41, 0xf7cd89be…9f64 → SmallFishInWhaleStomach, Warren
+
+  stupid22                        our= 14  pw= 23  $    90,082  No  Will Reza Pahlavi enter Iran by June 30?
+    [+3] polywhaler_insider_score: 23
+    [+1] medium_trade: 
+    [+2] large_portfolio: $585,029 portfolio value
+    [+2] falcon_high_win_rate: 90.0% win rate (7d window)
+    [+6] sybil_cluster: via 0xc536633f…af41, 0xf7cd89be…9f64 → SmallFishInWhaleStomach, Warren
+
+  cocos228                        our= 14  pw= 29  $    15,644  Yes  Will Mojtaba Khamenei be head of state in Iran end
+    [+4] polywhaler_insider_score: 29
+    [+2] large_portfolio: $442,598 portfolio value
+    [+2] falcon_high_win_rate: 76.2% win rate (7d window)
+    [+6] sybil_cluster: via 0xc536633f…af41, 0xf7cd89be…9f64 → SmallFishInWhaleStomach, Warren
+
+  cqs                             our= 14  pw= 26  $    13,768  No  US x Iran permanent peace deal by May 31, 2026?
+    [+4] polywhaler_insider_score: 26
+    [+2] large_portfolio: $936,020 portfolio value
+    [+2] falcon_high_win_rate: 92.3% win rate (7d window)
+    [+6] sybil_cluster: via 0xc536633f…af41, 0xf7cd89be…9f64 → SmallFishInWhaleStomach, Warren
+
+  MEPP                            our= 14  pw= 22  $    30,762  No  Iran closes its airspace by May 31?
+    [+3] polywhaler_insider_score: 22
+    [+1] medium_trade: 
+    [+2] falcon_realized_pnl: $195,896 realized PnL (3246W/2936L on settled markets)
+    [+2] large_portfolio: $475,113 portfolio value
+    [+6] sybil_cluster: via 0xc536633f…af41, 0xf7cd89be…9f64 → SmallFishInWhaleStomach, Warren
+
+  bobe7                           our= 11  pw= 25  $    32,191  No  Will 60 ships transit the Strait of Hormuz on any 
+    [+4] polywhaler_insider_score: 25
+    [+1] medium_trade: 
+    [+6] sybil_cluster: via 0xc536633f…af41, 0xf7cd89be…9f64 → SmallFishInWhaleStomach, Warren
+
+  splaym                          our= 11  pw= 22  $    12,644  No  Will Vivek Ramaswamy win the Ohio Governor Republi
+    [+3] polywhaler_insider_score: 22
+    [+2] falcon_high_win_rate: 100.0% win rate (7d window)
+    [+6] sybil_cluster: via 0xc536633f…af41, 0xf7cd89be…9f64 → SmallFishInWhaleStomach, Warren
+
+  celestat3123                    our=  9  pw= 56  $   274,499  Yes  Will the US confirm that aliens exist before 2027?
+    [+9] polywhaler_insider_score: 56
+    [+3] large_trade: 
+    [-3] low_confidence: 
+
+  T.hanks                         our=  6  pw= 26  $    15,396  No  Will "Mortal Kombat II" Opening Weekend Box Office
+    [+4] polywhaler_insider_score: 26
+    [+2] falcon_high_win_rate: 81.2% win rate (7d window)
+
+  Moonshot1019                    our=  6  pw= 20  $    27,781  No  US-Iran nuclear deal by May 31?
+    [+3] polywhaler_insider_score: 20
+    [+1] medium_trade: 
+    [+2] falcon_high_win_rate: 100.0% win rate (7d window)
+
+  Uztzzerr                        our=  4  pw= 28  $   126,761  No  Will Byron Donalds win the 2028 Republican preside
+    [+4] polywhaler_insider_score: 28
+    [+3] large_trade: 
+    [-3] low_confidence: 
+
+  peal                            our=  3  pw= 33  $    95,699  No  Will Bitcoin reach $85,000 in May?
+    [+5] polywhaler_insider_score: 33
+    [+1] medium_trade: 
+    [-3] low_confidence: 
+
+  mikemoneywire - 20419           our=  3  pw= 31  $    71,250  No  Strait of Hormuz traffic returns to normal by end 
+    [+5] polywhaler_insider_score: 31
+    [+1] medium_trade: 
+    [-3] low_confidence: 
+
+  liweiqp                         our=  2  pw= 33  $    13,580  Yes  Will Trump visit China by May 31?
+    [+5] polywhaler_insider_score: 33
+    [-3] low_confidence: 
+
+   P                              our=  1  pw= 22  $    40,716  No  MicroStrategy sells any Bitcoin by June 30, 2026?
+    [+3] polywhaler_insider_score: 22
+    [+1] medium_trade: 
+    [-3] low_confidence: 
+
+  minnisj                         our=  0  pw= 21  $    15,000  No  Will the US confirm that aliens exist by June 30?
+    [+3] polywhaler_insider_score: 21
+    [-3] low_confidence: 
+
+
+Outputs → /home/kali/polymarket/results/polywhaler/2026-05-06/
+  trades.json    26 flagged trades
+  analysis.json  23 scored traders
+  report.txt     ranked summary
+  run_stats.json health metrics
+========================================================================
+STEP 1 — Running polywhaler monitor…
+========================================================================
+
+========================================================================
+STEP 2 — Sending to Claude for analysis…
+========================================================================
+
+--- Claude analysis ---
+*COORDINATED SYBIL CLUSTER — Iran markets* (14 accounts, ~$765k aggregate)
+
+Fourteen wallets sharing 5 common on-chain funders are coordinated-trading a coherent Iran thesis: no US invasion, airspace remains open, diplomatic movement. Treat as a single actor. Cluster aggregate: $764,759.
+
+---
+
+*8934394839* — "Will US invade Iran before 2027?" No, $244,483
+7-day win rate 93.9%; concentrated_thesis flag shows 89% of $765k portfolio in this single market. Largest individual position in the cluster. No public identity found, but scale and concentration are notable. Lifetime PnL $658k across 3,187 trades.
+
+*MisTKy* (Thiago Gonçalves) — "US x Iran diplomatic meeting by May 31?" Yes, $42,188; also "Iran closes airspace by May 8?" No, $134,242
+Works at Marsh as Managing Director, Head of Marine & Cargo — Latin America & Caribbean per LinkedIn. Marine cargo insurance executives track Strait of Hormuz disruption professionally; both bets are consistent with private intelligence on Iranian de-escalation. Win rate 75.9%.
+https://www.linkedin.com/in/thiago-gon%C3%A7alves-a4a39930
+
+*jimbobianthethird* — "US x Iran permanent peace deal by May 31?" Yes, $100,285
+Highest Polywhaler score in cluster (43). Bet aligns with the cluster's directional thesis (Iran backs down / diplomacy wins) but no identity found.
+
+*SmallFishInWhaleStomach* — Russia-Ukraine ceasefire by June 30? No, $42,715 + $21,206
+7-day win rate 100%, category diversity 0.29 (below 0.3 concentrated threshold). Tightest on-chain profile in the cluster.
+
+---
+
+*Recommended action:* The cluster's unified Iran thesis (no escalation, diplomatic resolution) appears coordinated and scale-weighted. MisTKy/Thiago Gonçalves is the only verified real-world identity — his marine cargo insurance role at Marsh is directly relevant to Strait of Hormuz risk; prioritise deeper background check. Watch for price movement on Iran invasion (currently No) and US-Iran diplomatic/peace markets as a tell on whether the cluster holds information.
+--- end ---
+
+  Seeded 23 new alert(s) for 2026-05-06 (98 total in outcomes.json)
+
+Health: trades=26  scored=23  new=16
+
+========================================================================
+STEP 3 — Posting 1 message(s) to Telegram…
+========================================================================
+  [1/1] sent (plain-text fallback)
+Fetching up to 4 page(s) of trades (threshold: insiderScore ≥ 20)…
+  25 trades at or above threshold
+  15 new trader(s) not seen before, 10 already profiled
+  13 username(s) to OSINT
+  Running OSINT on 13 new trader(s)…
+╭───────────────────────────╮
+│ Polymarket OSINT Pipeline │
+╰───────────────────────────╯
+[08:30:07] Loaded 13 usernames from                                   run.py:293
+           /home/kali/polymarket/results/polywhaler/2026-05-07/new_us           
+           ernames.txt                                                          
+/home/kali/polymarket/run.py:1075: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "generated_at": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+[08:30:47] Falcon API: enriching 13 profile(s) with on-chain          run.py:293
+           analytics…                                                           
+[08:31:06] Falcon API: enriched 13/13 profile(s)                      run.py:293
+           Done. 13 profile(s), 0 thin. →                             run.py:293
+           /home/kali/polymarket/results/new_usernames/                         
+  Profiling ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 13/13 0:00:39 0:00:00
+/home/kali/polymarket/results/new_usernames
+Loaded 43 entries — 0 already done, 43 remaining
+Brave API: 136/5000 used this month (2026-05)  [2.7%]  4864 remaining
+Workers: 10  Delay per worker: 0.0–0.0s
+[1/43] 'no1yet' → "No1 Yet" site:linkedin.com/in/
+[2/43] 'novv25' → "gun dew" site:linkedin.com/in/
+[3/43] 'cqs' → "pooja jain" site:linkedin.com/in/ "jabalpur"
+[4/43] 'thegreengem' → "Drew Esmeralda" site:linkedin.com/in/ "Philippines"
+[5/43] 'skylove' → "Jalal Gampong" site:linkedin.com/in/ "Riyadh City"
+[6/43] 'CSKL' → "Csaba K." site:linkedin.com/in/
+[7/43] 'P' → "Oleg Pudeyev" site:linkedin.com/in/ "NYC"
+[8/43] 'James000' → "Alexander Jacob" site:linkedin.com/in/ "nimbin"
+[9/43] 'peal' → "Pedro Lopes" site:linkedin.com/in/ "Anywhere on earth."
+[10/43] 'exposito' → "Enock Owusu Ansah" site:linkedin.com/in/
+  – ['thegreengem'] not found
+[11/43] 'westminster' → "Westminster Westminster" site:linkedin.com/in/ "Sunnyvale"
+  – ['peal'] not found
+[12/43] 'PantheraUncia' → "Alona Ratsebarska" site:linkedin.com/in/ "Switzerland"
+  – ['skylove'] not found
+[13/43] 'TranQuiliT' → "Tranquil IT" site:linkedin.com/in/ "Nantes"
+  – ['James000'] not found
+[14/43] 'debased' → "dɘbaƨed (debased)" site:linkedin.com/in/
+  – ['P'] not found
+[15/43] 'ThreeOneFour' → "Ahmad Ayyash" site:linkedin.com/in/ "Amman"
+  – ['no1yet'] not found
+[16/43] 'Goopster' → "Jestin Brazda" site:linkedin.com/in/
+  – ['novv25'] not found
+[17/43] '36chambers' → "Mattias, Pascal, Gianluca ." site:linkedin.com/in/
+  ✓ ['exposito'] https://www.linkedin.com/in/enock-owusu-ansah (profile updated)
+[18/43] 'shadow54' → "jonathan renez" site:linkedin.com/in/ "diamond bar"
+  ✓ ['cqs'] https://www.linkedin.com/in/pooja-jain-4352a078 (profile updated)
+[19/43] 'scout' → "Purged from vessel" site:linkedin.com/in/ "New Mexico"
+  ✓ ['CSKL'] https://www.linkedin.com/in/csabakecskemeti (profile updated)
+[20/43] 'JJo' → "JuanJo Ciarlante" site:linkedin.com/in/ "Mendoza"
+  – ['westminster'] not found
+[21/43] 'Aurelian9' → "Aurelia N" site:linkedin.com/in/
+  – ['PantheraUncia'] not found
+[22/43] 'Rafifa' → "Rafifa Binte Jahir" site:linkedin.com/in/
+  – ['Goopster'] not found
+[23/43] 'justme003' → "Lenka Yaroyan" site:linkedin.com/in/ "Erevan"
+  – ['scout'] not found
+[24/43] 'strike123' → "Paresh Pandya" site:linkedin.com/in/
+  – ['36chambers'] not found
+[25/43] 'xOvation' → "Chris Alha" site:linkedin.com/in/
+  – ['shadow54'] not found
+[26/43] 'alextalley' → "Alex Talley" site:linkedin.com/in/
+  – ['JJo'] not found
+[27/43] 'SaylorMoon' → "Natacha Benmesbah" site:linkedin.com/in/
+  ✓ ['TranQuiliT'] https://www.linkedin.com/in/vincent-cardon-05b3946b (profile updated)
+[28/43] 'hebi007' → "Aung Kyaw Khant" site:linkedin.com/in/
+  ✓ ['ThreeOneFour'] https://www.linkedin.com/in/ahmad-ayyash-79a6a4150 (profile updated)
+[29/43] '2B9S' → "Ken Oikawa" site:linkedin.com/in/
+  – ['debased'] not found
+[30/43] 'MEPP' → "Dave Meppelink" site:linkedin.com/in/ "Mar del Plata"
+  – ['Rafifa'] not found
+[31/43] '10thave' → "10th Avenue" site:linkedin.com/in/ "10th"
+  ✓ ['Aurelian9'] https://www.linkedin.com/in/aurelia-n-87573522 (profile updated)
+[32/43] 'wlooo' → "Wael Nice" site:linkedin.com/in/ "New York City"
+  – ['justme003'] not found
+[33/43] 'Warren-Buffett' → "Warren Buffett" site:linkedin.com/in/
+  ✓ ['strike123'] https://www.linkedin.com/in/paresh-pandya-a173b5ba (profile updated)
+[34/43] 'denizz' → "Denis RedCoket" site:linkedin.com/in/ "Turkey"
+  ✓ ['xOvation'] https://www.linkedin.com/in/chris-alpha-a8b5748b (profile updated)
+[35/43] 'TylerTurden' → "Jon Tuck" site:linkedin.com/in/
+  ✓ ['alextalley'] https://www.linkedin.com/in/alex-talley-751416130 (profile updated)
+[36/43] 'ImJustKen' → "Fren Jarvis" site:linkedin.com/in/
+  ✓ ['SaylorMoon'] https://www.linkedin.com/in/natacha-benmesbah-7408472a1 (profile updated)
+[37/43] 'alliswell' → "Jared Erickson" site:linkedin.com/in/ "Brother"
+  ✓ ['hebi007'] https://www.linkedin.com/in/aung-kyaw-khant-7aa24a200 (profile updated)
+[38/43] 'MisTKy' → "Thiago Gonçalves" site:linkedin.com/in/
+  – ['MEPP'] not found
+[39/43] 'Pajamapants' → "Michael Kong" site:linkedin.com/in/
+  – ['wlooo'] not found
+[40/43] 'bigbond' → "Priyansh Agrahari" site:linkedin.com/in/
+  – ['denizz'] not found
+[41/43] 'dooby' → "dov israeli" site:linkedin.com/in/ "palm springs"
+  ✓ ['10thave'] https://www.linkedin.com/in/nick-shapiro (profile updated)
+[42/43] '100x' → "Remigijus Gineitis" site:linkedin.com/in/
+  ✓ ['Warren-Buffett'] https://www.linkedin.com/in/warren-buffett-9451b3361 (profile updated)
+[43/43] 'Yogi.Bear' → "Yogi Bear" site:linkedin.com/in/
+  ✓ ['alliswell'] https://www.linkedin.com/in/jared-erickson-93585b14 (profile updated)
+  ✓ ['TylerTurden'] https://www.linkedin.com/in/jon-tuck-22a9735 (profile updated)
+  ✓ ['Pajamapants'] https://bs.linkedin.com/in/michael-kong-89817544 (profile updated)
+  – ['dooby'] not found
+  ✓ ['bigbond'] https://www.linkedin.com/in/priyansh-agrahari-975309204 (profile updated)
+  – ['100x'] not found
+  ✓ ['Yogi.Bear'] https://www.linkedin.com/in/north-texas-jellystone-park-8a5284130 (profile updated)
+  ✓ ['2B9S'] https://www.linkedin.com/in/ken-oikawa-a895036b (profile updated)
+  – ['ImJustKen'] not found
+  ✓ ['MisTKy'] https://www.linkedin.com/in/thiago-gon%C3%A7alves-a4a39930 (profile updated)
+
+Done — 20 found, 23 not found, 0 errors (of 43 processed)
+Brave API: 179/5000 used this month (2026-05)  [3.6%]  4821 remaining
+  LinkedIn: 43 queries → /home/kali/polymarket/results/polywhaler/2026-05-07/linkedin_queries.json
+  Loaded 117 profile(s) from /home/kali/polymarket/results/new_usernames
+  Falcon: enriching 6 returning trader(s)…
+  Global profile cache: wrote 117 profile(s) → /home/kali/polymarket/results/polywhaler_profiles
+  Sybil: fetching latest Polygon block…
+  Sybil: scanning last 90d (from block 83,131,001) for 22 wallets…
+  Sybil: no shared-funder clusters detected
+  1 trader(s) scored without OSINT profile
+  Watchlist: tracking 27 trader(s) for up to 30 days
+
+========================================================================
+POLYWHALER INSIDER MONITOR — 2026-05-07
+========================================================================
+Traders scored: 22
+
+  snols                           our= 11  pw= 60  $    45,520  Yes  Will Roberto Sánchez Palomino win the 2026 Peruvia
+    [+10] polywhaler_insider_score: 60
+    [+1] medium_trade: 
+    [+2] large_portfolio: $154,248 portfolio value
+    [+2] concentrated_thesis: 44% of portfolio ($67,375) in: Will Keiko Fujimori win the 2026 Peruvi
+    [+2] falcon_high_win_rate: 100.0% win rate (7d window)
+    [-4] market_maker_pattern: 17.8% lifetime win rate over 2,925 trades — spread earner, not directi
+    [-2] dispersed_portfolio: 68 open positions, avg $2,268 each — no concentrated thesis
+
+  jocpolitic                      our= 10  pw= 56  $    40,000  Yes  Will Roberto Sánchez Palomino win the 2026 Peruvia
+    [+9] polywhaler_insider_score: 56
+    [+1] medium_trade: 
+    [+2] falcon_realized_pnl: $130,654 realized PnL (1476W/1536L on settled markets)
+    [+2] large_portfolio: $530,174 portfolio value
+    [+2] falcon_high_win_rate: 96.7% win rate (7d window)
+    [-4] market_maker_pattern: 12.8% lifetime win rate over 11,485 trades — spread earner, not direct
+    [-2] dispersed_portfolio: 107 open positions, avg $4,955 each — no concentrated thesis
+
+  westminster                     our=  9  pw= 28  $    30,000  No  US x Iran permanent peace deal by May 15, 2026?
+    [+4] polywhaler_insider_score: 28
+    [+1] medium_trade: 
+    [+2] falcon_realized_pnl: $258,909 realized PnL (99W/99L on settled markets)
+    [+2] falcon_high_win_rate: 87.5% win rate (7d window)
+
+  YatSen                          our=  9  pw= 33  $    17,356  No  Will GameStop acquire eBay?
+    [+5] polywhaler_insider_score: 33
+    [+2] falcon_realized_pnl: $575,978 realized PnL (3317W/482L on settled markets)
+    [+2] large_portfolio: $1,541,031 portfolio value
+    [+2] concentrated_thesis: 74% of portfolio ($1,140,862) in: Will China invade Taiwan by end of 2
+    [+2] falcon_high_win_rate: 87.5% win rate (7d window)
+    [-4] market_maker_pattern: 34.6% lifetime win rate over 9,578 trades — spread earner, not directi
+
+  65765757                        our=  9  pw= 24  $    44,548  No  Will the U.S. invade Iran before 2027?
+    [+4] polywhaler_insider_score: 24
+    [+1] medium_trade: 
+    [+2] falcon_realized_pnl: $252,768 realized PnL (507W/196L on settled markets)
+    [+2] large_portfolio: $520,574 portfolio value
+    [+2] concentrated_thesis: 86% of portfolio ($449,430) in: Will the U.S. invade Iran before 2027?
+    [+2] falcon_high_win_rate: 86.8% win rate (7d window)
+    [-4] market_maker_pattern: 25.1% lifetime win rate over 2,017 trades — spread earner, not directi
+
+  8934394839                      our=  9  pw= 28  $   375,631  No  Will the U.S. invade Iran before 2027?
+    [+4] polywhaler_insider_score: 28
+    [+3] large_trade: 
+    [+2] falcon_realized_pnl: $658,010 realized PnL (586W/330L on settled markets)
+    [+2] large_portfolio: $765,908 portfolio value
+    [+2] concentrated_thesis: 89% of portfolio ($684,331) in: Will the U.S. invade Iran before 2027?
+    [+2] falcon_high_win_rate: 93.9% win rate (7d window)
+    [-2] high_frequency_trader: 75 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 18.4% lifetime win rate over 3,187 trades — spread earner, not directi
+
+  alextalley                      our=  8  pw= 34  $    28,617  No  Strait of Hormuz traffic returns to normal by end 
+    [+5] polywhaler_insider_score: 34
+    [+1] medium_trade: 
+    [+2] falcon_high_win_rate: 100.0% win rate (7d window)
+
+  Erasmus.                        our=  8  pw= 34  $    55,001  Yes  US x Iran permanent peace deal by June 30, 2026?
+    also: $   120,948  Yes  Strait of Hormuz traffic returns to normal by end of Ju
+    [+5] polywhaler_insider_score: 34
+    [+1] medium_trade: 
+    [+2] falcon_realized_pnl: $710,018 realized PnL (739W/191L on settled markets)
+    [+2] large_portfolio: $821,447 portfolio value
+    [+2] falcon_high_win_rate: 88.5% win rate (7d window)
+    [-4] market_maker_pattern: 22.9% lifetime win rate over 3,223 trades — spread earner, not directi
+
+  shehues                         our=  7  pw= 33  $    93,816  Yes  US x Iran permanent peace deal by June 30, 2026?
+    [+5] polywhaler_insider_score: 33
+    [+1] medium_trade: 
+    [+1] falcon_concentrated_bets: category diversity score 0.29 (7d window)
+
+  gooppa                          our=  6  pw= 22  $    28,196  No  MicroStrategy sells any Bitcoin by May 31, 2026?
+    [+3] polywhaler_insider_score: 22
+    [+1] medium_trade: 
+    [+2] falcon_high_win_rate: 100.0% win rate (7d window)
+
+  yungstalin                      our=  6  pw= 46  $   166,214  Yes  US x Iran permanent peace deal by May 31, 2026?
+    [+7] polywhaler_insider_score: 46
+    [+3] large_trade: 
+    [+2] falcon_realized_pnl: $207,520 realized PnL (1334W/472L on settled markets)
+    [+2] large_portfolio: $604,064 portfolio value
+    [+2] falcon_high_win_rate: 85.0% win rate (7d window)
+    [-6] high_frequency_trader: 122 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 23.9% lifetime win rate over 5,571 trades — spread earner, not directi
+
+  no1yet                          our=  5  pw= 25  $    99,123  Yes  Will the next Prime Minister of Hungary be Péter M
+    [+4] polywhaler_insider_score: 25
+    [+1] medium_trade: 
+    [+2] large_portfolio: $336,277 portfolio value
+    [+2] concentrated_thesis: 100% of portfolio ($336,277) in: Will the next Prime Minister of Hunga
+    [-4] market_maker_pattern: 12.8% lifetime win rate over 1,254 trades — spread earner, not directi
+
+  aoidwa                          our=  4  pw= 26  $   551,052  No  Will Donald Trump win the 2028 US Presidential Ele
+    [+4] polywhaler_insider_score: 26
+    [+3] large_trade: 
+    [-3] low_confidence: 
+
+  scout                           our=  3  pw= 25  $    62,847  Yes  Will the next Prime Minister of Hungary be Péter M
+    [+4] polywhaler_insider_score: 25
+    [+1] medium_trade: 
+    [+2] falcon_realized_pnl: $93,821 realized PnL (1129W/252L on settled markets)
+    [+2] falcon_high_win_rate: 100.0% win rate (7d window)
+    [-2] high_frequency_trader: 33 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 13.6% lifetime win rate over 8,315 trades — spread earner, not directi
+
+  Rafifa                          our=  3  pw= 22  $   100,369  Yes  Will Flávio Bolsonaro win the 2026 Brazilian presi
+    [+3] polywhaler_insider_score: 22
+    [+3] large_trade: 
+    [-3] low_confidence: 
+
+  tphhh                           our=  3  pw= 23  $    17,507  No  Will 60 ships transit the Strait of Hormuz on any 
+    [+3] polywhaler_insider_score: 23
+    [+2] falcon_realized_pnl: $53,470 realized PnL (946W/167L on settled markets)
+    [+2] large_portfolio: $131,352 portfolio value
+    [+2] falcon_high_win_rate: 93.6% win rate (7d window)
+    [-2] high_frequency_trader: 42 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 14.0% lifetime win rate over 6,748 trades — spread earner, not directi
+
+  denizz                          our=  2  pw= 45  $    44,795  Yes  Iran agrees to surrender enriched uranium stockpil
+    [+7] polywhaler_insider_score: 45
+    [+1] medium_trade: 
+    [+2] falcon_realized_pnl: $521,515 realized PnL (5793W/4585L on settled markets)
+    [+2] large_portfolio: $1,564,267 portfolio value
+    [-6] high_frequency_trader: 292 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 20.7% lifetime win rate over 27,975 trades — spread earner, not direct
+
+  mygeomoney                      our=  1  pw= 28  $    17,838  No  US x Iran permanent peace deal by May 15, 2026?
+    [+4] polywhaler_insider_score: 28
+    [-3] low_confidence: 
+
+  stupid22                        our=  0  pw= 23  $   108,343  No  Will Reza Pahlavi enter Iran by June 30?
+    [+3] polywhaler_insider_score: 23
+    [+3] large_trade: 
+    [+2] large_portfolio: $585,029 portfolio value
+    [+2] falcon_high_win_rate: 90.0% win rate (7d window)
+    [-6] high_frequency_trader: 233 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 40.1% lifetime win rate over 17,205 trades — spread earner, not direct
+
+  onekey02                        our= -2  pw= 20  $    25,585  No  Iran closes its airspace by May 6?
+    [+3] polywhaler_insider_score: 20
+    [+1] medium_trade: 
+    [+2] large_portfolio: $886,769 portfolio value
+    [+2] falcon_high_win_rate: 100.0% win rate (7d window)
+    [-6] high_frequency_trader: 217 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 3.5% lifetime win rate over 1,610 trades — spread earner, not directio
+
+  ScottyNooo                      our= -3  pw= 21  $    35,371  No  Iran closes its airspace by May 8?
+    [+3] polywhaler_insider_score: 21
+    [+1] medium_trade: 
+    [+2] falcon_realized_pnl: $656,524 realized PnL (2336W/1734L on settled markets)
+    [+2] large_portfolio: $1,222,467 portfolio value
+    [+1] falcon_concentrated_bets: category diversity score 0.28 (7d window)
+    [-6] high_frequency_trader: 575 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 1.6% lifetime win rate over 142,242 trades — spread earner, not direct
+    [-2] dispersed_portfolio: 312 open positions, avg $3,918 each — no concentrated thesis
+
+  skylove                         our= -3  pw= 37  $    17,480  Yes  Will Trump visit China by May 15?
+    [+6] polywhaler_insider_score: 37
+    [-4] market_maker_pattern: 22.0% lifetime win rate over 2,358 trades — spread earner, not directi
+    [-2] dispersed_portfolio: 30 open positions, avg $2,404 each — no concentrated thesis
+    [-3] low_confidence: 
+
+
+Outputs → /home/kali/polymarket/results/polywhaler/2026-05-07/
+  trades.json    25 flagged trades
+  analysis.json  22 scored traders
+  report.txt     ranked summary
+  run_stats.json health metrics
+========================================================================
+STEP 1 — Running polywhaler monitor…
+========================================================================
+
+========================================================================
+STEP 2 — Sending to Claude for analysis…
+========================================================================
+
+--- Claude analysis ---
+*2026-05-07 · Iran cluster — 3 traders flagged*
+
+---
+
+*8934394839* — Will the U.S. invade Iran before 2027?, $375k on *No*
+89% of $766k portfolio ($684k) concentrated in this single outcome; 7-day win rate 0.939, lifetime PnL $658k. Extreme portfolio concentration in one geopolitical bet is structurally inconsistent with the market-maker pattern visible elsewhere in this account's history — points to a strong directional thesis. No identity recovered.
+
+*65765757* — Will the U.S. invade Iran before 2027?, $44.5k on *No*
+86% of $521k portfolio ($449k) in the same Iran invasion No position. 7-day win rate 0.868, lifetime PnL $253k. A second independent wallet making an identically concentrated bet on the same outcome corroborates the first signal. No identity recovered.
+
+*Erasmus.* — US×Iran permanent peace deal by Jun 30, $55k *Yes* + Strait of Hormuz normal by end of June, $121k *Yes* (total $176k)
+Two coordinated Iran-adjacent bets in complementary markets. 7-day win rate 0.885, lifetime PnL $710k across 3,223 trades. The paired peace-deal/Hormuz positions suggest a unified geopolitical thesis; caveat is market-maker pattern (22.9% lifetime win rate). No identity recovered.
+
+---
+
+*Recommended action:* The Iran invasion No cluster (8934394839 + 65765757) is the strongest signal today — two anonymous wallets independently placing near-all-in bets on the same directional outcome. Consider a small position mirroring Iran invasion No. Erasmus.'s complementary peace/Hormuz bets add supporting context but are lower confidence. All three lack OSINT confirmation; treat as on-chain-only signals.
+--- end ---
+
+  Seeded 22 new alert(s) for 2026-05-07 (120 total in outcomes.json)
+
+Health: trades=25  scored=22  new=13
+
+========================================================================
+STEP 3 — Posting 1 message(s) to Telegram…
+========================================================================
+  [1/1] sent (msg_id=25)
+Fetching up to 4 page(s) of trades (threshold: insiderScore ≥ 20)…
+  22 trades at or above threshold
+  16 new trader(s) not seen before, 6 already profiled
+  12 username(s) to OSINT
+  Running OSINT on 12 new trader(s)…
+╭───────────────────────────╮
+│ Polymarket OSINT Pipeline │
+╰───────────────────────────╯
+[08:30:07] Loaded 12 usernames from                                   run.py:293
+           /home/kali/polymarket/results/polywhaler/2026-05-08/new_us           
+           ernames.txt                                                          
+/home/kali/polymarket/run.py:1075: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "generated_at": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+[08:30:35] Falcon API: enriching 12 profile(s) with on-chain          run.py:293
+           analytics…                                                           
+[08:30:45] Falcon API: enriched 12/12 profile(s)                      run.py:293
+           Done. 12 profile(s), 0 thin. →                             run.py:293
+           /home/kali/polymarket/results/new_usernames/                         
+  Profiling ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12/12 0:00:28 0:00:00
+/home/kali/polymarket/results/new_usernames
+Loaded 49 entries — 0 already done, 49 remaining
+Brave API: 179/5000 used this month (2026-05)  [3.6%]  4821 remaining
+Workers: 10  Delay per worker: 0.0–0.0s
+[1/49] 'no1yet' → "No1 Yet" site:linkedin.com/in/
+[2/49] 'scottilicious' → "Thanakorn Intajak" site:linkedin.com/in/
+[3/49] 'novv25' → "gun dew" site:linkedin.com/in/
+[4/49] 'cqs' → "pooja jain" site:linkedin.com/in/ "jabalpur"
+[5/49] 'thegreengem' → "Drew Esmeralda" site:linkedin.com/in/ "Philippines"
+[6/49] 'skylove' → "Jalal Gampong" site:linkedin.com/in/ "Riyadh City"
+[7/49] 'CSKL' → "Csaba K." site:linkedin.com/in/
+[8/49] 'P' → "Oleg Pudeyev" site:linkedin.com/in/ "NYC"
+[9/49] 'James000' → "Alexander Jacob" site:linkedin.com/in/ "nimbin"
+[10/49] 'peal' → "Pedro Lopes" site:linkedin.com/in/ "Anywhere on earth."
+  – ['scottilicious'] not found
+[11/49] 'exposito' → "Enock Owusu Ansah" site:linkedin.com/in/
+  – ['skylove'] not found
+[12/49] 'westminster' → "Westminster Westminster" site:linkedin.com/in/ "Sunnyvale"
+  – ['no1yet'] not found
+[13/49] 'PantheraUncia' → "Alona Ratsebarska" site:linkedin.com/in/ "Switzerland"
+  – ['James000'] not found
+[14/49] 'TranQuiliT' → "Tranquil IT" site:linkedin.com/in/ "Nantes"
+  – ['thegreengem'] not found
+[15/49] 'debased' → "dɘbaƨed (debased)" site:linkedin.com/in/
+  – ['novv25'] not found
+[16/49] 'ThreeOneFour' → "Ahmad Ayyash" site:linkedin.com/in/ "Amman"
+  ✓ ['cqs'] https://www.linkedin.com/in/pooja-jain-4352a078 (profile updated)
+[17/49] 'Goopster' → "Jestin Brazda" site:linkedin.com/in/
+  – ['peal'] not found
+[18/49] '36chambers' → "Mattias, Pascal, Gianluca ." site:linkedin.com/in/
+  ✓ ['CSKL'] https://www.linkedin.com/in/csabakecskemeti (profile updated)
+[19/49] 'shadow54' → "jonathan renez" site:linkedin.com/in/ "diamond bar"
+  – ['P'] not found
+[20/49] 'scout' → "Purged from vessel" site:linkedin.com/in/ "New Mexico"
+  – ['westminster'] not found
+[21/49] 'horiz0n' → "Diganta Mandal" site:linkedin.com/in/
+  – ['debased'] not found
+[22/49] 'JJo' → "JuanJo Ciarlante" site:linkedin.com/in/ "Mendoza"
+  – ['PantheraUncia'] not found
+[23/49] 'wan123' → "ahmad syazwan" site:linkedin.com/in/ "kelantan"
+  ✓ ['exposito'] https://www.linkedin.com/in/enock-owusu-ansah (profile updated)
+[24/49] 'Aurelian9' → "Aurelia N" site:linkedin.com/in/
+  – ['Goopster'] not found
+[25/49] 'Rafifa' → "Rafifa Binte Jahir" site:linkedin.com/in/
+  – ['36chambers'] not found
+[26/49] 'justme003' → "Lenka Yaroyan" site:linkedin.com/in/ "Erevan"
+  – ['scout'] not found
+[27/49] 'strike123' → "Paresh Pandya" site:linkedin.com/in/
+  – ['shadow54'] not found
+[28/49] 'larrystein' → "Larry Stein" site:linkedin.com/in/
+  ✓ ['TranQuiliT'] https://www.linkedin.com/in/vincent-cardon-05b3946b (profile updated)
+[29/49] 'xOvation' → "Chris Alha" site:linkedin.com/in/
+  ✓ ['ThreeOneFour'] https://www.linkedin.com/in/ahmad-ayyash-79a6a4150 (profile updated)
+[30/49] 'alextalley' → "Alex Talley" site:linkedin.com/in/
+  – ['JJo'] not found
+[31/49] 'allenzzz' → "Alon Mandelblat" site:linkedin.com/in/
+  ✓ ['horiz0n'] https://in.linkedin.com/in/diganta-mandal-4294a324a (profile updated)
+[32/49] 'SaylorMoon' → "Natacha Benmesbah" site:linkedin.com/in/
+  – ['Rafifa'] not found
+[33/49] 'hebi007' → "Aung Kyaw Khant" site:linkedin.com/in/
+  ✓ ['wan123'] https://www.linkedin.com/in/ahmad-syazwan-02226318a (profile updated)
+[34/49] '2B9S' → "Ken Oikawa" site:linkedin.com/in/
+  – ['justme003'] not found
+[35/49] 'MEPP' → "Dave Meppelink" site:linkedin.com/in/ "Mar del Plata"
+  ✓ ['strike123'] https://www.linkedin.com/in/paresh-pandya-a173b5ba (profile updated)
+[36/49] '10thave' → "10th Avenue" site:linkedin.com/in/ "10th"
+  ✓ ['Aurelian9'] https://www.linkedin.com/in/aurelia-n-87573522 (profile updated)
+[37/49] 'wlooo' → "Wael Nice" site:linkedin.com/in/ "New York City"
+  ✓ ['alextalley'] https://www.linkedin.com/in/alex-talley-751416130 (profile updated)
+[38/49] 'Warren-Buffett' → "Warren Buffett" site:linkedin.com/in/
+  ✓ ['larrystein'] https://www.linkedin.com/in/larrystein-steinonstuttering (profile updated)
+[39/49] 'denizz' → "Denis RedCoket" site:linkedin.com/in/ "Turkey"
+  ✓ ['xOvation'] https://www.linkedin.com/in/chris-alpha-a8b5748b (profile updated)
+[40/49] 'TylerTurden' → "Jon Tuck" site:linkedin.com/in/
+  – ['allenzzz'] not found
+[41/49] 'ImJustKen' → "Fren Jarvis" site:linkedin.com/in/
+  – ['MEPP'] not found
+[42/49] 'alliswell' → "Jared Erickson" site:linkedin.com/in/ "Brother"
+  ✓ ['hebi007'] https://www.linkedin.com/in/aung-kyaw-khant-7aa24a200 (profile updated)
+[43/49] 'MisTKy' → "Thiago Gonçalves" site:linkedin.com/in/
+  ✓ ['SaylorMoon'] https://www.linkedin.com/in/natacha-benmesbah-7408472a1 (profile updated)
+[44/49] 'Pajamapants' → "Michael Kong" site:linkedin.com/in/
+  ✓ ['2B9S'] https://www.linkedin.com/in/ken-oikawa-a895036b (profile updated)
+[45/49] 'bigbond' → "Priyansh Agrahari" site:linkedin.com/in/
+  – ['denizz'] not found
+[46/49] 'dooby' → "dov israeli" site:linkedin.com/in/ "palm springs"
+  – ['wlooo'] not found
+[47/49] 'CB61' → "Chandra Bhushan Yadav" site:linkedin.com/in/ "YBI"
+  ✓ ['Warren-Buffett'] https://www.linkedin.com/in/warren-buffett-9451b3361 (profile updated)
+[48/49] '100x' → "Remigijus Gineitis" site:linkedin.com/in/
+  ✓ ['10thave'] https://www.linkedin.com/in/nick-shapiro (profile updated)
+[49/49] 'Yogi.Bear' → "Yogi Bear" site:linkedin.com/in/
+  ✓ ['TylerTurden'] https://www.linkedin.com/in/jon-tuck-22a9735 (profile updated)
+  – ['ImJustKen'] not found
+  ✓ ['alliswell'] https://www.linkedin.com/in/jared-erickson-93585b14 (profile updated)
+  – ['dooby'] not found
+  ✓ ['bigbond'] https://www.linkedin.com/in/priyansh-agrahari-975309204 (profile updated)
+  – ['CB61'] not found
+  ✓ ['MisTKy'] https://www.linkedin.com/in/thiago-gon%C3%A7alves-a4a39930 (profile updated)
+  ✓ ['Pajamapants'] https://bs.linkedin.com/in/michael-kong-89817544 (profile updated)
+  – ['100x'] not found
+  ✓ ['Yogi.Bear'] https://www.linkedin.com/in/north-texas-jellystone-park-8a5284130 (profile updated)
+
+Done — 23 found, 26 not found, 0 errors (of 49 processed)
+Brave API: 228/5000 used this month (2026-05)  [4.6%]  4772 remaining
+  LinkedIn: 49 queries → /home/kali/polymarket/results/polywhaler/2026-05-08/linkedin_queries.json
+  Loaded 129 profile(s) from /home/kali/polymarket/results/new_usernames
+  Falcon: enriching 3 returning trader(s)…
+  Global profile cache: wrote 129 profile(s) → /home/kali/polymarket/results/polywhaler_profiles
+  Sybil: fetching latest Polygon block…
+  Sybil: scanning last 90d (from block 83,180,365) for 17 wallets…
+  Sybil: no shared-funder clusters detected
+  Watchlist: tracking 38 trader(s) for up to 30 days
+
+========================================================================
+POLYWHALER INSIDER MONITOR — 2026-05-08
+========================================================================
+Traders scored: 17
+
+  MisTKy                          our= 11  pw= 24  $    63,123  No  US x Iran permanent peace deal by May 8, 2026?
+    [+12] role_domain_match: Marine/Cargo/Shipping expert (role: marine, cargo, logistics); market 
+    [+4] polywhaler_insider_score: 24
+    [+1] medium_trade: 
+    [+2] falcon_realized_pnl: $172,061 realized PnL (16853W/7715L on settled markets)
+    [+2] large_portfolio: $113,161 portfolio value
+    [+2] falcon_high_win_rate: 76.2% win rate (7d window)
+    [-6] high_frequency_trader: 284 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 47.4% lifetime win rate over 35,573 trades — spread earner, not direct
+    [-2] dispersed_portfolio: 35 open positions, avg $3,233 each — no concentrated thesis
+
+  108cap                          our= 10  pw= 78  $   146,871  Yes  Will the US confirm that aliens exist before 2027?
+    [+10] polywhaler_insider_score: 78
+    [+3] large_trade: 
+    [-3] low_confidence: 
+
+  GoriIIa                         our=  9  pw= 27  $   128,970  No  Hantavirus pandemic in 2026?
+    [+4] polywhaler_insider_score: 27
+    [+3] large_trade: 
+    [+2] falcon_realized_pnl: $168,877 realized PnL (269W/444L on settled markets)
+    [+2] large_portfolio: $686,296 portfolio value
+    [+2] concentrated_thesis: 54% of portfolio ($371,418) in: Strait of Hormuz traffic returns to no
+    [-4] market_maker_pattern: 15.2% lifetime win rate over 1,774 trades — spread earner, not directi
+
+  CB61                            our=  9  pw= 39  $    39,160  Yes  US x Iran permanent peace deal by June 30, 2026?
+    [+6] polywhaler_insider_score: 39
+    [+1] medium_trade: 
+    [+2] falcon_high_win_rate: 100.0% win rate (7d window)
+
+  wan123                          our=  9  pw= 49  $   275,581  Yes  US x Iran permanent peace deal by May 31, 2026?
+    [+8] polywhaler_insider_score: 49
+    [+3] large_trade: 
+    [+2] falcon_realized_pnl: $349,943 realized PnL (1350W/442L on settled markets)
+    [+2] large_portfolio: $1,043,390 portfolio value
+    [-2] high_frequency_trader: 91 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 12.6% lifetime win rate over 10,698 trades — spread earner, not direct
+
+  allenzzz                        our=  8  pw= 24  $    19,267  No  Hantavirus pandemic in 2026?
+    [+4] polywhaler_insider_score: 24
+    [+2] large_portfolio: $419,706 portfolio value
+    [+2] falcon_high_win_rate: 85.7% win rate (7d window)
+
+  bin8888                         our=  8  pw= 23  $    59,647  No  Will WTI Crude Oil (WTI) hit (HIGH) $110 in May?
+    [+3] polywhaler_insider_score: 23
+    [+1] medium_trade: 
+    [+2] falcon_realized_pnl: $410,872 realized PnL (1067W/26L on settled markets)
+    [+2] large_portfolio: $190,926 portfolio value
+    [+2] concentrated_thesis: 49% of portfolio ($93,284) in: Will WTI Crude Oil (WTI) hit (HIGH) $15
+    [+2] falcon_high_win_rate: 77.8% win rate (7d window)
+    [-4] market_maker_pattern: 39.4% lifetime win rate over 2,707 trades — spread earner, not directi
+
+  horiz0n                         our=  8  pw= 58  $   211,996  Yes  US x Iran permanent peace deal by May 31, 2026?
+    also: $    90,486  Yes  Strait of Hormuz traffic returns to normal by end of Ma
+    [+9] polywhaler_insider_score: 58
+    [+3] large_trade: 
+    [+2] large_portfolio: $151,789 portfolio value
+    [+2] falcon_high_win_rate: 89.2% win rate (7d window)
+    [-2] high_frequency_trader: 63 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 44.0% lifetime win rate over 1,842 trades — spread earner, not directi
+    [-2] dispersed_portfolio: 76 open positions, avg $1,997 each — no concentrated thesis
+
+  whyhealwayswinning              our=  8  pw= 35  $    57,859  No  Will the U.S. invade Iran before 2027?
+    [+5] polywhaler_insider_score: 35
+    [+1] medium_trade: 
+    [+2] falcon_high_win_rate: 100.0% win rate (7d window)
+
+  scottilicious                   our=  6  pw= 22  $    37,713  Yes  Will the Democrats win the Maine Senate race in 20
+    [+3] polywhaler_insider_score: 22
+    [+1] medium_trade: 
+    [+2] falcon_realized_pnl: $301,126 realized PnL (1178W/364L on settled markets)
+    [+2] large_portfolio: $650,190 portfolio value
+    [+2] falcon_high_win_rate: 100.0% win rate (7d window)
+    [-4] market_maker_pattern: 15.4% lifetime win rate over 7,660 trades — spread earner, not directi
+
+  strike123                       our=  6  pw= 43  $   123,080  No  Strait of Hormuz traffic returns to normal by end 
+    [+7] polywhaler_insider_score: 43
+    [+3] large_trade: 
+    [+2] falcon_realized_pnl: $67,812 realized PnL (261W/142L on settled markets)
+    [+2] large_portfolio: $135,446 portfolio value
+    [+2] concentrated_thesis: 92% of portfolio ($125,048) in: Strait of Hormuz traffic returns to no
+    [-6] high_frequency_trader: 227 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 15.2% lifetime win rate over 1,720 trades — spread earner, not directi
+
+  Kingofhenorth1                  our=  5  pw= 40  $    89,295  Yes  US x Iran permanent peace deal by May 31, 2026?
+    [+6] polywhaler_insider_score: 40
+    [+1] medium_trade: 
+    [+2] falcon_realized_pnl: $66,006 realized PnL (535W/458L on settled markets)
+    [-4] market_maker_pattern: 17.2% lifetime win rate over 3,114 trades — spread earner, not directi
+
+  ImJustKen                       our=  4  pw= 32  $    49,613  No  Starmer out by May 15, 2026?
+    [+5] polywhaler_insider_score: 32
+    [+1] medium_trade: 
+    [+2] falcon_realized_pnl: $93,916 realized PnL (22175W/10444L on settled markets)
+    [+2] large_portfolio: $891,280 portfolio value
+    [+2] falcon_high_win_rate: 94.0% win rate (7d window)
+    [-2] high_frequency_trader: 68 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 21.2% lifetime win rate over 104,407 trades — spread earner, not direc
+    [-2] dispersed_portfolio: 870 open positions, avg $1,024 each — no concentrated thesis
+
+  larrystein                      our=  4  pw= 47  $    14,951  No  Will the U.S. invade Iran before 2027?
+    [+7] polywhaler_insider_score: 47
+    [-3] low_confidence: 
+
+  devin.lawson.77                 our=  4  pw= 20  $    19,774  No  Will Allegiant announce bankruptcy by December 31?
+    [+3] polywhaler_insider_score: 20
+    [+2] falcon_high_win_rate: 82.1% win rate (7d window)
+    [+1] falcon_concentrated_bets: category diversity score 0.13 (7d window)
+    [-2] dispersed_portfolio: 34 open positions, avg $2,638 each — no concentrated thesis
+
+  onekey02                        our= -2  pw= 20  $    41,880  No  Iran closes its airspace by May 7?
+    [+3] polywhaler_insider_score: 20
+    [+1] medium_trade: 
+    [+2] large_portfolio: $886,769 portfolio value
+    [+2] falcon_high_win_rate: 100.0% win rate (7d window)
+    [-6] high_frequency_trader: 217 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 3.5% lifetime win rate over 1,610 trades — spread earner, not directio
+
+  ScottyNooo                      our= -2  pw= 25  $    63,963  No  US x Iran permanent peace deal by May 15, 2026?
+    also: $    11,554  No  Russia x Ukraine ceasefire by May 31, 2026?
+    [+4] polywhaler_insider_score: 25
+    [+1] medium_trade: 
+    [+2] falcon_realized_pnl: $656,524 realized PnL (2336W/1734L on settled markets)
+    [+2] large_portfolio: $1,222,467 portfolio value
+    [+1] falcon_concentrated_bets: category diversity score 0.28 (7d window)
+    [-6] high_frequency_trader: 575 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 1.6% lifetime win rate over 142,242 trades — spread earner, not direct
+    [-2] dispersed_portfolio: 312 open positions, avg $3,918 each — no concentrated thesis
+
+
+Outputs → /home/kali/polymarket/results/polywhaler/2026-05-08/
+  trades.json    22 flagged trades
+  analysis.json  17 scored traders
+  report.txt     ranked summary
+  run_stats.json health metrics
+========================================================================
+STEP 1 — Running polywhaler monitor…
+========================================================================
+
+========================================================================
+STEP 2 — Sending to Claude for analysis…
+========================================================================
+
+--- Claude analysis ---
+*Intelligence Brief — 2026-05-08*
+17 traders flagged. 2 clear the bar.
+
+---
+
+*MisTKy* (Thiago Gonçalves) — US×Iran permanent peace deal by May 8, *No*, $63k
+Works at Marsh as *Managing Director — Head of Marine & Cargo, Latin America & Caribbean* (LinkedIn confirmed). His role covers sanctions-sensitive shipping lanes and cargo insurance across a region directly exposed to Iranian trade restrictions; betting No on a peace deal is squarely within his professional sightlines. 7-day win rate 76%, lifetime realised PnL $172k across 35k trades. Caveat: trade volume suggests a market-making layer alongside this directional position — size the copy accordingly.
+https://www.linkedin.com/in/thiago-gon%C3%A7alves-a4a39930
+
+*bin8888* — WTI Crude Oil hits $110 in May, *No*, $60k
+No identity found, but the on-chain pattern is atypical: 7-day win rate 78%, category diversity score *0* (fully concentrated), and 49% of total portfolio ($93k) in WTI $150 call — a single, directional crude-oil thesis rather than market-maker scatter. Lifetime PnL $411k from only 2,707 trades implies high per-trade profit inconsistent with market-making. No OSINT corroboration; treat as on-chain signal only and size small until an identity is established.
+
+---
+
+Excluded: *108cap* ($147k aliens Yes) and *larrystein* — polywhaler-only flags, no corroborating identity. *wan123* ($276k Iran Yes) — LinkedIn confirms no relevant employer (rural Malaysian student profile). *horiz0n* ($212k Iran Yes) — IIT Kharagpur CS student, no professional Iran nexus, market-maker pattern. All remaining traders failed identity or on-chain threshold.
+
+*Recommended action:* Mirror MisTKy's No on US×Iran peace by May 8 — time-sensitive, market resolves today. Flag bin8888 for identity probe before copying; watch for further crude oil entries.
+--- end ---
+
+  Seeded 17 new alert(s) for 2026-05-08 (137 total in outcomes.json)
+
+Health: trades=22  scored=17  new=12
+
+========================================================================
+STEP 3 — Posting 1 message(s) to Telegram…
+========================================================================
+  [1/1] sent (msg_id=26)
+Fetching up to 4 page(s) of trades (threshold: insiderScore ≥ 20)…
+  15 trades at or above threshold
+  10 new trader(s) not seen before, 5 already profiled
+  7 username(s) to OSINT
+  Running OSINT on 7 new trader(s)…
+╭───────────────────────────╮
+│ Polymarket OSINT Pipeline │
+╰───────────────────────────╯
+[08:30:05] Loaded 7 usernames from                                    run.py:293
+           /home/kali/polymarket/results/polywhaler/2026-05-09/new_us           
+           ernames.txt                                                          
+/home/kali/polymarket/run.py:1075: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "generated_at": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+[08:30:27] Falcon API: enriching 7 profile(s) with on-chain           run.py:293
+           analytics…                                                           
+[08:30:36] Falcon API: enriched 7/7 profile(s)                        run.py:293
+           Done. 7 profile(s), 0 thin. →                              run.py:293
+           /home/kali/polymarket/results/new_usernames/                         
+  Profiling ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 7/7 0:00:21 0:00:00
+/home/kali/polymarket/results/new_usernames
+Loaded 54 entries — 0 already done, 54 remaining
+Brave API: 228/5000 used this month (2026-05)  [4.6%]  4772 remaining
+Workers: 10  Delay per worker: 0.0–0.0s
+[1/54] 'no1yet' → "No1 Yet" site:linkedin.com/in/
+[2/54] 'scottilicious' → "Thanakorn Intajak" site:linkedin.com/in/
+[3/54] 'novv25' → "gun dew" site:linkedin.com/in/
+[4/54] 'cqs' → "pooja jain" site:linkedin.com/in/ "jabalpur"
+[5/54] 'thegreengem' → "Drew Esmeralda" site:linkedin.com/in/ "Philippines"
+[6/54] 'skylove' → "Jalal Gampong" site:linkedin.com/in/ "Riyadh City"
+[7/54] 'CSKL' → "Csaba K." site:linkedin.com/in/
+[8/54] 'mohahaha' → "Mohammad turbo" site:linkedin.com/in/
+[9/54] 'Sam.Young' → "Sam Y.&#x27;s Profile" site:linkedin.com/in/
+[10/54] 'P' → "Oleg Pudeyev" site:linkedin.com/in/ "NYC"
+  – ['Sam.Young'] not found
+[11/54] 'James000' → "Alexander Jacob" site:linkedin.com/in/ "nimbin"
+  – ['skylove'] not found
+[12/54] 'peal' → "Pedro Lopes" site:linkedin.com/in/ "Anywhere on earth."
+  – ['thegreengem'] not found
+[13/54] 'exposito' → "Enock Owusu Ansah" site:linkedin.com/in/
+  – ['novv25'] not found
+[14/54] 'westminster' → "Westminster Westminster" site:linkedin.com/in/ "Sunnyvale"
+  ✓ ['cqs'] https://www.linkedin.com/in/pooja-jain-4352a078 (profile updated)
+[15/54] 'PantheraUncia' → "Alona Ratsebarska" site:linkedin.com/in/ "Switzerland"
+  – ['no1yet'] not found
+[16/54] 'TranQuiliT' → "Tranquil IT" site:linkedin.com/in/ "Nantes"
+  – ['mohahaha'] not found
+[17/54] 'debased' → "dɘbaƨed (debased)" site:linkedin.com/in/
+  – ['P'] not found
+[18/54] 'ThreeOneFour' → "Ahmad Ayyash" site:linkedin.com/in/ "Amman"
+  – ['scottilicious'] not found
+[19/54] 'Goopster' → "Jestin Brazda" site:linkedin.com/in/
+  ✓ ['CSKL'] https://www.linkedin.com/in/csabakecskemeti (profile updated)
+[20/54] '36chambers' → "Mattias, Pascal, Gianluca ." site:linkedin.com/in/
+  – ['James000'] not found
+[21/54] 'shadow54' → "jonathan renez" site:linkedin.com/in/ "diamond bar"
+  – ['westminster'] not found
+[22/54] 'scout' → "Purged from vessel" site:linkedin.com/in/ "New Mexico"
+  ✓ ['exposito'] https://www.linkedin.com/in/enock-owusu-ansah (profile updated)
+[23/54] 'horiz0n' → "Diganta Mandal" site:linkedin.com/in/
+  ✓ ['ThreeOneFour'] https://www.linkedin.com/in/ahmad-ayyash-79a6a4150 (profile updated)
+[24/54] 'JJo' → "JuanJo Ciarlante" site:linkedin.com/in/ "Mendoza"
+  – ['36chambers'] not found
+[25/54] 'wan123' → "ahmad syazwan" site:linkedin.com/in/ "kelantan"
+  ✓ ['TranQuiliT'] https://www.linkedin.com/in/vincent-cardon-05b3946b (profile updated)
+[26/54] 'Aurelian9' → "Aurelia N" site:linkedin.com/in/
+  – ['shadow54'] not found
+[27/54] 'Rafifa' → "Rafifa Binte Jahir" site:linkedin.com/in/
+  – ['JJo'] not found
+[28/54] 'justme003' → "Lenka Yaroyan" site:linkedin.com/in/ "Erevan"
+  ✓ ['horiz0n'] https://in.linkedin.com/in/diganta-mandal-4294a324a (profile updated)
+[29/54] 'strike123' → "Paresh Pandya" site:linkedin.com/in/
+  ✓ ['wan123'] https://www.linkedin.com/in/ahmad-syazwan-02226318a (profile updated)
+[30/54] 'larrystein' → "Larry Stein" site:linkedin.com/in/
+  – ['scout'] not found
+[31/54] 'xOvation' → "Chris Alha" site:linkedin.com/in/
+  ✓ ['Aurelian9'] https://www.linkedin.com/in/aurelia-n-87573522 (profile updated)
+[32/54] 'alextalley' → "Alex Talley" site:linkedin.com/in/
+  – ['Rafifa'] not found
+[33/54] 'allenzzz' → "Alon Mandelblat" site:linkedin.com/in/
+  – ['justme003'] not found
+[34/54] 'SaylorMoon' → "Natacha Benmesbah" site:linkedin.com/in/
+  – ['peal'] not found
+[35/54] 'hebi007' → "Aung Kyaw Khant" site:linkedin.com/in/
+  ✓ ['strike123'] https://www.linkedin.com/in/paresh-pandya-a173b5ba (profile updated)
+[36/54] '2B9S' → "Ken Oikawa" site:linkedin.com/in/
+  ✓ ['xOvation'] https://www.linkedin.com/in/chris-alpha-a8b5748b (profile updated)
+[37/54] 'MEPP' → "Dave Meppelink" site:linkedin.com/in/ "Mar del Plata"
+  ✓ ['larrystein'] https://www.linkedin.com/in/larrystein-steinonstuttering (profile updated)
+[38/54] '10thave' → "10th Avenue" site:linkedin.com/in/ "10th"
+  – ['PantheraUncia'] not found
+[39/54] 'wlooo' → "Wael Nice" site:linkedin.com/in/ "New York City"
+  – ['debased'] not found
+[40/54] 'Warren-Buffett' → "Warren Buffett" site:linkedin.com/in/
+  – ['Goopster'] not found
+[41/54] 'denizz' → "Denis RedCoket" site:linkedin.com/in/ "Turkey"
+  ✓ ['SaylorMoon'] https://www.linkedin.com/in/natacha-benmesbah-7408472a1 (profile updated)
+[42/54] 'Arbguy' → "arb guy" site:linkedin.com/in/ "arbville"
+  – ['MEPP'] not found
+[43/54] 'TylerTurden' → "Jon Tuck" site:linkedin.com/in/
+  ✓ ['hebi007'] https://www.linkedin.com/in/aung-kyaw-khant-7aa24a200 (profile updated)
+[44/54] 'NELF' → "Nelf Royal" site:linkedin.com/in/
+  ✓ ['2B9S'] https://www.linkedin.com/in/ken-oikawa-a895036b (profile updated)
+[45/54] 'ImJustKen' → "Fren Jarvis" site:linkedin.com/in/
+  – ['denizz'] not found
+[46/54] 'alliswell' → "Jared Erickson" site:linkedin.com/in/ "Brother"
+  ✓ ['10thave'] https://www.linkedin.com/in/nick-shapiro (profile updated)
+[47/54] 'MisTKy' → "Thiago Gonçalves" site:linkedin.com/in/
+  – ['Arbguy'] not found
+[48/54] 'Pajamapants' → "Michael Kong" site:linkedin.com/in/
+  – ['NELF'] not found
+[49/54] 'bigbond' → "Priyansh Agrahari" site:linkedin.com/in/
+  ✓ ['TylerTurden'] https://www.linkedin.com/in/jon-tuck-22a9735 (profile updated)
+[50/54] 'dooby' → "dov israeli" site:linkedin.com/in/ "palm springs"
+  ✓ ['MisTKy'] https://www.linkedin.com/in/thiago-gon%C3%A7alves-a4a39930 (profile updated)
+[51/54] 'CB61' → "Chandra Bhushan Yadav" site:linkedin.com/in/ "YBI"
+  ✓ ['alextalley'] https://www.linkedin.com/in/alex-talley-751416130 (profile updated)
+[52/54] 'AlAhmeda' → "Alaa Alahmed" site:linkedin.com/in/
+  – ['allenzzz'] not found
+[53/54] '100x' → "Remigijus Gineitis" site:linkedin.com/in/
+  – ['dooby'] not found
+[54/54] 'Yogi.Bear' → "Yogi Bear" site:linkedin.com/in/
+  – ['CB61'] not found
+  – ['wlooo'] not found
+  ✓ ['AlAhmeda'] https://www.linkedin.com/in/alaa-alahmed (profile updated)
+  ✓ ['Yogi.Bear'] https://www.linkedin.com/in/north-texas-jellystone-park-8a5284130 (profile updated)
+  ✓ ['alliswell'] https://www.linkedin.com/in/jared-erickson-93585b14 (profile updated)
+  ✓ ['Pajamapants'] https://bs.linkedin.com/in/michael-kong-89817544 (profile updated)
+  ✓ ['bigbond'] https://www.linkedin.com/in/priyansh-agrahari-975309204 (profile updated)
+  ✓ ['Warren-Buffett'] https://www.linkedin.com/in/warren-buffett-9451b3361 (profile updated)
+  – ['100x'] not found
+  – ['ImJustKen'] not found
+
+Done — 24 found, 30 not found, 0 errors (of 54 processed)
+Brave API: 282/5000 used this month (2026-05)  [5.6%]  4718 remaining
+Falcon agent=569 wallet=?: timed out after 20s
+  LinkedIn: 54 queries → /home/kali/polymarket/results/polywhaler/2026-05-09/linkedin_queries.json
+  Loaded 136 profile(s) from /home/kali/polymarket/results/new_usernames
+  Falcon: enriching 4 returning trader(s)…
+  Global profile cache: wrote 136 profile(s) → /home/kali/polymarket/results/polywhaler_profiles
+  Sybil: fetching latest Polygon block…
+  Sybil: scanning last 90d (from block 83,229,739) for 11 wallets…
+  Sybil: found 1 cluster(s) covering 2 wallets
+  Watchlist: tracking 41 trader(s) for up to 30 days
+
+========================================================================
+POLYWHALER INSIDER MONITOR — 2026-05-09
+========================================================================
+Traders scored: 11
+
+  8934394839                      our= 10  pw= 34  $   294,134  No  Will the U.S. invade Iran before 2027?
+    [+5] polywhaler_insider_score: 34
+    [+3] large_trade: 
+    [+2] falcon_realized_pnl: $698,152 realized PnL (705W/363L on settled markets)
+    [+2] large_portfolio: $816,425 portfolio value
+    [+2] concentrated_thesis: 89% of portfolio ($725,833) in: Will the U.S. invade Iran before 2027?
+    [+2] falcon_high_win_rate: 93.5% win rate (7d window)
+    [-2] high_frequency_trader: 93 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 18.9% lifetime win rate over 3,737 trades — spread earner, not directi
+
+  mohahaha                        our=  9  pw= 26  $    75,835  No  US x Iran peace deal before Trump visits China?
+    also: $   205,519  No  US x Iran diplomatic meeting by May 15, 2026?
+    [+4] polywhaler_insider_score: 26
+    [+1] medium_trade: 
+    [+2] large_portfolio: $302,857 portfolio value
+    [+2] concentrated_thesis: 57% of portfolio ($171,608) in: US x Iran diplomatic meeting by May 15
+    [+0] thematic_cluster: 2 bets on 'iran'-themed markets ($281,354 total): US x Iran diplomatic
+
+  LlamaLoco0000                   our=  5  pw= 49  $    60,964  Yes  Will the Iranian regime fall before 2027?
+    also: $   191,874  Yes  Will Crude Oil (CL) hit (HIGH) $175 by end of June?
+    [+8] polywhaler_insider_score: 49
+    [+1] medium_trade: 
+    [+2] large_portfolio: $247,016 portfolio value
+    [+2] falcon_high_win_rate: 87.0% win rate (7d window)
+    [-2] high_frequency_trader: 96 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 5.6% lifetime win rate over 6,333 trades — spread earner, not directio
+    [-2] dispersed_portfolio: 58 open positions, avg $4,259 each — no concentrated thesis
+
+  bobe2                           our=  5  pw= 25  $   166,351  Yes  Will the next Prime Minister of Hungary be Péter M
+    [+4] polywhaler_insider_score: 25
+    [+3] large_trade: 
+    [+2] falcon_realized_pnl: $414,182 realized PnL (1585W/315L on settled markets)
+    [+2] large_portfolio: $9,228,841 portfolio value
+    [+2] concentrated_thesis: 61% of portfolio ($5,673,500) in: Will JD Vance win the 2028 US Presid
+    [+2] falcon_high_win_rate: 88.9% win rate (7d window)
+    [-6] high_frequency_trader: 138 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 5.1% lifetime win rate over 31,202 trades — spread earner, not directi
+
+  ArmageddonRewardsBilly          our=  4  pw= 25  $   110,616  No  US x Iran permanent peace deal by May 11, 2026?
+    [+4] polywhaler_insider_score: 25
+    [+3] large_trade: 
+    [+2] large_portfolio: $1,972,559 portfolio value
+    [-6] high_frequency_trader: 5327 trades/day (7d window) — likely automated/bot
+    [-2] dispersed_portfolio: 703 open positions, avg $2,806 each — no concentrated thesis
+    [+3] sybil_cluster: via 0x2c0367a9…58b1 → Arbguy — cluster total $123,116
+
+  Arbguy                          our=  4  pw= 20  $    12,500  No  US obtains Iranian enriched uranium by May 31?
+    [+3] polywhaler_insider_score: 20
+    [+2] falcon_realized_pnl: $282,459 realized PnL (1398W/969L on settled markets)
+    [+2] large_portfolio: $347,373 portfolio value
+    [-2] high_frequency_trader: 40 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 9.5% lifetime win rate over 14,717 trades — spread earner, not directi
+    [+3] sybil_cluster: via 0x2c0367a9…58b1 → ArmageddonRewardsBilly — cluster total $123,116
+
+  NELF                            our=  2  pw= 26  $    27,171  No  US x Iran permanent peace deal by May 15, 2026?
+    [+4] polywhaler_insider_score: 26
+    [+1] medium_trade: 
+    [-3] low_confidence: 
+
+  FreeDiddy2028                   our=  2  pw= 26  $    50,974  No  Iran agrees to end enrichment of uranium by May 31
+    [+4] polywhaler_insider_score: 26
+    [+1] medium_trade: 
+    [-3] low_confidence: 
+
+  Sam.Young                       our=  1  pw= 23  $    10,830  No  Will the White House call a full lid by 6:30PM on 
+    [+3] polywhaler_insider_score: 23
+    [+2] falcon_high_win_rate: 100.0% win rate (7d window)
+    [-4] market_maker_pattern: 42.5% lifetime win rate over 6,894 trades — spread earner, not directi
+
+  onekey02                        our= -2  pw= 20  $    62,573  No  Iran closes its airspace by May 8?
+    [+3] polywhaler_insider_score: 20
+    [+1] medium_trade: 
+    [+2] large_portfolio: $1,222,414 portfolio value
+    [+2] falcon_high_win_rate: 100.0% win rate (7d window)
+    [-6] high_frequency_trader: 185 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 3.4% lifetime win rate over 1,836 trades — spread earner, not directio
+
+  AlAhmeda                        our= -7  pw= 20  $    24,000  No  Iran leadership change by May 31?
+    [+3] polywhaler_insider_score: 20
+    [+2] large_portfolio: $235,042 portfolio value
+    [-6] high_frequency_trader: 218 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 42.1% lifetime win rate over 15,246 trades — spread earner, not direct
+    [-2] dispersed_portfolio: 198 open positions, avg $1,187 each — no concentrated thesis
+
+
+Outputs → /home/kali/polymarket/results/polywhaler/2026-05-09/
+  trades.json    15 flagged trades
+  analysis.json  11 scored traders
+  report.txt     ranked summary
+  run_stats.json health metrics
+========================================================================
+STEP 1 — Running polywhaler monitor…
+========================================================================
+
+========================================================================
+STEP 2 — Sending to Claude for analysis…
+========================================================================
+
+--- Claude analysis ---
+*Intelligence Brief — 2026-05-09*
+
+Two traders clear the bar. All flagged markets are Iran-themed; today's flow is concentrated geopolitical directional betting.
+
+---
+
+*8934394839* — "Will the U.S. invade Iran before 2027?" | *$294,134* on No
+89% of an $816k portfolio is in this single market — an extreme concentration inconsistent with the market-maker pattern flagged on lifetime trades (18.9% lifetime win rate, 3,737 trades). The 7-day window tells a different story: *93.5% win rate* with $698k lifetime realized PnL. No public identity found, but a quarter-million-dollar directional bet on a single political outcome, with that recent accuracy, warrants attention.
+No LinkedIn available.
+
+*AlAhmeda* (Alaa Alahmed) — "Iran leadership change by May 31?" | *$24,000* on No
+Works at *Saudi Leadership Society | المجلس السعودي للقادة* per LinkedIn — a Saudi institution with natural proximity to Iranian political intelligence. LinkedIn snippet: "dynamic energy engineer… strategic management… Stanford University… Location: Dha[hran/Saudi Arabia]." A Saudi energy professional with leadership-sector ties betting No on Iranian regime change is a credible OSINT alignment regardless of on-chain metrics (which are unremarkable: 71% win rate, negative Sharpe, dispersed 198-position portfolio).
+https://www.linkedin.com/in/alaa-alahmed
+
+---
+
+*Recommended action:* Primary mirror on No — "Will the U.S. invade Iran before 2027?" (8934394839's conviction and size are the strongest signal today); treat AlAhmeda as a corroborating directional read on Iranian political stability rather than a copy-trade candidate given the dispersed portfolio and small position size.
+--- end ---
+
+  Seeded 11 new alert(s) for 2026-05-09 (148 total in outcomes.json)
+  Seeded 4 new position(s) for 2026-05-09 (skipped 7 below score 5) (131 total)
+
+Health: trades=15  scored=11  new=7
+
+========================================================================
+STEP 3 — Posting 1 message(s) to Telegram…
+========================================================================
+  [1/1] sent (msg_id=28)
+
+========================================================================
+STEP 5 — Running pipeline self-review with Claude…
+========================================================================
+
+  Pipeline review saved → /home/kali/polymarket/results/polywhaler/2026-05-09/pipeline_review.txt
+
+--- Pipeline review ---
+## Pipeline Evaluation — 2026-05-09
+
+---
+
+### Signal Quality
+
+**8934394839 — legitimate, well-handled.** The $294k directional bet with 89% portfolio concentration is genuine signal. The brief correctly surfaces the market-maker tension and lets the operator weigh it. The 7-day/lifetime win rate divergence is flagged appropriately. No issues here.
+
+**AlAhmeda — overpromoted relative to raw score.** The LinkedIn hit is real and the OSINT alignment is plausible. But the brief elevates AlAhmeda to second position without disclosing the raw score of **-7**. The operator is making a decision with incomplete information — the brief reads as though on-chain metrics are "unremarkable" when in fact they are actively negative (market maker pattern, 218 trades/day, 198 dispersed positions, negative Sharpe). A corroborating read is fine; hiding the score is not.
+
+**mohahaha — the most important miss of this run.** Score 9, second-highest in the dataset, **$281k total Iran exposure across two thematically linked markets** (diplomatic meeting + peace deal), both No. Completely absent from the Telegram brief. The brief covers a -7 trader and skips the #2 trader. This is the clearest quality failure today.
+
+**LlamaLoco0000 — correct exclusion, but the crude oil cross-signal is worth noting.** The market-maker pattern is real. However, this trader also placed a $191k bet on crude oil >$175 by June — a position that correlates directly with an Iran conflict escalation thesis. The pipeline sees these as independent trades; a human analyst would recognize them as a unified geopolitical view. The brief mentions nothing.
+
+**ArmageddonRewardsBilly / Arbguy — correctly excluded.** 5,327 trades/day is unambiguously automated. The sybil cluster linking them is accurate; the +3 points it gives each of them is not (see Scoring below).
+
+---
+
+### Coverage Gaps
+
+**LinkedIn enrichment rate: 1/11 (9%).** This is the most valuable OSINT source for professional identity and it hit for only one trader. This is partly a data limitation (most traders don't have public LinkedIn), but the brief should communicate this gap explicitly so the operator knows they're working with thin OSINT on most candidates.
+
+**HudsonRock appears in 10/11 profiles and adds zero information.** It's a data-breach lookup tool, not a professional identity source. Its presence in `profiles_found` creates noise and makes the profiles look richer than they are. It should be filtered out of displayed results.
+
+**mohahaha's thematic cluster flag produces 0 points.** Two trades totaling $281k in the same geopolitical cluster — Iran diplomacy — are scored identically to a single trade in terms of thematic signal. The `thematic_cluster` flag is computed but not weighted. This is a logic gap, not a data gap.
+
+**No professional GitHub or HuggingFace hits for any trader.** This may simply reflect the population, but if scraping is being skipped or timing out for certain sites, there's no way to tell from the output.
+
+---
+
+### Scoring Calibration
+
+**`thematic_cluster` is broken at 0 points.** mohahaha has $281k across two Iran markets and the flag correctly identifies the cluster, then assigns nothing. This is likely a bug or an oversight in `score_against_market()`. Given that thematic concentration is one of the stronger insider signals (it shows the trader has a specific, committed view on one geopolitical event rather than portfolio-diversified gambling), this flag should award 2–4 points scaled by aggregate USD.
+
+**`sybil_cluster` is mis-applied here.** Giving +3 to ArmageddonRewardsBilly and Arbguy because they share a funder assumes sybil coordination implies insider collusion. In this case, two high-frequency market-making bots sharing a funding wallet is entirely consistent with a single automated operator running two accounts — it implies nothing about information advantage. The +3 should be conditional: only award it when the cluster's aggregate directional exposure is concentrated (not dispersed across 703 positions).
+
+**`market_maker_pattern` (-4) + `high_frequency_trader` (-6) stack to -10, which overwhelms almost any positive signal.** For AlAhmeda, 20 points of genuine OSINT signal (Saudi institution, Iran market) can't break through because the on-chain pattern alone subtracts -10. The penalty is appropriate for pure automated arbitrageurs, but a market maker can also hold a single informed directional position. Consider applying the full stacked penalty only when there is *no* concentration signal (no `concentrated_thesis`, no `thematic_cluster`). If a market maker has 89% of their portfolio in one market, the penalties should be reduced.
+
+**`falcon_high_win_rate` at 7-day window is unreliable.** Sam.Young has 100% win rate on 130 trades in 7 days, onekey02 has 100% on 1,296 trades — both are market makers where recent positions happened to resolve favorably. 8934394839's 93.5% on 650 trades is more interesting because it's paired with a large concentrated position, but the flag itself is too noisy to carry +2 unconditionally. Should require a minimum of settled positions with >$500 average stake to suppress false triggers.
+
+---
+
+### Pipeline Reliability
+
+**Run looks clean mechanically.** Falcon enrichment succeeded for all 11 traders; fetched_at timestamps cluster around 06:30 UTC, no apparent timeouts. The 15 trades / 7 new traders / 11 scored distribution is consistent with normal dedup behavior.
+
+**The `low_confidence: polywhaler_only` penalty (-3) is correctly applied to NELF and FreeDiddy2028.** These traders have no Falcon enrichment signal to corroborate the polywhaler score. Good.
+
+**Win/loss count inconsistency in 8934394839's lifetime data.** Falcon reports wins=705, losses=363, win_rate=0.1887. If win_rate = wins/(wins+losses), the expected value is 705/1068 = 66%, not 18.87%. Falcon appears to calculate win_rate as wins/total_trades (including open/unresolved), not wins/settled. The brief characterizes "18.9% lifetime win rate" without clarifying this, which could mislead the operator into thinking this is a bad trader when the actual settled-trade accuracy may be much higher. This needs a clarifying note or a data normalization fix.
+
+---
+
+### Output Quality
+
+The brief is well-written and concise where it acts. But:
+
+1. **mohahaha is absent with no explanation.** A #2 scorer with $281k Iran exposure being omitted while a -7 scorer is promoted is the most actionable failure.
+2. **AlAhmeda's score (-7) is not disclosed.** The operator should know they're overriding the model's output, not following it.
+3. **The directional read across all traders is consistent and correctly characterized** — Iran geopolitical No positions dominate. The thematic framing in the brief is accurate.
+4. **The recommended action is reasonable** given the data available to the brief-writer.
+
+---
+
+### Improvements Ranked by Expected Impact
+
+**1. Fix `thematic_cluster` scoring — award 2–4 points for concentrated multi-market exposure**
+*File: `polywhaler_monitor.py`, `score_against_market()`*
+The flag is computed but its `points` value is 0. This directly caused mohahaha (score 9, $281k across two Iran markets) to be underweighted relative to a single-trade assessment. Add: 2 points if aggregate USD > $50k, 4 points if > $150k, capped so it doesn't overlap with `concentrated_thesis`.
+
+**2. Include all traders above score threshold in the LLM prompt and enforce a floor on the brief**
+*File: `auto_monitor.py`, `build_prompt()`; and the system prompt passed to `claude -p`*
+mohahaha at score 9 should have been in the brief. The current pipeline apparently passes a subset of traders to Claude and the model cut mohahaha without explanation. Either increase the number of traders passed to Claude, or add an explicit instruction: "include every trader with `our_score ≥ 5` in the output, even if briefly." The operator can then decide whom to act on.
+
+**3. Disclose raw `our_score` for every trader in the brief, especially overrides**
+*File: the system prompt passed to `claude -p`*
+When the LLM elects to discuss a trader with a negative score (AlAhmeda, -7), it should state the score explicitly so the operator knows it's a qualitative override. Add to the system prompt: "For each trader mentioned, include their `our_score` in parentheses. If a trader has a negative score but is included due to OSINT quality, note the override and explain it."
+
+**4. Decouple market-maker penalties from concentration signals**
+*File: `polywhaler_monitor.py`, `score_against_market()`*
+The -10 floor from stacked market-maker flags (pattern + high freq) suppresses legitimate directional signals. Change the logic: if a trader has `concentrated_thesis` (top position > 50% of portfolio) or `thematic_cluster` (>$100k thematic), apply only the weaker of the two penalties (`market_maker_pattern` -4 or `high_frequency_trader` penalty), not both. A market maker making a $294k directional bet is interesting precisely *because* they deviated from their pattern.
+
+**5. Filter HudsonRock from `profiles_found` display and remove it from OSINT confidence calculations**
+*File: `polywhaler_monitor.py` or report generation*
+HudsonRock is a data breach aggregator, not a professional identity signal. It appears in 10/11 profiles and makes every trader look OSINT-enriched when most are actually ghosts. Remove it from the displayed list and, if `low_confidence: polywhaler_only` is triggered by "no meaningful profiles found," ensure HudsonRock alone does not count as a meaningful profile. This would correctly apply the -3 penalty to FreeDiddy2028 (only HudsonRock + Snapchat) and potentially to others.
+--- end ---
+
+Fetching up to 4 page(s) of trades (threshold: insiderScore ≥ 20)…
+  24 trades at or above threshold
+  11 new trader(s) not seen before, 13 already profiled
+  9 username(s) to OSINT
+  Running OSINT on 9 new trader(s)…
+╭───────────────────────────╮
+│ Polymarket OSINT Pipeline │
+╰───────────────────────────╯
+[08:30:07] Loaded 9 usernames from                                    run.py:293
+           /home/kali/polymarket/results/polywhaler/2026-05-10/new_us           
+           ernames.txt                                                          
+/home/kali/polymarket/run.py:1075: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "generated_at": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+[08:30:31] Falcon API: enriching 9 profile(s) with on-chain           run.py:293
+           analytics…                                                           
+[08:30:39] Falcon API: enriched 9/9 profile(s)                        run.py:293
+           Done. 9 profile(s), 0 thin. →                              run.py:293
+           /home/kali/polymarket/results/new_usernames/                         
+  Profiling ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 9/9 0:00:24 0:00:00
+/home/kali/polymarket/results/new_usernames
+Loaded 58 entries — 0 already done, 58 remaining
+Brave API: 282/5000 used this month (2026-05)  [5.6%]  4718 remaining
+Workers: 10  Delay per worker: 0.0–0.0s
+[1/58] 'Valen9' → "Valentin Sambucetti" site:linkedin.com/in/
+[2/58] 'no1yet' → "No1 Yet" site:linkedin.com/in/
+[3/58] 'scottilicious' → "Thanakorn Intajak" site:linkedin.com/in/
+[4/58] 'novv25' → "gun dew" site:linkedin.com/in/
+[5/58] 'cqs' → "pooja jain" site:linkedin.com/in/ "jabalpur"
+[6/58] 'thegreengem' → "Drew Esmeralda" site:linkedin.com/in/ "Philippines"
+[7/58] 'skylove' → "Jalal Gampong" site:linkedin.com/in/ "Riyadh City"
+[8/58] 'itachida' → "Gausiya Shaikh" site:linkedin.com/in/
+[9/58] 'CSKL' → "Csaba K." site:linkedin.com/in/
+[10/58] 'mohahaha' → "Mohammad turbo" site:linkedin.com/in/
+  – ['thegreengem'] not found
+[11/58] 'Sam.Young' → "Sam Y.&#x27;s Profile" site:linkedin.com/in/
+  – ['skylove'] not found
+[12/58] 'P' → "Oleg Pudeyev" site:linkedin.com/in/ "NYC"
+  – ['scottilicious'] not found
+[13/58] 'James000' → "Alexander Jacob" site:linkedin.com/in/ "nimbin"
+  – ['Valen9'] not found
+[14/58] 'peal' → "Pedro Lopes" site:linkedin.com/in/ "Anywhere on earth."
+  – ['novv25'] not found
+[15/58] 'exposito' → "Enock Owusu Ansah" site:linkedin.com/in/
+  – ['mohahaha'] not found
+[16/58] 'westminster' → "Westminster Westminster" site:linkedin.com/in/ "Sunnyvale"
+  – ['no1yet'] not found
+[17/58] 'PantheraUncia' → "Alona Ratsebarska" site:linkedin.com/in/ "Switzerland"
+  ✓ ['itachida'] https://www.linkedin.com/in/gausiya-shaikh-650b8914a (profile updated)
+[18/58] 'TranQuiliT' → "Tranquil IT" site:linkedin.com/in/ "Nantes"
+  ✓ ['cqs'] https://www.linkedin.com/in/pooja-jain-4352a078 (profile updated)
+[19/58] 'debased' → "dɘbaƨed (debased)" site:linkedin.com/in/
+  ✓ ['CSKL'] https://www.linkedin.com/in/csabakecskemeti (profile updated)
+[20/58] 'ThreeOneFour' → "Ahmad Ayyash" site:linkedin.com/in/ "Amman"
+  – ['peal'] not found
+[21/58] 'bigbonder' → "Brandon Chan" site:linkedin.com/in/
+  – ['westminster'] not found
+[22/58] 'Goopster' → "Jestin Brazda" site:linkedin.com/in/
+  – ['Sam.Young'] not found
+[23/58] '36chambers' → "Mattias, Pascal, Gianluca ." site:linkedin.com/in/
+  – ['James000'] not found
+[24/58] 'shadow54' → "jonathan renez" site:linkedin.com/in/ "diamond bar"
+  – ['P'] not found
+[25/58] 'scout' → "Purged from vessel" site:linkedin.com/in/ "New Mexico"
+  – ['PantheraUncia'] not found
+[26/58] 'horiz0n' → "Diganta Mandal" site:linkedin.com/in/
+  – ['debased'] not found
+[27/58] 'JJo' → "JuanJo Ciarlante" site:linkedin.com/in/ "Mendoza"
+  ✓ ['exposito'] https://www.linkedin.com/in/enock-owusu-ansah (profile updated)
+[28/58] 'wan123' → "ahmad syazwan" site:linkedin.com/in/ "kelantan"
+  ✓ ['TranQuiliT'] https://www.linkedin.com/in/vincent-cardon-05b3946b (profile updated)
+[29/58] 'Aurelian9' → "Aurelia N" site:linkedin.com/in/
+  ✓ ['ThreeOneFour'] https://www.linkedin.com/in/ahmad-ayyash-79a6a4150 (profile updated)
+[30/58] 'Rafifa' → "Rafifa Binte Jahir" site:linkedin.com/in/
+  – ['scout'] not found
+[31/58] 'justme003' → "Lenka Yaroyan" site:linkedin.com/in/ "Erevan"
+  – ['shadow54'] not found
+[32/58] 'strike123' → "Paresh Pandya" site:linkedin.com/in/
+  – ['36chambers'] not found
+[33/58] 'larrystein' → "Larry Stein" site:linkedin.com/in/
+  – ['JJo'] not found
+[34/58] 'xOvation' → "Chris Alha" site:linkedin.com/in/
+  ✓ ['horiz0n'] https://in.linkedin.com/in/diganta-mandal-4294a324a (profile updated)
+[35/58] 'alextalley' → "Alex Talley" site:linkedin.com/in/
+  ✓ ['bigbonder'] https://www.linkedin.com/in/brandon-sc-chan (profile updated)
+[36/58] 'allenzzz' → "Alon Mandelblat" site:linkedin.com/in/
+  ✓ ['wan123'] https://www.linkedin.com/in/ahmad-syazwan-02226318a (profile updated)
+[37/58] 'Hashbrown' → "Brad Armstrong" site:linkedin.com/in/ "Minneapolis"
+  – ['Rafifa'] not found
+[38/58] 'SaylorMoon' → "Natacha Benmesbah" site:linkedin.com/in/
+  – ['justme003'] not found
+[39/58] 'hebi007' → "Aung Kyaw Khant" site:linkedin.com/in/
+  ✓ ['strike123'] https://www.linkedin.com/in/paresh-pandya-a173b5ba (profile updated)
+[40/58] '2B9S' → "Ken Oikawa" site:linkedin.com/in/
+  ✓ ['alextalley'] https://www.linkedin.com/in/alex-talley-751416130 (profile updated)
+[41/58] 'MEPP' → "Dave Meppelink" site:linkedin.com/in/ "Mar del Plata"
+  ✓ ['SaylorMoon'] https://www.linkedin.com/in/natacha-benmesbah-7408472a1 (profile updated)
+[42/58] '10thave' → "10th Avenue" site:linkedin.com/in/ "10th"
+  ✓ ['hebi007'] https://www.linkedin.com/in/aung-kyaw-khant-7aa24a200 (profile updated)
+[43/58] 'wlooo' → "Wael Nice" site:linkedin.com/in/ "New York City"
+  – ['MEPP'] not found
+[44/58] 'Warren-Buffett' → "Warren Buffett" site:linkedin.com/in/
+  ✓ ['2B9S'] https://www.linkedin.com/in/ken-oikawa-a895036b (profile updated)
+[45/58] 'denizz' → "Denis RedCoket" site:linkedin.com/in/ "Turkey"
+  ✓ ['10thave'] https://www.linkedin.com/in/nick-shapiro (profile updated)
+[46/58] 'Arbguy' → "arb guy" site:linkedin.com/in/ "arbville"
+  – ['Goopster'] not found
+[47/58] 'TylerTurden' → "Jon Tuck" site:linkedin.com/in/
+  ✓ ['Aurelian9'] https://www.linkedin.com/in/aurelia-n-87573522 (profile updated)
+[48/58] 'NELF' → "Nelf Royal" site:linkedin.com/in/
+  – ['wlooo'] not found
+[49/58] 'ImJustKen' → "Fren Jarvis" site:linkedin.com/in/
+  ✓ ['Warren-Buffett'] https://www.linkedin.com/in/warren-buffett-9451b3361 (profile updated)
+[50/58] 'alliswell' → "Jared Erickson" site:linkedin.com/in/ "Brother"
+  – ['allenzzz'] not found
+[51/58] 'MisTKy' → "Thiago Gonçalves" site:linkedin.com/in/
+  ✓ ['xOvation'] https://www.linkedin.com/in/chris-alpha-a8b5748b (profile updated)
+[52/58] 'Pajamapants' → "Michael Kong" site:linkedin.com/in/
+  ✓ ['Hashbrown'] https://www.linkedin.com/in/therealbradarmstrong (profile updated)
+[53/58] 'bigbond' → "Priyansh Agrahari" site:linkedin.com/in/
+  ✓ ['TylerTurden'] https://www.linkedin.com/in/jon-tuck-22a9735 (profile updated)
+[54/58] 'dooby' → "dov israeli" site:linkedin.com/in/ "palm springs"
+  – ['ImJustKen'] not found
+[55/58] 'CB61' → "Chandra Bhushan Yadav" site:linkedin.com/in/ "YBI"
+  ✓ ['alliswell'] https://www.linkedin.com/in/jared-erickson-93585b14 (profile updated)
+[56/58] 'AlAhmeda' → "Alaa Alahmed" site:linkedin.com/in/
+  ✓ ['MisTKy'] https://www.linkedin.com/in/thiago-gon%C3%A7alves-a4a39930 (profile updated)
+[57/58] '100x' → "Remigijus Gineitis" site:linkedin.com/in/
+  ✓ ['Pajamapants'] https://bs.linkedin.com/in/michael-kong-89817544 (profile updated)
+[58/58] 'Yogi.Bear' → "Yogi Bear" site:linkedin.com/in/
+  ✓ ['bigbond'] https://www.linkedin.com/in/priyansh-agrahari-975309204 (profile updated)
+  – ['CB61'] not found
+  – ['dooby'] not found
+  ✓ ['AlAhmeda'] https://www.linkedin.com/in/alaa-alahmed (profile updated)
+  – ['denizz'] not found
+  ✓ ['Yogi.Bear'] https://www.linkedin.com/in/north-texas-jellystone-park-8a5284130 (profile updated)
+  – ['Arbguy'] not found
+  ✓ ['larrystein'] https://www.linkedin.com/in/larrystein-steinonstuttering (profile updated)
+  – ['NELF'] not found
+  – ['100x'] not found
+
+Done — 27 found, 31 not found, 0 errors (of 58 processed)
+Brave API: 340/5000 used this month (2026-05)  [6.8%]  4660 remaining
+  LinkedIn: 58 queries → /home/kali/polymarket/results/polywhaler/2026-05-10/linkedin_queries.json
+  Loaded 145 profile(s) from /home/kali/polymarket/results/new_usernames
+  Falcon: enriching 11 returning trader(s)…
+  Global profile cache: wrote 145 profile(s) → /home/kali/polymarket/results/polywhaler_profiles
+  Sybil: fetching latest Polygon block…
+  Sybil: scanning last 90d (from block 83,279,106) for 20 wallets…
+  Sybil: no shared-funder clusters detected
+  Watchlist: tracking 43 trader(s) for up to 30 days
+
+========================================================================
+POLYWHALER INSIDER MONITOR — 2026-05-10
+========================================================================
+Traders scored: 20
+
+  bigbonder                       our= 11  pw= 26  $   108,490  No  Hantavirus pandemic in 2026?
+    [+4] polywhaler_insider_score: 26
+    [+3] large_trade: 
+    [+2] large_portfolio: $163,166 portfolio value
+    [+2] concentrated_thesis: 100% of portfolio ($163,166) in: Hantavirus pandemic in 2026?
+
+  alextalley                      our=  8  pw= 31  $    72,811  No  Strait of Hormuz traffic returns to normal by end 
+    [+5] polywhaler_insider_score: 31
+    [+1] medium_trade: 
+    [+2] falcon_high_win_rate: 100.0% win rate (7d window)
+
+  65765757                        our=  8  pw= 25  $    14,534  No  Iran closes its airspace by May 31?
+    [+4] polywhaler_insider_score: 25
+    [+2] falcon_realized_pnl: $253,695 realized PnL (514W/196L on settled markets)
+    [+2] large_portfolio: $519,319 portfolio value
+    [+2] concentrated_thesis: 87% of portfolio ($449,925) in: Will the U.S. invade Iran before 2027?
+    [+2] falcon_high_win_rate: 76.3% win rate (7d window)
+    [-4] market_maker_pattern: 25.4% lifetime win rate over 2,028 trades — spread earner, not directi
+
+  LlamaLoco0000                   our=  8  pw= 42  $   216,874  Yes  Will Crude Oil (CL) hit (HIGH) $175 by end of June
+    [+7] polywhaler_insider_score: 42
+    [+3] large_trade: 
+    [+2] large_portfolio: $296,051 portfolio value
+    [+2] falcon_high_win_rate: 87.5% win rate (7d window)
+    [-2] high_frequency_trader: 80 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 5.5% lifetime win rate over 6,459 trades — spread earner, not directio
+
+  ev1710                          our=  7  pw= 32  $    21,962  No  US x Iran permanent peace deal by May 15, 2026?
+    [+5] polywhaler_insider_score: 32
+    [+2] falcon_high_win_rate: 100.0% win rate (7d window)
+
+  scottilicious                   our=  4  pw= 27  $    16,300  Yes  Will the Democratic Party control the House after 
+    also: $    25,817  No  Starmer out by May 15, 2026?
+    [+4] polywhaler_insider_score: 27
+    [+2] falcon_realized_pnl: $301,998 realized PnL (1180W/364L on settled markets)
+    [+2] large_portfolio: $673,822 portfolio value
+    [+2] falcon_high_win_rate: 100.0% win rate (7d window)
+    [-2] high_frequency_trader: 36 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 15.1% lifetime win rate over 7,830 trades — spread earner, not directi
+
+  chriszyy3                       our=  3  pw= 23  $    21,111  No  Will the US acquire part of Greenland in 2026?
+    [+3] polywhaler_insider_score: 23
+    [+2] large_portfolio: $275,045 portfolio value
+    [+2] falcon_high_win_rate: 100.0% win rate (7d window)
+    [-4] market_maker_pattern: 16.0% lifetime win rate over 3,731 trades — spread earner, not directi
+
+  itachida                        our=  3  pw= 37  $    14,725  No  US x Iran permanent peace deal by May 15, 2026?
+    [+6] polywhaler_insider_score: 37
+    [-3] low_confidence: 
+
+  aenews2                         our=  3  pw= 29  $    35,447  No  Billionaire one-time wealth tax passes in Californ
+    [+4] polywhaler_insider_score: 29
+    [+1] medium_trade: 
+    [+2] large_portfolio: $285,480 portfolio value
+    [+2] concentrated_thesis: 66% of portfolio ($187,452) in: Will the U.S. invade Iran before 2027?
+    [+2] falcon_high_win_rate: 86.1% win rate (7d window)
+    [-2] high_frequency_trader: 32 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 22.5% lifetime win rate over 20,824 trades — spread earner, not direct
+    [-2] dispersed_portfolio: 62 open positions, avg $4,605 each — no concentrated thesis
+
+  Arbguy                          our=  3  pw= 27  $    51,839  No  US x Iran permanent peace deal by May 15, 2026?
+    [+4] polywhaler_insider_score: 27
+    [+1] medium_trade: 
+    [+2] falcon_realized_pnl: $319,760 realized PnL (1405W/971L on settled markets)
+    [+2] large_portfolio: $305,078 portfolio value
+    [-2] high_frequency_trader: 49 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 9.5% lifetime win rate over 14,773 trades — spread earner, not directi
+
+  jimbobianthethird               our=  2  pw= 28  $    29,313  No  US x Iran diplomatic meeting by May 31, 2026?
+    [+4] polywhaler_insider_score: 28
+    [+1] medium_trade: 
+    [-3] low_confidence: 
+
+  enri.hl                         our=  1  pw= 31  $    99,995  Yes  US x Iran permanent peace deal by December 31, 202
+    [+5] polywhaler_insider_score: 31
+    [+1] medium_trade: 
+    [+1] falcon_concentrated_bets: category diversity score 0.01 (7d window)
+    [-2] high_frequency_trader: 92 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 30.1% lifetime win rate over 10,788 trades — spread earner, not direct
+
+  boyau                           our=  1  pw= 27  $   125,443  No  Will WTI Crude Oil (WTI) hit (HIGH) $105 in May?
+    [+4] polywhaler_insider_score: 27
+    [+3] large_trade: 
+    [+2] falcon_realized_pnl: $214,854 realized PnL (2540W/2069L on settled markets)
+    [+2] large_portfolio: $263,126 portfolio value
+    [-6] high_frequency_trader: 243 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 16.1% lifetime win rate over 15,745 trades — spread earner, not direct
+
+  Hashbrown                       our=  1  pw= 22  $    37,106  No  US obtains Iranian enriched uranium by May 31?
+    [+3] polywhaler_insider_score: 22
+    [+1] medium_trade: 
+    [+2] large_portfolio: $198,400 portfolio value
+    [+2] concentrated_thesis: 51% of portfolio ($101,852) in: Will there be no change in Fed interes
+    [-4] market_maker_pattern: 7.8% lifetime win rate over 2,253 trades — spread earner, not directio
+    [-3] identity_fragmented: conflicting names: GitHub='brad armstrong'; Hugging Face='robert c edw
+
+  WynnWaldorf                     our=  1  pw= 33  $    52,430  Yes  Strait of Hormuz traffic returns to normal by end 
+    [+5] polywhaler_insider_score: 33
+    [+1] medium_trade: 
+    [-2] dispersed_portfolio: 31 open positions, avg $1,970 each — no concentrated thesis
+    [-3] low_confidence: 
+
+  Valen9                          our=  0  pw= 33  $    40,504  Yes  US x Iran permanent peace deal by June 30, 2026?
+    [+5] polywhaler_insider_score: 33
+    [+1] medium_trade: 
+    [+2] falcon_realized_pnl: $231,714 realized PnL (6525W/3075L on settled markets)
+    [+2] large_portfolio: $539,350 portfolio value
+    [-6] high_frequency_trader: 110 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 28.7% lifetime win rate over 22,739 trades — spread earner, not direct
+
+  Clear-Corridor                  our= -3  pw= 22  $    13,000  No  US obtains Iranian enriched uranium by December 31
+    [+3] polywhaler_insider_score: 22
+    [+2] falcon_realized_pnl: $258,888 realized PnL (13018W/5587L on settled markets)
+    [+2] large_portfolio: $636,337 portfolio value
+    [-6] high_frequency_trader: 399 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 26.3% lifetime win rate over 49,426 trades — spread earner, not direct
+
+  powangly                        our= -5  pw= 22  $    26,951  No  Iran closes its airspace by May 15?
+    [+3] polywhaler_insider_score: 22
+    [+1] medium_trade: 
+    [-2] high_frequency_trader: 82 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 30.9% lifetime win rate over 2,107 trades — spread earner, not directi
+    [-3] low_confidence: 
+
+  NiFengFanPan                    our= -6  pw= 28  $    20,621  No  Iran agrees to end enrichment of uranium by May 31
+    [+4] polywhaler_insider_score: 28
+    [+2] large_portfolio: $369,589 portfolio value
+    [-6] high_frequency_trader: 733 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 9.9% lifetime win rate over 43,412 trades — spread earner, not directi
+    [-2] dispersed_portfolio: 273 open positions, avg $1,354 each — no concentrated thesis
+
+  bigbond                         our=-11  pw= 26  $    11,575  No  Will Trump agree to Iranian enrichment of uranium 
+    [+4] polywhaler_insider_score: 26
+    [-6] high_frequency_trader: 247 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 16.6% lifetime win rate over 6,003 trades — spread earner, not directi
+    [-2] dispersed_portfolio: 121 open positions, avg $300 each — no concentrated thesis
+    [-3] low_confidence: 
+
+
+Outputs → /home/kali/polymarket/results/polywhaler/2026-05-10/
+  trades.json    24 flagged trades
+  analysis.json  20 scored traders
+  report.txt     ranked summary
+  run_stats.json health metrics
+========================================================================
+STEP 1 — Running polywhaler monitor…
+========================================================================
+
+========================================================================
+STEP 2 — Sending to Claude for analysis…
+========================================================================
+
+--- Claude analysis ---
+*Intelligence Brief — 2026-05-10*
+
+---
+
+*bigbonder* (Brandon Chan) — Hantavirus pandemic in 2026?, $108k, No
+Yale University affiliation confirmed via LinkedIn: 'macro, innovation, investment, spatial. brandon.chan@yale.edu'. Entire portfolio ($163k) concentrated 100% in this single market. Yale's proximity to top-tier public health and epidemiology expertise raises the possibility of informed conviction rather than speculation. Large trade size reinforces seriousness of the position.
+https://www.linkedin.com/in/brandon-sc-chan
+
+---
+
+*alextalley* (Alex Talley) — Strait of Hormuz traffic returns to normal by end of June?, $72k, No
+LinkedIn-verified identity: Business Data Analyst at PepsiCo, Fort Wayne. Employer has no obvious Hormuz connection, but on-chain metrics are notable: 7-day win rate 1.0 with category diversity score of 0 (maximally concentrated bets). Passes the exceptional on-chain criterion independently. Caution: 7-day window may represent few trades; no domain-relevant employer to corroborate.
+https://www.linkedin.com/in/alex-talley-751416130
+
+---
+
+All remaining 18 traders were excluded: market-maker patterns (high trade frequency, sub-20% lifetime win rates), polywhaler score without corroborating OSINT, or irrelevant/unverified employer signals.
+
+*Recommended action:* Monitor bigbonder — the Yale anchor and fully concentrated $108k No position on a pandemic market warrants direct attention. alextalley is worth watching but treat as lower confidence pending more Falcon history.
+--- end ---
+
+  Seeded 20 new alert(s) for 2026-05-10 (168 total in outcomes.json)
+  Seeded 5 new position(s) for 2026-05-10 (skipped 15 below score 5) (136 total)
+
+Health: trades=24  scored=20  new=9
+
+========================================================================
+STEP 3 — Posting 1 message(s) to Telegram…
+========================================================================
+  [1/1] sent (msg_id=30)
+
+========================================================================
+STEP 5 — Running pipeline self-review with Claude…
+========================================================================
+
+  Pipeline review saved → /home/kali/polymarket/results/polywhaler/2026-05-10/pipeline_review.txt
+
+--- Pipeline review ---
+## Pipeline Evaluation — 2026-05-10
+
+---
+
+### Signal Quality
+
+**bigbonder** is the most credible case. Yale affiliation + 100% portfolio concentration in a pandemic market + $108k trade is a genuine, convergent signal. However, the lifetime on-chain record is concerning: 3.76% win rate across 213 trades, with wallet_360_30d showing zero resolved wins in the 7-day window. This looks like a new or rarely-active wallet making a one-off conviction bet — which can go either way on suspicion. The brief correctly leads with this trader.
+
+**alextalley** is a false positive that should not have made the brief. The `falcon_high_win_rate` flag fired on 7 trades over 3 active days. A 100% win rate over 7 trades is statistically meaningless. Lifetime metrics (11.65% win rate, $645 total PnL on $67k invested) suggest an unsophisticated trader. PepsiCo has zero connection to Hormuz shipping. This is noise presented as signal.
+
+**65765757 was wrongly excluded.** This trader has no social profile (only HudsonRock), which triggered `low_confidence`. But their portfolio tells a different story: $519k total, with $449k (87%) concentrated in "Will the U.S. invade Iran before 2027?" — and they also traded Iran airspace, which is what got them into the batch. This is a ghost account making massive, thematically coherent Iran bets. The pipeline's per-trade scoring framework missed the cross-market pattern. The operator should have seen this one.
+
+**LlamaLoco0000** (polywhaler score 42, $217k crude oil trade) was correctly excluded — 6,459 lifetime trades at 5.5% win rate is an unambiguous market maker. Good filter.
+
+**ev1710** (our_score: 7) has a wallet_360_30d with 2 total trades in 7 days at 1.0 win rate. The `falcon_high_win_rate` flag should never fire on 2 trades. Excluded from brief correctly, but the score inflation from this flag is a calibration bug.
+
+**itachida** (our_score: 3) — Indian college student, 1 lifetime trade, $14.7k. Correct exclusion. The `low_confidence` penalty is doing its job here.
+
+---
+
+### Coverage Gaps
+
+**bigbonder: no domain keyword match awarded.** The scoring system detected employer "Yale University" but did not connect it to the pandemic/public health domain of the Hantavirus market. The `category_*_keyword` flags (8 points) and `direct_entity_match` (18 points) both went unclaimed. Yale's relationship to epidemiology, public health, and biosurveillance is direct and well-established. This is a missed 8–18 point signal. The trader's own LinkedIn snippet offers no health keywords ("macro, innovation, investment, spatial"), but the employer alone should be enough to trigger domain scoring against a pandemic market.
+
+**65765757: zero OSINT, no username.** The profile could not be researched because the username is a numeric string with no Sherlock matches. Alchemy wallet resolution presumably failed or wasn't attempted. There is no path to identity without a starting username — this is a structural gap in the pipeline for wallet-first traders.
+
+**Falcon 7-day fallback without quality gating.** At least 5 traders in this batch have `calculation_window_days: 7` instead of 30, meaning Falcon couldn't build a 30-day window (likely not enough activity). The 7-day metrics are being scored identically to 30-day metrics. This silently degrades signal quality for new or sporadic wallets and creates false positives via the win rate flag.
+
+**No entry-timing signal.** When did bigbonder first buy into the Hantavirus market? The current data only shows the most recent trade. An entry that predates any public reporting would be strong evidence of information advantage; an entry made after news coverage would weaken the case significantly. `all_trades` only records the flagged trade, not the position-opening date.
+
+**No cross-market corroboration.** Today's batch has at least 8 traders betting on Iran-related outcomes. The pipeline treats each independently. If multiple high-scored accounts are converging on the same geopolitical thesis from different angles (peace deal, airspace, uranium, Hormuz), that clustering is itself a meta-signal worth surfacing.
+
+---
+
+### Scoring Calibration
+
+**`falcon_high_win_rate` (2 pts) has no minimum trade count gate.** This is the most concrete calibration bug. The flag fires identically for alextalley (7 trades, 100%) and a trader with 100 trades at 78%. A minimum of 15–20 trades in the window should be required before this flag is creditable. As-is it is generating false positives and inflating scores for new or recently-active wallets.
+
+**`polywhaler_insider_score` scaling is compressed at the top.** Score 42 (LlamaLoco0000) yields 7 points; score 22 yields 3 points. The formula is `raw ÷ 6, capped at 10`. A score of 60 would yield the same 10 points as a score of 42. For a signal that is the primary input from an external model, more differentiation at the high end would be useful. Consider a two-tier: scores ≥35 get an additional 2 points.
+
+**`market_maker_pattern` (-4 pts) is applied too uniformly.** It fires on lifetime trade count + lifetime win rate. But 65765757 has 2,028 lifetime trades with a 25% lifetime win rate — triggering the penalty — yet their 7-day win rate is 76.3% and their portfolio is $519k concentrated in Iran. The market maker pattern in lifetime behavior doesn't mean the current position is not informed. The flag should be less penalizing when the recent window diverges significantly from the lifetime baseline.
+
+**`concentrated_thesis` (+2 pts) doesn't score the connection to the flagged trade.** bigbonder's concentration in the Hantavirus market directly matches the flagged trade — this is coherent and strengthens suspicion. 65765757's top position is in Iran invasion but the flagged trade is Iran airspace — thematically related but not identical. The flag currently gives the same points in both cases. A version that distinguishes direct match (same title) from thematic alignment would be more informative.
+
+**`large_portfolio` (+2 pts) and `large_trade` (+3 pts) double-count related capital.** For bigbonder, the portfolio is almost entirely the large trade. These are not two independent signals. Consider gating `large_portfolio` so it only fires when open positions > 1, or when portfolio value exceeds trade size by a meaningful margin.
+
+---
+
+### Pipeline Reliability
+
+**Falcon win rate data quality is silently degraded for sporadic wallets.** bigbonder's wallet_360_30d shows 115 total trades in 7 days but only 2 days active. The avg_trade_size of $596 is wildly inconsistent with the $108k flagged trade. The Falcon data appears to be capturing some different trade stream (possibly the AMM liquidity activity, not the main market positions). The bigbonder profile should have triggered a data coherence warning.
+
+**itachida has no wallet_360_30d key** in polymarket_analytics. The Falcon agent 581 call either failed or returned nothing. This is a silent enrichment gap — the scoring ran without the missing data without flagging it. There should be a `falcon_unavailable` marker in the flags when agent 581 returns nothing.
+
+**The 9-new-traders / 20-scored gap (11 cached traders)** is normal dedup behavior, but there is no visibility into which 11 cached traders were re-scored today. If a cached trader's Falcon data is stale (fetched weeks ago), they're being scored on old metrics without re-enrichment.
+
+**identity_fragmented (-3 pts) on Hashbrown** correctly fires for conflicting GitHub/HuggingFace names. But combined with market_maker_pattern (-4) it puts this trader at +1 — barely surfaced. The flag is doing its job correctly, but the combination of two independent negative signals may be over-penalizing a trader who might still be worth monitoring for other reasons.
+
+---
+
+### Output Quality
+
+The brief is clean and appropriately concise. The Yale anchor for bigbonder is the right framing. The alextalley caution note is honest. But three structural issues:
+
+1. **65765757 is absent and should not be.** A ghost account with $519k and 87% Iran concentration betting on Iran-adjacent markets is exactly what the system is built to flag. The brief should include a "low-OSINT, high-concentration" category specifically for this pattern.
+
+2. **alextalley's inclusion weakens the brief.** Presenting a PepsiCo analyst with 7 Falcon trades as independently meeting the "exceptional on-chain criterion" will erode operator trust in the system over time if the position doesn't resolve favorably. This should have been cut or relegated to a footnote.
+
+3. **The Iran clustering is invisible to the operator.** Today's batch has 8+ traders touching Iran markets. A one-line summary like "Heavy Iran-themed clustering today (8 traders across peace deal, airspace, uranium, Hormuz markets) — suggest checking whether there is correlated news flow" would give the operator useful context for interpreting all individual cases.
+
+---
+
+## Proposed Improvements (Ranked by Expected Impact)
+
+**1. Add minimum-trades gate to `falcon_high_win_rate` — `polywhaler_monitor.py`**
+
+In `score_against_market()`, gate the `falcon_high_win_rate` flag on `total_trades >= 15` (or 20) within the Falcon window. Current behavior fires on 2–7 trades and creates systematic false positives for any recently-active wallet. This is a one-line fix with direct impact: alextalley drops from our_score 8 to 6, ev1710 drops from 7 to 5, and both are correctly deprioritized. The fix should also log the trade count in the flag payload so it's visible in analysis.json.
+
+**2. Add university/institution → domain keyword expansion — `polywhaler_monitor.py`**
+
+The current `score_against_market()` checks employer text for direct company name matches and generic finance keywords, but doesn't map academic institutions to their domain areas. Add a lookup table: `INSTITUTION_DOMAINS = {"Yale University": ["epidemiology", "public health", "medicine", "policy"], "Johns Hopkins": [...], ...}` and check whether any mapped domain overlaps with market category keywords. For bigbonder + Hantavirus, this should award the `category_*_keyword` 8-point flag. This is the single largest missed signal today: a correctly identified, credible employer-market connection that scored zero.
+
+**3. Introduce a `ghost_concentration` flag for no-OSINT + large concentrated portfolios — `polywhaler_monitor.py`**
+
+Add a new flag: if `profiles_found` contains only `["HudsonRock"]` (or similar non-identity sites), polywhaler score ≥25, portfolio value ≥$100k, and top position pct ≥0.7, award +4 points. Rationale: the existing `no_online_presence` (+2) is too weak to overcome the `low_confidence` penalty (-3) for polywhaler-only cases. A deliberate ghost identity combined with a large concentrated bet is more suspicious than an identifiable trader with weak OSINT. This would have surfaced 65765757 (score jumps from 8 to ~12) and brought them into the brief.
+
+**4. Add a Falcon data quality validator — `falcon_analytics.py` or `polywhaler_monitor.py`**
+
+Before scoring, check for coherence signals: (a) if `calculation_window_days == 7` and `days_active <= 3`, append a `falcon_low_sample` flag that suppresses win-rate and Sharpe flags; (b) if `wallet_360_30d` is absent entirely, append a `falcon_enrichment_failed` flag with 0 points (for visibility); (c) if avg_trade_size in Falcon is >100x smaller than the flagged trade size, log a `falcon_data_mismatch` warning. This addresses the silent degradation problem and would have caught the bigbonder Falcon coherence issue.
+
+**5. Add market-cluster meta-signal to the brief prompt — `auto_monitor.py` `build_prompt()`**
+
+Before calling Claude, compute the top market title cluster across all scored traders (e.g., count distinct market titles containing "Iran"). If ≥3 traders from today's batch are betting on a common theme, inject a cluster summary into the prompt: `"CLUSTER ALERT: 8 traders today are active on Iran-related markets."` This costs one loop over `analysis.json` and gives the LLM (and operator) context that individual scores cannot convey. It would have flagged the Iran theme dominance today and helped the operator interpret bigbonder's Hantavirus position as an outlier against a background of geopolitical noise.
+--- end ---
+
+Fetching up to 4 page(s) of trades (threshold: insiderScore ≥ 20)…
+  22 trades at or above threshold
+  13 new trader(s) not seen before, 9 already profiled
+  12 username(s) to OSINT
+  Running OSINT on 12 new trader(s)…
+╭───────────────────────────╮
+│ Polymarket OSINT Pipeline │
+╰───────────────────────────╯
+[08:30:07] Loaded 12 usernames from                                   run.py:293
+           /home/kali/polymarket/results/polywhaler/2026-05-11/new_us           
+           ernames.txt                                                          
+/home/kali/polymarket/run.py:1075: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "generated_at": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+[08:30:40] Falcon API: enriching 12 profile(s) with on-chain          run.py:293
+           analytics…                                                           
+[08:30:50] Falcon API: enriched 12/12 profile(s)                      run.py:293
+           Done. 12 profile(s), 0 thin. →                             run.py:293
+           /home/kali/polymarket/results/new_usernames/                         
+  Profiling ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12/12 0:00:32 0:00:00
+/home/kali/polymarket/results/new_usernames
+Loaded 60 entries — 0 already done, 60 remaining
+Brave API: 340/5000 used this month (2026-05)  [6.8%]  4660 remaining
+Workers: 10  Delay per worker: 0.0–0.0s
+[1/60] 'Valen9' → "Valentin Sambucetti" site:linkedin.com/in/
+[2/60] 'no1yet' → "No1 Yet" site:linkedin.com/in/
+[3/60] 'scottilicious' → "Thanakorn Intajak" site:linkedin.com/in/
+[4/60] 'novv25' → "gun dew" site:linkedin.com/in/
+[5/60] 'cqs' → "pooja jain" site:linkedin.com/in/ "jabalpur"
+[6/60] 'thegreengem' → "Drew Esmeralda" site:linkedin.com/in/ "Philippines"
+[7/60] 'skylove' → "Jalal Gampong" site:linkedin.com/in/ "Riyadh City"
+[8/60] 'itachida' → "Gausiya Shaikh" site:linkedin.com/in/
+[9/60] 'CSKL' → "Csaba K." site:linkedin.com/in/
+[10/60] 'mohahaha' → "Mohammad turbo" site:linkedin.com/in/
+  – ['no1yet'] not found
+[11/60] 'Sam.Young' → "Sam Y.&#x27;s Profile" site:linkedin.com/in/
+  – ['novv25'] not found
+[12/60] 'P' → "Oleg Pudeyev" site:linkedin.com/in/ "NYC"
+  – ['Valen9'] not found
+[13/60] 'tourists' → "green blue" site:linkedin.com/in/
+  – ['thegreengem'] not found
+[14/60] 'James000' → "Alexander Jacob" site:linkedin.com/in/ "nimbin"
+  – ['scottilicious'] not found
+[15/60] 'peal' → "Pedro Lopes" site:linkedin.com/in/ "Anywhere on earth."
+  ✓ ['cqs'] https://www.linkedin.com/in/pooja-jain-4352a078 (profile updated)
+[16/60] 'exposito' → "Enock Owusu Ansah" site:linkedin.com/in/
+  – ['mohahaha'] not found
+[17/60] 'westminster' → "Westminster Westminster" site:linkedin.com/in/ "Sunnyvale"
+  ✓ ['itachida'] https://www.linkedin.com/in/gausiya-shaikh-650b8914a (profile updated)
+[18/60] 'PantheraUncia' → "Alona Ratsebarska" site:linkedin.com/in/ "Switzerland"
+  – ['skylove'] not found
+[19/60] 'TranQuiliT' → "Tranquil IT" site:linkedin.com/in/ "Nantes"
+  ✓ ['CSKL'] https://www.linkedin.com/in/csabakecskemeti (profile updated)
+[20/60] 'debased' → "dɘbaƨed (debased)" site:linkedin.com/in/
+  – ['James000'] not found
+[21/60] 'ThreeOneFour' → "Ahmad Ayyash" site:linkedin.com/in/ "Amman"
+  – ['westminster'] not found
+  – ['Sam.Young'] not found
+[22/60] 'bigbonder' → "Brandon Chan" site:linkedin.com/in/
+[23/60] 'Goopster' → "Jestin Brazda" site:linkedin.com/in/
+  – ['P'] not found
+[24/60] '36chambers' → "Mattias, Pascal, Gianluca ." site:linkedin.com/in/
+  – ['peal'] not found
+[25/60] 'shadow54' → "jonathan renez" site:linkedin.com/in/ "diamond bar"
+  – ['debased'] not found
+[26/60] 'scout' → "Purged from vessel" site:linkedin.com/in/ "New Mexico"
+  – ['PantheraUncia'] not found
+[27/60] 'horiz0n' → "Diganta Mandal" site:linkedin.com/in/
+  ✓ ['exposito'] https://www.linkedin.com/in/enock-owusu-ansah (profile updated)
+[28/60] 'JJo' → "JuanJo Ciarlante" site:linkedin.com/in/ "Mendoza"
+  ✓ ['tourists'] https://www.linkedin.com/in/green-blue-3455a06/?_l=en (profile updated)
+[29/60] 'wan123' → "ahmad syazwan" site:linkedin.com/in/ "kelantan"
+  ✓ ['TranQuiliT'] https://www.linkedin.com/in/vincent-cardon-05b3946b (profile updated)
+[30/60] 'Aurelian9' → "Aurelia N" site:linkedin.com/in/
+  – ['Goopster'] not found
+[31/60] 'Rafifa' → "Rafifa Binte Jahir" site:linkedin.com/in/
+  – ['shadow54'] not found
+[32/60] 'justme003' → "Lenka Yaroyan" site:linkedin.com/in/ "Erevan"
+  – ['scout'] not found
+[33/60] 'strike123' → "Paresh Pandya" site:linkedin.com/in/
+  ✓ ['ThreeOneFour'] https://www.linkedin.com/in/ahmad-ayyash-79a6a4150 (profile updated)
+[34/60] 'larrystein' → "Larry Stein" site:linkedin.com/in/
+  – ['JJo'] not found
+[35/60] 'xOvation' → "Chris Alha" site:linkedin.com/in/
+  – ['36chambers'] not found
+[36/60] 'alextalley' → "Alex Talley" site:linkedin.com/in/
+  ✓ ['horiz0n'] https://in.linkedin.com/in/diganta-mandal-4294a324a (profile updated)
+[37/60] 'allenzzz' → "Alon Mandelblat" site:linkedin.com/in/
+  ✓ ['Aurelian9'] https://www.linkedin.com/in/aurelia-n-87573522 (profile updated)
+[38/60] 'Hashbrown' → "Brad Armstrong" site:linkedin.com/in/ "Minneapolis"
+  – ['Rafifa'] not found
+[39/60] 'SaylorMoon' → "Natacha Benmesbah" site:linkedin.com/in/
+  – ['justme003'] not found
+[40/60] 'hebi007' → "Aung Kyaw Khant" site:linkedin.com/in/
+  ✓ ['xOvation'] https://www.linkedin.com/in/chris-alpha-a8b5748b (profile updated)
+[41/60] '2B9S' → "Ken Oikawa" site:linkedin.com/in/
+  ✓ ['Hashbrown'] https://www.linkedin.com/in/therealbradarmstrong (profile updated)
+[42/60] 'MEPP' → "Dave Meppelink" site:linkedin.com/in/ "Mar del Plata"
+  ✓ ['SaylorMoon'] https://www.linkedin.com/in/natacha-benmesbah-7408472a1 (profile updated)
+[43/60] '10thave' → "10th Avenue" site:linkedin.com/in/ "10th"
+  ✓ ['hebi007'] https://www.linkedin.com/in/aung-kyaw-khant-7aa24a200 (profile updated)
+[44/60] 'wlooo' → "Wael Nice" site:linkedin.com/in/ "New York City"
+  ✓ ['2B9S'] https://www.linkedin.com/in/ken-oikawa-a895036b (profile updated)
+[45/60] 'Warren-Buffett' → "Warren Buffett" site:linkedin.com/in/
+  – ['MEPP'] not found
+[46/60] 'denizz' → "Denis RedCoket" site:linkedin.com/in/ "Turkey"
+  ✓ ['wan123'] https://www.linkedin.com/in/ahmad-syazwan-02226318a (profile updated)
+[47/60] 'Arbguy' → "arb guy" site:linkedin.com/in/ "arbville"
+  ✓ ['bigbonder'] https://www.linkedin.com/in/brandon-sc-chan (profile updated)
+[48/60] 'endgame3' → "Medusa Hades" site:linkedin.com/in/ "rreading"
+  – ['wlooo'] not found
+[49/60] 'TylerTurden' → "Jon Tuck" site:linkedin.com/in/
+  ✓ ['10thave'] https://www.linkedin.com/in/nick-shapiro (profile updated)
+[50/60] 'NELF' → "Nelf Royal" site:linkedin.com/in/
+  ✓ ['Warren-Buffett'] https://www.linkedin.com/in/warren-buffett-9451b3361 (profile updated)
+[51/60] 'ImJustKen' → "Fren Jarvis" site:linkedin.com/in/
+  – ['denizz'] not found
+[52/60] 'alliswell' → "Jared Erickson" site:linkedin.com/in/ "Brother"
+  – ['Arbguy'] not found
+[53/60] 'MisTKy' → "Thiago Gonçalves" site:linkedin.com/in/
+  ✓ ['alextalley'] https://www.linkedin.com/in/alex-talley-751416130 (profile updated)
+[54/60] 'Pajamapants' → "Michael Kong" site:linkedin.com/in/
+  – ['allenzzz'] not found
+[55/60] 'bigbond' → "Priyansh Agrahari" site:linkedin.com/in/
+  ✓ ['larrystein'] https://www.linkedin.com/in/larrystein-steinonstuttering (profile updated)
+[56/60] 'dooby' → "dov israeli" site:linkedin.com/in/ "palm springs"
+  ✓ ['TylerTurden'] https://www.linkedin.com/in/jon-tuck-22a9735 (profile updated)
+[57/60] 'CB61' → "Chandra Bhushan Yadav" site:linkedin.com/in/ "YBI"
+  ✓ ['alliswell'] https://www.linkedin.com/in/jared-erickson-93585b14 (profile updated)
+[58/60] 'AlAhmeda' → "Alaa Alahmed" site:linkedin.com/in/
+  – ['dooby'] not found
+[59/60] '100x' → "Remigijus Gineitis" site:linkedin.com/in/
+  ✓ ['MisTKy'] https://www.linkedin.com/in/thiago-gon%C3%A7alves-a4a39930 (profile updated)
+[60/60] 'Yogi.Bear' → "Yogi Bear" site:linkedin.com/in/
+  ✓ ['bigbond'] https://www.linkedin.com/in/priyansh-agrahari-975309204 (profile updated)
+  ✓ ['Pajamapants'] https://bs.linkedin.com/in/michael-kong-89817544 (profile updated)
+  – ['CB61'] not found
+  – ['100x'] not found
+  ✓ ['AlAhmeda'] https://www.linkedin.com/in/alaa-alahmed (profile updated)
+  ✓ ['Yogi.Bear'] https://www.linkedin.com/in/north-texas-jellystone-park-8a5284130 (profile updated)
+  – ['endgame3'] not found
+  ✓ ['strike123'] https://www.linkedin.com/in/paresh-pandya-a173b5ba (profile updated)
+  – ['NELF'] not found
+  – ['ImJustKen'] not found
+
+Done — 28 found, 32 not found, 0 errors (of 60 processed)
+Brave API: 400/5000 used this month (2026-05)  [8.0%]  4600 remaining
+  LinkedIn: 60 queries → /home/kali/polymarket/results/polywhaler/2026-05-11/linkedin_queries.json
+  Loaded 157 profile(s) from /home/kali/polymarket/results/new_usernames
+  Falcon: enriching 5 returning trader(s)…
+  Global profile cache: wrote 157 profile(s) → /home/kali/polymarket/results/polywhaler_profiles
+  Sybil: fetching latest Polygon block…
+  Sybil: scanning last 90d (from block 83,328,477) for 18 wallets…
+  Sybil: no shared-funder clusters detected
+  1 trader(s) scored without OSINT profile
+  Watchlist: tracking 49 trader(s) for up to 30 days
+
+========================================================================
+POLYWHALER INSIDER MONITOR — 2026-05-11
+========================================================================
+Traders scored: 18
+
+  winforretire                    our=  9  pw= 28  $    29,799  No  Will China invade Taiwan by December 31, 2027?
+    [+4] polywhaler_insider_score: 28
+    [+1] medium_trade: 
+    [+2] large_portfolio: $404,007 portfolio value
+    [+2] concentrated_thesis: 90% of portfolio ($364,408) in: Will China invade Taiwan by end of 202
+
+  CAR-GangVersion                 our=  9  pw= 29  $   173,656  Yes  Will Trump visit China by May 15?
+    [+4] polywhaler_insider_score: 29
+    [+3] large_trade: 
+    [+2] falcon_realized_pnl: $77,207 realized PnL (89W/11L on settled markets)
+    [+2] large_portfolio: $1,253,785 portfolio value
+    [+2] concentrated_thesis: 65% of portfolio ($812,500) in: Will JD Vance win the 2028 US Presiden
+    [-4] market_maker_pattern: 2.2% lifetime win rate over 4,072 trades — spread earner, not directio
+
+  wan123                          our=  7  pw= 51  $   403,000  Yes  US x Iran permanent peace deal by May 31, 2026?
+    [+8] polywhaler_insider_score: 51
+    [+3] large_trade: 
+    [+2] falcon_realized_pnl: $635,674 realized PnL (1461W/454L on settled markets)
+    [+2] large_portfolio: $1,438,430 portfolio value
+    [+2] falcon_high_win_rate: 78.8% win rate (7d window)
+    [-6] high_frequency_trader: 143 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 13.2% lifetime win rate over 11,082 trades — spread earner, not direct
+
+  CREEED                          our=  7  pw= 26  $    13,370  No  Iran leadership change by May 31?
+    [+4] polywhaler_insider_score: 26
+    [+2] falcon_high_win_rate: 100.0% win rate (7d window)
+    [+1] falcon_concentrated_bets: category diversity score 0.06 (7d window)
+
+  Arron-                          our=  7  pw= 29  $    43,483  Yes  Will Trump visit China by May 15?
+    [+4] polywhaler_insider_score: 29
+    [+1] medium_trade: 
+    [+2] large_portfolio: $554,984 portfolio value
+    [+2] concentrated_thesis: 71% of portfolio ($395,739) in: Strait of Hormuz traffic returns to no
+    [-2] high_frequency_trader: 41 trades/day (7d window) — likely automated/bot
+
+  fin-tech                        our=  5  pw= 27  $    40,697  Yes  Will Trump visit China by May 15?
+    [+4] polywhaler_insider_score: 27
+    [+1] medium_trade: 
+    [+2] large_portfolio: $2,343,712 portfolio value
+    [+2] concentrated_thesis: 54% of portfolio ($1,263,284) in: Will J.D. Vance win the 2028 Republi
+    [-4] market_maker_pattern: 1.7% lifetime win rate over 1,137 trades — spread earner, not directio
+
+  70cx577x6f7                     our=  5  pw= 21  $    20,473  No  Iran leadership change by May 31?
+    [+3] polywhaler_insider_score: 21
+    [+2] falcon_high_win_rate: 95.2% win rate (7d window)
+
+  QuietRiskisWrong                our=  5  pw= 33  $   325,897  No  Will the U.S. invade Iran before 2027?
+    also: $    19,810  No  Israel closes its airspace by May 31?
+    also: $    29,370  No  Iran closes its airspace by May 15?
+    [+5] polywhaler_insider_score: 33
+    [+3] large_trade: 
+    [+0] thematic_cluster: 2 bets on 'iran'-themed markets ($355,267 total): Will the U.S. invade
+    [-3] low_confidence: 
+
+  BBQ1991                         our=  4  pw= 41  $    75,000  No  Will the US confirm that aliens exist before 2027?
+    [+6] polywhaler_insider_score: 41
+    [+1] medium_trade: 
+    [-3] low_confidence: 
+
+  tourists                        our=  3  pw= 23  $    24,679  No  Hantavirus pandemic in 2026?
+    [+3] polywhaler_insider_score: 23
+    [+2] falcon_realized_pnl: $180,490 realized PnL (3206W/2106L on settled markets)
+    [+2] large_portfolio: $148,956 portfolio value
+    [+2] concentrated_thesis: 48% of portfolio ($70,872) in: Hantavirus pandemic in 2026?
+    [-2] high_frequency_trader: 65 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 18.3% lifetime win rate over 17,551 trades — spread earner, not direct
+
+  bezneslawt                      our=  2  pw= 35  $    12,601  No  US x Iran permanent peace deal by May 15, 2026?
+    [+5] polywhaler_insider_score: 35
+    [-3] low_confidence: 
+
+  PoppingChairman                 our=  2  pw= 24  $    48,957  No  US x Iran permanent peace deal by May 15, 2026?
+    [+4] polywhaler_insider_score: 24
+    [+1] medium_trade: 
+    [-3] low_confidence: 
+
+  Doggieson                       our=  2  pw= 29  $    41,242  No  Iran closes its airspace by May 31?
+    [+4] polywhaler_insider_score: 29
+    [+1] medium_trade: 
+    [-3] low_confidence: 
+
+  enri.hl                         our=  1  pw= 30  $   122,412  Yes  US x Iran permanent peace deal by December 31, 202
+    [+5] polywhaler_insider_score: 30
+    [+3] large_trade: 
+    [+2] falcon_high_win_rate: 75.4% win rate (7d window)
+    [+1] falcon_concentrated_bets: category diversity score 0.01 (7d window)
+    [-6] high_frequency_trader: 102 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 30.5% lifetime win rate over 10,909 trades — spread earner, not direct
+
+  endgame3                        our=  1  pw= 34  $    85,005  Yes  Will WTI Crude Oil (WTI) hit (HIGH) $110 in May?
+    [+5] polywhaler_insider_score: 34
+    [+1] medium_trade: 
+    [-2] high_frequency_trader: 51 trades/day (7d window) — likely automated/bot
+    [-3] low_confidence: 
+
+  bobe2.1                         our=  0  pw= 20  $    33,868  No  Epstein suicide note released by May 8?
+    [+3] polywhaler_insider_score: 20
+    [+1] medium_trade: 
+    [+2] large_portfolio: $1,302,593 portfolio value
+    [-2] high_frequency_trader: 92 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 0.3% lifetime win rate over 1,493 trades — spread earner, not directio
+
+  AdrianCronauer                  our= -1  pw= 26  $   605,461  No  US x Iran permanent peace deal by May 13, 2026?
+    [+4] polywhaler_insider_score: 26
+    [+3] large_trade: 
+    [+2] large_portfolio: $1,512,607 portfolio value
+    [-6] high_frequency_trader: 155 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 5.8% lifetime win rate over 2,504 trades — spread earner, not directio
+
+  NonceChaser                     our= -1  pw= 41  $    20,309  Yes  Will Keiko Fujimori win the 2026 Peruvian presiden
+    [+6] polywhaler_insider_score: 41
+    [+2] large_portfolio: $899,845 portfolio value
+    [+1] falcon_concentrated_bets: category diversity score 0.28 (7d window)
+    [-6] high_frequency_trader: 238 trades/day (7d window) — likely automated/bot
+    [-4] market_maker_pattern: 6.4% lifetime win rate over 7,094 trades — spread earner, not directio
+
+
+Outputs → /home/kali/polymarket/results/polywhaler/2026-05-11/
+  trades.json    22 flagged trades
+  analysis.json  18 scored traders
+  report.txt     ranked summary
+  run_stats.json health metrics
+========================================================================
+STEP 1 — Running polywhaler monitor…
+========================================================================
+
+========================================================================
+STEP 2 — Sending to Claude for analysis…
+========================================================================
+
+--- Claude analysis ---
+*Polymarket Intelligence Brief — 2026-05-11*
+
+Two traders warrant attention. No verified employer-to-market connections today; both cases rest on anomalous on-chain behavior combined with trade size.
+
+---
+
+*enri.hl* — "US x Iran permanent peace deal by Dec 31, 2026?" — $122,412 YES
+No verified identity. Win rate 75.43% over the past 7 days, category diversity 0.005 — near-total concentration in a single category, with all recent activity pointing at Iran outcomes. Lifetime profile shows a market-maker pattern (10,909 trades, 30% lifetime win rate), but recent behavior diverges sharply from that baseline — a sudden pivot to heavy directional betting on Iran diplomacy at 75%+ accuracy is a meaningful behavioral anomaly.
+
+---
+
+*wan123* (Ahmad Syazwan) — "US x Iran permanent peace deal by May 31, 2026?" — $403,000 YES
+LinkedIn identity confirmed; employer listed as unemployed, based in Kelantan, Malaysia — no professional link to US-Iran diplomacy. On-chain: 78.79% win rate (7-day), $635k lifetime realized PnL across 11,082 trades. Category diversity is broad (0.86), which weakens the insider hypothesis — this looks more like a skilled high-frequency trader taking a large directional position than someone with specific access. The $403k size is the primary flag.
+https://www.linkedin.com/in/ahmad-syazwan-02226318a
+
+---
+
+*Watch only:* *CREEED* bet $13,370 on "Iran leadership change No" with a 100% 7-day win rate and extreme concentration (diversity 0.06). Small size and no identity, but the metric combination is worth tracking if the position resolves correctly.
+
+*Recommended action:* Neither clears the bar for confident copy-trading. enri.hl's behavioral shift is the more structurally interesting signal — flag for follow-up if Iran deal markets move. wan123's size warrants monitoring but the broad portfolio diversification argues against targeted inside information. Do not copy either position at this time.
+--- end ---
+
+  Seeded 18 new alert(s) for 2026-05-11 (186 total in outcomes.json)
+  Seeded 8 new position(s) for 2026-05-11 (skipped 10 below score 5) (144 total)
+
+Health: trades=22  scored=18  new=12
+
+========================================================================
+STEP 3 — Posting 1 message(s) to Telegram…
+========================================================================
+  [1/1] sent (msg_id=31)
+
+========================================================================
+STEP 5 — Running pipeline self-review with Claude…
+========================================================================
+
+  Pipeline review saved → /home/kali/polymarket/results/polywhaler/2026-05-11/pipeline_review.txt
+
+--- Pipeline review ---
+## Pipeline Evaluation — 2026-05-11
+
+---
+
+### Signal Quality
+
+**Iran thematic cluster is real but poorly surfaced.** Multiple independent wallets are positioned around the same Iran diplomatic situation (peace deal, airspace closure, leadership change, US invasion), which is genuine convergence worth noting. The pipeline detected the theme but didn't fully exploit it.
+
+**enri.hl is correctly identified as the most structurally interesting case.** The behavioral anomaly — 10,909 lifetime trades at 30% win rate pivoting to 75%+ accuracy on a concentrated Iran directional bet — is a meaningful signal. The brief's analysis of this is the best writing in the output.
+
+**wan123 is correctly de-prioritized.** $403k YES on Iran peace + 11k lifetime trades + 0.86 diversity score + Malaysian high school background = sophisticated HFT taking a directional position, not a diplomat with a tip. The brief's reasoning here is sound.
+
+**Obvious false positives:**
+- `CAR-GangVersion`: 4,072 trades, 2.19% lifetime win rate, $46M total invested with only $77k profit — this is a liquidity provider, not an insider. The `large_trade` flag on their $173k Trump-China bet is misleading; they make $14k-avg trades constantly.
+- `AdrianCronauer`: $605k trade is the largest single trade in the dataset, yet score is -1. This is fine — the negative lifetime PnL ($-26k on $4.2M invested) and high-frequency pattern correctly identify them as a market maker taking on directional risk, not insider activity. The scoring is working here.
+- `BBQ1991`: polywhaler_insider_score 41 on "Will the US confirm aliens exist" — almost certainly noise. A high insider score on a conspiratorial long-tail market suggests polywhaler's model doesn't adjust for market type.
+
+---
+
+### Coverage Gaps
+
+**Critical miss: winforretire and CAR-GangVersion are the two highest-scored traders (our_score 9 each) and neither appears in the Telegram brief.** This is the most significant output failure today.
+
+**QuietRiskisWrong is absent from the brief despite having the most compelling thematic signature in the dataset.** Three coordinated Iran bets totaling ~$375k (US invasion No, Iran airspace No, Israel airspace No), all in the same thematic cluster, with a polywhaler score of 33, and zero OSINT identity — this is a ghost account running a sizable coordinated de-escalation thesis. The `low_confidence: polywhaler_only` penalty of -3 dropped the score to 5 and it fell out of the brief. That penalty is silencing a genuinely suspicious pattern.
+
+**Falcon 7d windows returning all-zeros for at least 5 traders** (winforretire, CAR-GangVersion, Arron-, fin-tech, endgame3): every time-based metric (`win_rate`, `annualized_return`, `sharpe_ratio`, `best_market_pnl`) is zero. These wallets have open but unresolved positions — the Falcon API cannot compute metrics because no trades have closed in the window. The pipeline is silently treating this as data rather than flagging it as a collection gap. winforretire in particular is missing all behavioral data despite being the top-scored trader.
+
+**Doggieson is missing wallet_360_30d entirely** — positions_data fetched but no risk metrics at all.
+
+**No identity on 10 of 18 traders.** Sherlock/OSINT ran but failed to find usable profiles for CAR-GangVersion, winforretire, CREEED, 70cx577x6f7, QuietRiskisWrong, BBQ1991, Arron-, PoppingChairman, Doggieson, bezneslawt. This is expected for some, but the absence of any LinkedIn/GitHub data on $600k+ trade wallets like QuietRiskisWrong is a real coverage hole.
+
+---
+
+### Scoring Calibration
+
+**`thematic_cluster` awards 0 points.** This is broken. The flag is being detected but contributes nothing to the score. QuietRiskisWrong has three coordinated Iran bets totaling $375k and gets 0 points for it. Multi-market coordinated bets are one of the clearest behavioral signals in the dataset and should contribute meaningfully.
+
+**`high_frequency_trader` at -6 is too aggressive at the high end.** The penalty tiers are:
+- 40–65 trades/day → -2 (reasonable)
+- 65–100 trades/day → -2 (probably still OK)
+- 100+ trades/day → -6 (overcorrects)
+
+The problem: a market maker making an outsized directional bet is *more* suspicious than a retail trader doing the same. enri.hl at 102 trades/day gets -6, which nearly cancels out the $122k large trade (+3) and polywhaler score (+5). The penalty should scale with how anomalous the current trade is relative to the wallet's typical trade size, not just with raw trade frequency.
+
+**`market_maker_pattern` at -4 is too blunt.** It correctly suppresses most market makers, but it doesn't distinguish between:
+- True market makers (buying AND selling, `buy_trade_ratio` near 0.5)
+- Prolific directional traders (high trade count but consistent one-sided bets)
+
+enri.hl has `buy_trade_ratio: 0.5014` — genuinely two-sided, a real market maker. AdrianCronauer has `buy_trade_ratio: 0.7976` — mostly buying, less clearly a market maker. The penalty should be steeper for balanced buy/sell ratios and lighter for high-volume directional traders.
+
+**`low_confidence: polywhaler_only` at -3 is appropriate in principle but miscalibrated in magnitude.** For traders with polywhaler_insider_score > 30 AND trade size > $200k, the -3 penalty overwhelms the evidence. The confidence penalty should taper at high trade sizes: a $325k position from a ghost account is already self-evidencing significance.
+
+**`large_portfolio` and `concentrated_thesis` each award 2 points** for portfolio-level signals that are weakly correlated with insider activity. A $1.25M portfolio making a $40k trade is not particularly suspicious. These flags may be inflating scores on large market makers.
+
+---
+
+### Pipeline Reliability
+
+**The brief's trader selection does not follow the `our_score` ranking.** The two top-scored traders (winforretire, CAR-GangVersion, score 9) are not in the brief. The brief leads with enri.hl (score 1). The LLM is making independent editorial choices about whom to surface, and those choices are not anchored to the quantitative ranking. This defeats the purpose of scoring.
+
+**Falcon "all-zeros" windows are being silently treated as valid data.** When `win_rate: 0` and `total_trades: 0` and `days_active < 3`, the 7d window is empty, not a meaningful signal. At least 5 traders have this condition and the pipeline scores them as if Falcon enrichment succeeded.
+
+**HudsonRock appears in 15 of 18 trader profiles** as a `profiles_found` entry. This is almost certainly a data breach probe (Have I Been Pwned-style lookup) with near-100% hit rate. It adds no actionable signal, clutters the profiles list, and may confuse the LLM when it scans profiles_found for identity cues.
+
+**enri.hl's current position is $6.9k** (`portfolio_value` in positions_data), not $122k. The $122k is the original trade size (tokens purchased), but the position has been substantially reduced or partially closed. The brief correctly stated "$122,412" as the trade size, but the operator should know the current exposure is much smaller — the trade may have already been partially exited.
+
+---
+
+### Output Quality
+
+The brief is well-written, appropriately terse, and the qualitative reasoning on enri.hl's behavioral shift is genuinely insightful. The "Watch only: CREEED" format is good. The recommendation to not copy either position is defensible.
+
+But it missed three traders that deserved coverage:
+
+| Trader | Score | Why it matters | Why it was missed |
+|---|---|---|---|
+| winforretire | 9 | Top score, $404k concentrated Taiwan portfolio | No Falcon 7d data, never surfaced to LLM |
+| CAR-GangVersion | 9 | Top score, $173k Trump-China trade | market_maker flag, never surfaced |
+| QuietRiskisWrong | 5 | $375k coordinated Iran de-escalation across 3 markets, ghost account | low_confidence penalty, thematic_cluster = 0 pts |
+
+---
+
+## Improvement Recommendations (Ranked by Impact)
+
+### 1. Fix `thematic_cluster` scoring — it gives 0 points (high impact, 1-line fix)
+
+**File:** `polywhaler_monitor.py`, `score_against_market()`
+
+The flag is detected but awards nothing. Coordinated multi-market bets are a high-value signal — they suggest the trader has a specific thesis about an outcome, not just noise.
+
+```python
+# Current: 0 points for thematic_cluster
+# Proposed:
+if flag_type == "thematic_cluster":
+    trade_count = flag.get("trade_count", 1)
+    points = 2 if trade_count == 2 else 4  # 2 markets → +2, 3+ → +4
+```
+
+This alone would lift QuietRiskisWrong from score 5 to 9, bringing it into the brief.
+
+---
+
+### 2. Detect and flag empty Falcon 7d windows — currently silent data gaps (high impact)
+
+**File:** `polywhaler_monitor.py` or `falcon_analytics.py`
+
+When `wallet_360_7d.total_trades == 0` or `win_rate == 0` and `days_active < 3`, the window is empty, not a valid reading. The pipeline should:
+
+1. Add a `falcon_data_gap` flag to the profile (no points, but visible in output)
+2. Fall back to lifetime performance ratios where possible
+3. Pass the gap flag to the LLM prompt so it can note the limitation
+
+Without this, winforretire's lack of any recent behavioral signal goes unnoticed and the trader gets silently under-analyzed despite a score of 9.
+
+---
+
+### 3. Anchor the LLM brief to `our_score` ranking (high impact, prompt change)
+
+**File:** `auto_monitor.py`, `build_prompt()` and the Claude system prompt
+
+Currently the LLM makes independent editorial choices that can ignore top-scored traders entirely. The prompt should:
+
+1. Pass traders sorted by `our_score` descending (verify this is already happening — but the output suggests it's not being respected)
+2. Require explicit mention of all traders with `our_score ≥ 7`
+3. Allow the LLM to *discount* a high-scored trader with reasoning, but not silently omit them
+
+Example system prompt addition:
+> "The traders are pre-ranked by `our_score`. Your brief MUST address every trader with `our_score ≥ 7`. You may conclude a high-scored trader is a false positive, but state why explicitly."
+
+---
+
+### 4. Make `market_maker_pattern` penalty depend on trade anomaly ratio (medium impact)
+
+**File:** `polywhaler_monitor.py`, `score_against_market()`
+
+A market maker placing a trade 10x their average size is more suspicious, not less. The current flat -4 penalty doesn't account for this.
+
+```python
+# Instead of flat -4:
+avg_trade_size = polymarket_analytics.get("wallet_360_30d", {}).get("avg_trade_size", 0)
+if avg_trade_size > 0:
+    anomaly_ratio = trade_size / avg_trade_size
+    if anomaly_ratio > 10:
+        mm_penalty = -1  # unusually large for this wallet — reduce penalty
+    elif anomaly_ratio > 3:
+        mm_penalty = -2
+    else:
+        mm_penalty = -4  # normal-sized trade for a market maker
+```
+
+enri.hl's $122k trade vs. their $138 avg trade size is a 884x anomaly. That's the opposite of noise.
+
+---
+
+### 5. Remove HudsonRock from OSINT profiles or strip it pre-scoring (low impact, easy win)
+
+**File:** `polywhaler_monitor.py` or `run.py` — wherever `profiles_found` is assembled
+
+HudsonRock appears in 15/18 profiles and is essentially a constant — it's a dark-web breach database, not a professional identity signal. Remove it from `TARGET_SITES` in `search_usernames_targeted_sherlock.py` or filter it out when building the `profiles_found` list before scoring. It adds noise to the LLM context and slightly inflates the appearance of OSINT coverage.
+
+---
+
+**Bottom line on today's run:** The scoring system and data collection worked adequately, but the output failed on selection — two of the most interesting traders were omitted from the brief, and the most compelling ghost-account pattern ($375k coordinated Iran thesis from QuietRiskisWrong) was suppressed by a 0-point thematic cluster flag. Fixes 1 and 3 above would materially improve tomorrow's output with minimal code change.
+--- end ---
+
